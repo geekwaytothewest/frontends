@@ -132,3 +132,6 @@ dist
 # custom build locations
 **/build/
 **/dist/
+
+# webpack
+**/webpack.*.js
