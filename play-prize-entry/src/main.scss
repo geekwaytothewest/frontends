@@ -1,0 +1,583 @@
+@import '~@blueprintjs/core/lib/css/blueprint.css';
+@import '~@blueprintjs/popover2/lib/css/blueprint-popover2.css';
+@import './colors.scss';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:100,300,400');
+// @import './assets/fonts/Adlib-Regular.woff';
+// @import './assets/fonts/Adlib-Regular.woff2';
+
+@font-face {
+  font-family: ADLIB;
+  font-style: normal;
+  src: 
+    url(assets/Fonts/Adlib-Regular.woff2) format('woff2'), 
+    url(assets/Fonts/Adlib-Regular.woff) format('woff'),
+    url(assets/Fonts/AdLib-Regular.ttf) format('truetype');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'ADLIB', 'Roboto', sans-serif;
+  margin-bottom: 20px;
+  line-height: 1.1em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  background-color: #0094d2;
+  background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #0094d2 10px ), repeating-linear-gradient( #00b25955, #00b259 );
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 98vh;
+  @media (max-height: 870px) {
+    min-height: 0;
+  }
+}
+
+em {
+  color: $dark-gray;
+}
+
+.ml025 {
+  margin-left: 0.25rem;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 601px) {
+    &:before,
+    &:after {
+      -webkit-box-flex: 1;
+      box-flex: 1;
+      flex-grow: 1;
+      content: '';
+      display: block;
+      height: 24px;
+    }
+  }
+}
+
+.main-content {
+  background-color: $not-quite-white;
+  border: 1px solid $dark-gray;
+  width: 900px;
+  // height: 92vh;
+  min-height: 50vh;
+  flex-shrink: 0;
+  margin: 0 auto;
+  padding: 2em 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
+
+  @media (max-width: 950px) {
+    width: 100%;
+  }
+
+  @media (max-height: 800px) {
+    height: 88vh;
+  }
+
+  @media (max-height: 660px) {
+    height: 88vh;
+  }
+
+  @media (max-height: 525px) {
+    height: 88vh;
+  }
+
+  &-header {
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1.5em;
+    min-height: 5.5em;
+
+    &-title {
+    font-family: 'ADLIB', 'Roboto', sans-serif;
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    .wrong-user-warning {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.authenticate-form-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrong-user-warning,
+.callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 20rem;
+  max-width: 24rem;
+  margin-bottom: 1em;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin-bottom: 0.5em;
+  }
+}
+
+.callout-block {
+  display: flex;
+  flex-direction: column;
+
+  &-inline {
+    align-items: center;
+    justify-content: space-between;
+    align-content: space-between;
+  }
+}
+
+.choose-checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 25.5rem;
+  flex: 1 1 auto;
+
+  .back-button {
+    align-self: flex-start;
+    margin-left: 1em;
+  }
+}
+
+.checkouts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 98%;
+  margin-top: 10px;
+  background-color: $light-gray;
+  border: 1px solid $dark-gray;
+  padding-top: 1em;
+  margin: 0 3px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+
+  .checkouts-list-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 2px 1em 0 1em;
+
+    .game-card {
+      max-height: 4em;
+      text-align: center;
+
+      margin: 0 1em 1em 1em;
+      margin-bottom: 1em;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: Roboto;
+      }
+    }
+  }
+}
+
+.form-section {
+  background-color: $light-gray;
+  padding: 1.3em 3em;
+  border: 1px solid $dark-gray;
+  margin-bottom: 1em;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.enter-play,
+.review-play {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+
+  .button-group {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .enter-players {
+    .button-group {
+      justify-content: initial;
+
+      .added-players-count {
+        display: flex;
+        flex: 0.33 1 auto;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          margin: 0;
+          min-width: 8rem;
+        }
+      }
+    }
+
+    .player-search-popover-content
+    {
+      border: 0.3em solid $geekway-medium-blue;
+      padding: 1em;
+      background-color: white;
+
+      min-width: 25rem;
+      min-height: 21rem;
+      max-height: 21rem;
+      z-index: 1;
+
+      &-arrow path {
+        fill: $geekway-medium-blue;
+        z-index: 0;
+      }
+
+      @media (max-height: 780px) {
+        min-height: 13rem;
+        max-height: 13rem;
+      }
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+
+      .header-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 0.4rem 0 0.4rem;
+      }
+
+      h3 {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .player-search-popover {
+        align-self: center;
+
+        &-content {
+          display: flex;
+          flex-direction: column;
+          flex: 0 0 auto;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+.enter-players {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.player-search-results,
+.added-players-list {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 0 0.5em;
+
+  &-row,
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 1em;
+    margin-bottom: 3px;
+    border-radius: 3px;
+
+    &-number {
+      color: #454545;
+      margin-right: 1.1em;
+    }
+
+    &-actions {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &-rating {
+      margin-right: 2.2em;
+    }
+  }
+
+  &-row {
+    &-rating {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &-header {
+    background-color: inherit;
+    border: 0px;
+    flex: 0 0 auto;
+    font-weight: bold;
+  }
+
+  &-rows {
+    flex: 0 1 auto;
+    overflow-y: auto;
+    padding-right: 4px;
+    width: 100%;
+  }
+}
+
+.player-search-results {
+  margin-top: 0.5em;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  &-add {
+    &:focus {
+      background-color: $purple;
+      outline: none;
+    }
+  }
+
+  &-rows {
+    &::-webkit-scrollbar {
+      width: 1em;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(180, 180, 180, 0.7);
+      border: 1px solid black;
+      border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $geekway-blue;
+      background-clip: content-box;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      outline: 2px solid slategrey;
+      width: 50%;
+    }
+  }
+
+  &-row {
+    width: 100%;
+  }
+}
+
+.added-players-list {
+  height: 43vh;
+  overflow: hidden;
+
+  @media (max-height: 780px) {
+    height: 51vh;
+  }
+
+  @media (max-height: 760px) {
+    height: 46vh;
+  }
+
+  @media (max-height: 690px) {
+    height: 42vh;
+  }
+
+  @media (max-height: 630px) {
+    height: 38vh;
+  }
+
+  &-row,
+  &-header {
+    &-wants-win {
+      flex-basis: 7rem;
+      flex-grow: 2;
+      margin-bottom: 0;
+    }
+    &-name {
+      flex-basis: 26rem;
+      flex-grow: 5;
+      text-align: left;
+    }
+
+    &-actions {
+      flex-basis: 19rem;
+      flex-grow: 3;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+
+  &-rows {
+    &::-webkit-scrollbar {
+      width: 1em;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: rgba(180, 180, 180, 0.7);
+      border: 1px solid black;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #454545;
+      background-clip: content-box;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      outline: 2px solid slategrey;
+      width: 50%;
+    }
+  }
+
+  &-row {
+    background-color: $not-quite-white;
+    border: 1px solid $dark-gray;
+    padding-right: 0.2em;
+    &-wants-win-toggle {
+      flex-basis: 4rem;
+      max-width: 6.75rem;
+    }
+    &-name {
+      margin-left: 0.6rem;
+    }
+    &-actions {
+      justify-content: flex-end;
+    }
+    &-rating {
+      margin-right: 2.6em;
+    }
+  }
+}
+
+.review-play {
+  display: flex;
+  flex-direction: column;
+
+  h2,
+  aside {
+    align-self: center;
+  }
+
+  h2 {
+    margin-bottom: 0.1rem;
+  }
+
+  aside {
+    margin: 0.25rem 0 1.5rem 0;
+  }
+
+  .review-players {
+    overflow-y: auto;
+    width: 100%;
+    height: 30rem;
+    margin-bottom: 2em;
+    border: 1px solid gray;
+    background: $light-gray;
+    padding: 1em 2.4em 0 2.4em;
+    flex: 1;
+
+    h3 {
+      margin-top: 2px;
+    }
+
+    .review-player {
+      display: flex;
+      margin: 0.5em 0;
+      min-width: 15rem;
+      min-height: 1.5em;
+      justify-content: space-between;
+
+      .badges {
+        display: flex;
+
+        .badge {
+          min-width: 6rem;
+          padding: 1px 6px 1px 8px;
+          border-radius: 10px;
+          background-color: $geekway-medium-blue;
+          color: $not-quite-white;
+          text-align: left;
+          margin-left: 1rem;
+
+          &.wants-win {
+            min-width: 8rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+.submit-success {
+  margin: 1em;
+}
+
+hr {
+  margin: 0.7em 0;
+}
+
+.react-rater-star {
+  font-size: 1.2rem;
+  &.is-active {
+    color: $geekway-blue;
+  }
+}
+
+.added-players-list-row-wants-win-toggle {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+
+  &-status {
+    position: relative;
+    top: 8px;
+    right: 2px;
+  }
+}
