@@ -24,7 +24,7 @@ export const actionTypes = {
 
 export const createGetCollectionsAction = () => ({
   [RSAA]: {
-    endpoint: () => `${apiRoot}/copycollections/`,
+    endpoint: () => `${apiRoot}/copycollections`,
     method: 'GET',
     types: [actionTypes.getCollectionsRequest, actionTypes.getCollectionsSuccess, actionTypes.getCollectionsFailure]
   }

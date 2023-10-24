@@ -23,7 +23,7 @@ export const actionTypes = {
 
 export const createGetAttendeesAction = () => ({
   [RSAA]: {
-    endpoint: () => `${apiRoot}/attendees/`,
+    endpoint: () => `${apiRoot}/attendees`,
     method: 'GET',
     types: [actionTypes.getAttendeesRequest, actionTypes.getAttendeesSuccess, actionTypes.getAttendeesFailure]
   }
@@ -40,7 +40,7 @@ export const createAddAttendeeAction = (name, badgeNumber) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
-      endpoint: () => `${apiRoot}/attendees/`,
+      endpoint: () => `${apiRoot}/attendees`,
       body: JSON.stringify({ name, badgeNumber }),
       method: 'POST',
       types: [actionTypes.addAttendeeRequest, actionTypes.addAttendeeSuccess, actionTypes.addAttendeeFailure]
