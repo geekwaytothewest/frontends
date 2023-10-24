@@ -91,7 +91,6 @@ const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCop
               intent={Intent.PRIMARY}
               onClick={toggleAddCopyDialog}
             />
-            <PageHeaderButton text='Upload' intent={Intent.PRIMARY} onClick={toggleUploadCopiesDialog} />
           </PageHeaderButtonSection>
         </PageHeader>
       )}

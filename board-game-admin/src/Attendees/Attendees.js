@@ -61,7 +61,6 @@ const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDial
             intent={Intent.PRIMARY}
             onClick={toggleAddAttendeeDialog}
           />
-          <PageHeaderButton text='Upload' intent={Intent.PRIMARY} onClick={toggleUploadAttendeesDialog} />
         </PageHeaderButtonSection>
       </PageHeader>
       {bodyContent}
