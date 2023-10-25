@@ -4,7 +4,7 @@
   "description": "The web application for a library attendant to assist patrons with checking games in and out of the library. It also displays other relevant information to the attendants.",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server -d --config webpack.dev.js --open --hot --port 1234",
+    "start": "webpack-dev-server -d --config webpack.dev.js --open --hot --port 8082",
     "build:test": "webpack --config webpack.test.js -o dist/test/bundle.js -p",
     "build:prod": "webpack --config webpack.prod.js -o dist/prod/bundle.js -p",
     "build:mm": "webpack --config webpack.mm.js -o dist/mm/bundle.js -p",

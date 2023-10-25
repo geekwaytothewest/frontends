@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server -d --config webpack.dev.js --mode development --open --hot --port 3000",
+    "start": "webpack-dev-server -d --config webpack.dev.js --mode development --open --hot --port 8081",
     "build:test": "webpack --config webpack.test.js --env.ENVIRONMENT=production --mode production -o dist/test/bundle.js",
     "build:prod": "webpack --config webpack.prod.js --env.ENVIRONMENT=production --mode production -o dist/prod/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
