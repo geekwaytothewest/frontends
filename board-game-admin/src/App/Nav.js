@@ -31,6 +31,12 @@ class Nav extends Component {
             <>
               <Button
                 className='bp3-minimal'
+                icon='cube'
+                text='Games'
+                onClick={() => this.goTo('games')}
+              />
+              <Button
+                className='bp3-minimal'
                 icon='list-columns'
                 text='Collections'
                 onClick={() => this.goTo('collections')}

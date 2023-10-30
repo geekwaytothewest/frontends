@@ -19,5 +19,14 @@ export default {
     uploadAttendeesDialogOpen: false,
     updateAttendeeDialogOpen: false,
     savingAttendee: false
+  },
+  games: {
+    loading: false,
+    errorMessages: [],
+    items: [],
+    addGameDialogOpen: false,
+    uploadGamesDialogOpen: false,
+    updateGameDialogOpen: false,
+    savingGame: false
   }
 };
