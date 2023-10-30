@@ -7,26 +7,13 @@ import GamesList from './GamesList';
 import GamesNonIdeal from './GamesNonIdeal';
 
 
-const Games = ({ games, gamesLoading, toggleAddCopyDialog, toggleUploadCopiesDialog, selectedCollection, filterText }) => {
+const Games = ({ games, gamesLoading, toggleUpdateGameDialog, selectedCollection, filterText }) => {
   const [dialogTitle, setDialogTitle] = useState('');
-  const [dialogCopyId, setDialogCopyId] = useState('');
 
   useLayoutEffect(() => {
     const gameSearch = document.getElementById('game-search');
     if (gameSearch) gameSearch.focus();
   }, [selectedCollection]);
-
-
-  const gameListOpenCopyDialog = (title, copyId) => {
-    setDialogTitle(title);
-    setDialogCopyId(copyId);
-    toggleAddCopyDialog();
-  };
-
-  const copyDialogClosing = () => {
-    setDialogTitle('');
-    setDialogCopyId('');
-  };
 
   let pageBody;
 
@@ -37,7 +24,7 @@ const Games = ({ games, gamesLoading, toggleAddCopyDialog, toggleUploadCopiesDia
       <GamesList
         gamesLoading={gamesLoading}
         games={games}
-        openCopyDialog={gameListOpenCopyDialog}
+        openGameDialog={toggleUpdateGameDialog}
         filterText={filterText}
       />
     );

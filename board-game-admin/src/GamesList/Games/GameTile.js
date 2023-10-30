@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card } from '@blueprintjs/core';
-import { gameTileStyles, GameTileHeader } from '../GamesListStyles';
+import { gameTileStyles, GameTileHeader, EditGameButton } from '../GamesListStyles';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import { IconNames } from '@blueprintjs/icons';
+import { Intent } from '@blueprintjs/core';
 
 class GameTile extends React.Component {
   constructor(props) {
@@ -16,13 +18,19 @@ class GameTile extends React.Component {
   }
 
   render() {
-    const { title, openAddGameDialog } = this.props;
+    const { title, openUpdateGameDialog } = this.props;
 
     return (
       <Card css={gameTileStyles}>
         <GameTileHeader>
-          <h3>{title}</h3>
+          <h3>{title.name}</h3>
         </GameTileHeader>
+        <EditGameButton
+          icon={IconNames.EDIT}
+          onClick={() => openUpdateGameDialog(title)}
+          minimal={true}
+          intent={Intent.PRIMARY}
+        />
       </Card>
     );
   }

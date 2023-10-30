@@ -4,12 +4,12 @@ import { jsx } from '@emotion/core';
 import GameTile from './GameTile';
 import { gameListStyles } from '../GamesListStyles';
 
-const GamesList = ({ games }) => {
+const GamesList = ({ games, openGameDialog }) => {
   return (
     <>
       <div css={gameListStyles}>
         {games.map(title => (
-          <GameTile key={title.id} title={title.name} />
+          <GameTile key={title.id} title={title} openUpdateGameDialog={openGameDialog} />
         ))}
       </div>
     </>

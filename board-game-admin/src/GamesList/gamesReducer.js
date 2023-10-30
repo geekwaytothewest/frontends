@@ -11,6 +11,8 @@ const reducer = (state = initialState.games, action) => {
         loading: false,
         items: payload,
       };
+    case actionTypes.toggleUpdateGameDialog:
+      return { ...state, updateGameDialogOpen: !state.updateGameDialogOpen, selectedGame: action.game };
     default:
       return state;
   }

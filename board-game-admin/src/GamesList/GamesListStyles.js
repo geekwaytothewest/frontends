@@ -141,6 +141,6 @@ export const gameTileStyles = css`
   }
 `;
 
-export const EditCollectionButton = styled(Button)`
+export const EditGameButton = styled(Button)`
   position: relative;
 `;

@@ -3,13 +3,14 @@ import { connect } from 'react-redux';
 import { ColumnPage, PageHeader, PageSubheader, PageHeaderSection, PageHeaderText, PageHeaderSearch, PageHeaderTitle, PageHeaderButtonSection, PageHeaderButton } from '../layoutComponents';
 import _ from 'lodash';
 import Games from './Games/Games';
-import { createGetGamesAction, toggleAddGameDialog } from './gamesActions';
+import { createGetGamesAction, toggleAddGameDialog, toggleUpdateGameDialog } from './gamesActions';
 import { IconNames } from '@blueprintjs/icons';
 import { Intent } from '@blueprintjs/core';
 import { ListContainer, LoadMoreButton } from './GamesListStyles';
 import filterListItems from '../Utilities/filterListItems';
+import UpdateGameDialog from './UpdateGameDialog';
 
-const GamesList = ({ loading, games, requestGames, gamesLoading }) => {
+const GamesList = ({ loading, games, requestGames, gamesLoading, toggleUpdateGameDialog }) => {
   const [filterText, setFilterText] = useState('');
   const [displayCap, setDisplayCap] = useState(50);
   const filteredTitles = filterListItems(games, filterText, ['name']).slice(0, displayCap);
@@ -53,7 +54,8 @@ const GamesList = ({ loading, games, requestGames, gamesLoading }) => {
         <PageHeaderText>{gamesLoading ? 'Refreshing...' : ''}</PageHeaderText>
       </PageSubheader>
       <ListContainer>
-        <Games games={filteredTitles} filterText={filterText} />
+        <UpdateGameDialog description='Update the chosen game' />
+        <Games games={filteredTitles} filterText={filterText} toggleUpdateGameDialog={toggleUpdateGameDialog} />
       </ListContainer>
       <LoadMoreButton
         text='Load More'
@@ -76,7 +78,8 @@ const mapDispatch = dispatch => ({
   requestGames: () => {
     const action = createGetGamesAction();
     dispatch(action);
-  }
+  },
+  toggleUpdateGameDialog: (selectedGame) => dispatch(toggleUpdateGameDialog(selectedGame)),
 });
 
 export default connect(

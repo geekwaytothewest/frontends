@@ -8,5 +8,4 @@ function* onGamesChange() {
 export default function* collectionsSaga() {
   yield takeEvery(actionTypes.addGameSuccess, onGamesChange);
   yield takeEvery(actionTypes.updateGameSuccess, onGamesChange);
-  yield takeEvery(actionTypes.uploadGamesSuccess, onGamesChange);
 }

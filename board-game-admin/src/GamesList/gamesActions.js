@@ -11,9 +11,14 @@ export const actionTypes = {
   addGameRequest: 'ADD_GAME_REQUEST',
   addGameSuccess: 'ADD_GAME_SUCCESS',
   addGameFailure: 'ADD_GAME_FAILURE',
+  toggleUpdateGameDialog: 'TOGGLE_UPDATE_GAME_DIALOG',
+  updateGameRequest: 'UPDATE_GAME_REQUEST',
+  updateGameSuccess: 'UPDATE_GAME_SUCCESS',
+  updateGameFailure: 'UPDATE_GAME_FAILURE',
 };
 
 export const toggleAddGameDialog = () => ({ type: actionTypes.toggleAddGameDialog });
+export const toggleUpdateGameDialog = (game) => ({ type: actionTypes.toggleUpdateGameDialog, game });
 
 export const createGetGamesAction = () => ({
   [RSAA]: {
@@ -22,3 +27,17 @@ export const createGetGamesAction = () => ({
     types: [actionTypes.getGamesRequest, actionTypes.getGamesSuccess, actionTypes.getGamesFailure]
   }
 });
+
+export const createUpdateGameAction = (id, name) => {
+  return {
+    [RSAA]: {
+      headers: { 'Content-Type': 'application/json' },
+      endpoint: () => `${apiRoot}/games/${id}`,
+      body: JSON.stringify({
+        title: name,
+      }),
+      method: 'PUT',
+      types: [actionTypes.updateGameRequest, actionTypes.updateGameSuccess, actionTypes.updateGameFailure]
+    }
+  };
+};
