@@ -5,17 +5,25 @@ import { Card, Spinner, Icon, Tooltip, Position } from '@blueprintjs/core';
 import { jsx } from '@emotion/core';
 import { collectionListStyles, listItemStyles, selectedListItemStyles } from './CollectionsStyles';
 import { NonIdealState } from '@blueprintjs/core';
-import { setSelectedCollectionAction } from './collectionsActions';
+import { setSelectedCollectionAction, toggleAddCollectionDialog, toggleImportCollectionDialog } from './collectionsActions';
 import { IconNames } from '@blueprintjs/icons';
 import styled from '@emotion/styled';
-import { PageHeaderTitle, PageHeader } from '../layoutComponents';
+import {
+  PageHeaderTitle,
+  PageHeader,
+  PageHeaderButton,
+  PageHeaderButtonSection
+} from '../layoutComponents';
+import { Intent } from '@blueprintjs/core';
+import ImportCollectionDialog from './ImportCollectionDialog';
+import AddCollectionDialog from './AddCollectionDialog';
 
 const CollectionCard = styled(Card)`
   display: flex;
   justify-content: space-between;
 `;
 
-const getMainContent = (collections, loading, selectedCollection, selectCollection) => {
+const getMainContent = (collections, loading, selectedCollection, selectCollection,) => {
   if (loading || collections.length) {
     return (
       <>
@@ -45,13 +53,29 @@ const getMainContent = (collections, loading, selectedCollection, selectCollecti
 
 class CollectionsList extends React.Component {
   render() {
-    const { collections, loading, selectedCollection, selectCollection } = this.props;
+    const { collections, loading, selectedCollection, selectCollection, toggleImportCollectionDialog, toggleAddCollectionDialog } = this.props;
 
     return (
       <div css={collectionListStyles}>
         <PageHeader>
           <PageHeaderTitle>Collections</PageHeaderTitle>
+          <PageHeaderButtonSection>
+            <PageHeaderButton
+              text='Import'
+              rightIcon={IconNames.ADD}
+              intent={Intent.PRIMARY}
+              onClick={toggleImportCollectionDialog}
+            />
+            <PageHeaderButton
+              text='Create'
+              rightIcon={IconNames.ADD}
+              intent={Intent.PRIMARY}
+              onClick={toggleAddCollectionDialog}
+            />
+          </PageHeaderButtonSection>
         </PageHeader>
+        <ImportCollectionDialog />
+        <AddCollectionDialog />
         {getMainContent(collections, loading, selectedCollection, selectCollection)}
       </div>
     );
@@ -59,7 +83,11 @@ class CollectionsList extends React.Component {
 }
 
 const mapState = state => ({ selectedCollection: state.collections.selectedCollection });
-const mapDispatch = dispatch => ({ selectCollection: collection => dispatch(setSelectedCollectionAction(collection)) });
+const mapDispatch = dispatch => ({
+  selectCollection: collection => dispatch(setSelectedCollectionAction(collection)),
+  toggleAddCollectionDialog: () => dispatch(toggleAddCollectionDialog()),
+  toggleImportCollectionDialog: () => dispatch(toggleImportCollectionDialog())
+});
 
 export default connect(
   mapState,
