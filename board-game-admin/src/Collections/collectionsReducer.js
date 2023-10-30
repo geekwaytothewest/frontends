@@ -45,13 +45,27 @@ const reducer = (state = initialState.collections, action) => {
       return { ...state, savingCopy: false, errors: payload.response.Errors };
     case actionTypes.toggleImportCollectionDialog:
       return { ...state, importCollectionDialogOpen: !state.importCollectionDialogOpen };
-    case actionTypes.toggleAddCollectionDialog:
-      return { ...state, addCollectionDialogOpen: !state.addCollectionDialogOpen };
     case actionTypes.importCollectionRequest:
       return { ...state, savingCopy: true };
     case actionTypes.importCollectionSuccess:
       return { ...state, savingCopy: false, importCollectionDialogOpen: false };
     case actionTypes.importCollectionFailure:
+      return { ...state, savingCopy: false, errors: payload.response.Errors };
+    case actionTypes.toggleAddCollectionDialog:
+      return { ...state, addCollectionDialogOpen: !state.addCollectionDialogOpen };
+    case actionTypes.addCollectionRequest:
+      return { ...state, savingCopy: true };
+    case actionTypes.addCollectionSuccess:
+      return { ...state, savingCopy: false, addCollectionDialogOpen: false };
+    case actionTypes.addCollectionFailure:
+      return { ...state, savingCopy: false, errors: payload.response.Errors };
+    case actionTypes.toggleUpdateCollectionDialog:
+      return { ...state, updateCollectionDialogOpen: !state.updateCollectionDialogOpen, selectedCollection: action.collection };
+    case actionTypes.updateCollectionRequest:
+      return { ...state, savingCopy: true };
+    case actionTypes.updateCollectionSuccess:
+      return { ...state, savingCopy: false, updateCollectionDialogOpen: false };
+    case actionTypes.updateCollectionFailure:
       return { ...state, savingCopy: false, errors: payload.response.Errors };
     default:
       return state;

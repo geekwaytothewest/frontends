@@ -28,6 +28,10 @@ export const actionTypes = {
   importCollectionRequest: 'IMPORT_COLLECTION_REQUEST',
   importCollectionSuccess: 'IMPORT_COLLECTION_SUCCESS',
   importCollectionFailure: 'IMPORT_COLLECTION_FAILURE',
+  toggleUpdateCollectionDialog: 'TOGGLE_UPDATE_COLLECTION_DIALOG',
+  updateCollectionRequest: 'UPDATE_COLLECTION_REQUEST',
+  updateCollectionSuccess: 'UPDATE_COLLECTION_SUCCESS',
+  updateCollectionFailure: 'UPDATE_COLLECTION_FAILURE',
 };
 
 export const createGetCollectionsAction = () => ({
@@ -47,7 +51,9 @@ export const toggleAddCopyDialog = () => ({ type: actionTypes.toggleAddCopyDialo
 export const toggleUpdateCopyDialog = copy => ({ type: actionTypes.toggleUpdateCopyDialog, copy });
 export const toggleUploadCopiesDialog = () => ({ type: actionTypes.toggleUploadCopiesDialog });
 export const toggleImportCollectionDialog = () => ({ type: actionTypes.toggleImportCollectionDialog });
+export const toggleUpdateCollectionDialog = collection => ({ type: actionTypes.toggleUpdateCollectionDialog, collection });
 export const toggleAddCollectionDialog = () => ({ type: actionTypes.toggleAddCollectionDialog });
+
 export const createAddCopyAction = (collection, gameTitle, copyId) => {
   const collId = collection.ID;
 
@@ -107,6 +113,21 @@ export const addCollectionAction = (collectionName, allowWinning) => {
       }),
       method: 'POST',
       types: [actionTypes.addCollectionRequest, actionTypes.addCollectionSuccess, actionTypes.addCollectionFailure]
+    }
+  };
+};
+
+export const updateCollectionAction = (collection, collectionName, allowWinning) => {
+  return {
+    [RSAA]: {
+      headers: { 'Content-Type': 'application/json' },
+      endpoint: () => `${apiRoot}/collection/${collection.ID}`,
+      body: JSON.stringify({
+        name: collectionName,
+        allowWinning: allowWinning
+      }),
+      method: 'POST',
+      types: [actionTypes.updateCollectionRequest, actionTypes.updateCollectionSuccess, actionTypes.updateCollectionFailure]
     }
   };
 };
