@@ -132,16 +132,15 @@ export const updateCollectionAction = (collection, collectionName, allowWinning)
   };
 };
 
-export const createUpdateCopyAction = (gameTitle, originalCopyId, newCopyId, newCollectionId, winnable) => {
+export const createUpdateCopyAction = (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
-      endpoint: () => `${apiRoot}/copies/${originalCopyId}`,
+      endpoint: () => `${apiRoot}/copies/${oldBarcodeLabel}`,
       body: JSON.stringify({
-        title: gameTitle,
-        libraryId: newCopyId,
+        libraryId: newBarcodeLabel,
         collectionId: newCollectionId,
-        winnable
+        winnable: winnable,
       }),
       method: 'PUT',
       types: [actionTypes.updateCopyRequest, actionTypes.updateCopySuccess, actionTypes.updateCopyFailure]

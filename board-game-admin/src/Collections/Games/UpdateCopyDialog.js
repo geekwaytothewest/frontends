@@ -37,7 +37,7 @@ const UpdateCopyDialog = ({
       headerText='Update Copy'
       saving={savingCopy}
       disabled={savingCopy}
-      save={() => saveCopy(localTitle, originalId, localCopyId, localCollectionId, localWinnable)}
+      save={() => saveCopy(originalId, localCopyId, localCollectionId, localWinnable)}
       isOpen={isOpen}
       onOpening={() => setFields(copy.Title, copy.ID, selectedCollection.ID, copy.Winnable)}
       onClosed={() => {
@@ -45,14 +45,6 @@ const UpdateCopyDialog = ({
         onClosed();
       }}
     >
-      <LabeledInput
-        label='Game Title'
-        placeholder='Azul'
-        large={true}
-        value={localTitle}
-        onChange={setTitle}
-        autoFocus={true}
-      />
       <LabeledInput label='Copy ID' placeholder='ABC123' large={true} value={localCopyId} onChange={setCopyId} />
       <Select
         large={true}
@@ -81,8 +73,8 @@ const mapState = state => ({
   errors: state.collections.errorMessages
 });
 const mapDispatch = dispatch => ({
-  saveCopy: (title, originalCopyId, newCopyId, newCollectionId, winnable) =>
-    dispatch(createUpdateCopyAction(title, originalCopyId, newCopyId, newCollectionId, winnable))
+  saveCopy: (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable) =>
+    dispatch(createUpdateCopyAction(oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable))
 });
 
 export default connect(
