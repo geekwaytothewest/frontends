@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import LabeledInput from '../../SharedComponents/LabeledInput';
 import SaveDialog from '../../SharedComponents/SaveDialog';
 import { createAddCopyAction } from '../collectionsActions';
+import { Checkbox, Label } from '@blueprintjs/core';
 
-const AddCopyDialog = ({ collection, isOpen, close, saveCopy, savingCopy, onClosed, title = '', copyId = '' }) => {
+const AddCopyDialog = ({ collection, isOpen, close, saveCopy, savingCopy, onClosed, title = '', copyId = '', winnable = false }) => {
   const [localTitle, setTitle] = useState('');
   const [localCopyId, setCopyId] = useState('');
-  const setFields = (upTitle, upCopyId) => {
+  const [localWinnable, setWinnable] = useState('');
+  const setFields = (upTitle, upCopyId, upWinnable) => {
     setTitle(upTitle);
     setCopyId(upCopyId);
+    setWinnable(upWinnable);
   };
 
   return (
@@ -19,11 +22,11 @@ const AddCopyDialog = ({ collection, isOpen, close, saveCopy, savingCopy, onClos
       headerText='Add Game'
       saving={savingCopy}
       disabled={savingCopy}
-      save={() => saveCopy(collection, localTitle, localCopyId)}
+      save={() => saveCopy(collection, localTitle, localCopyId, localWinnable)}
       isOpen={isOpen}
-      onOpening={() => setFields(title, copyId)}
+      onOpening={() => setFields(title, copyId, winnable)}
       onClosed={() => {
-        setFields('', '');
+        setFields('', '', false);
         onClosed();
       }}
     >
@@ -36,6 +39,9 @@ const AddCopyDialog = ({ collection, isOpen, close, saveCopy, savingCopy, onClos
         autoFocus={true}
       />
       <LabeledInput label='Copy ID' placeholder='ABC123' large={true} value={localCopyId} onChange={setCopyId} />
+
+      <Label>Winnable</Label>
+      <Checkbox checked={localWinnable} onChange={() => setWinnable(!localWinnable)} />
     </SaveDialog>
   );
 };
@@ -46,7 +52,7 @@ const mapState = state => ({
   isOpen: state.collections.addCopyDialogOpen
 });
 const mapDispatch = dispatch => ({
-  saveCopy: (coll, title, copyId) => dispatch(createAddCopyAction(coll, title, copyId))
+  saveCopy: (coll, title, copyId, winnable) => dispatch(createAddCopyAction(coll, title, copyId, winnable))
 });
 
 export default connect(
