@@ -8,10 +8,13 @@ const UpdateAttendeeDialog = ({ saving, saveAttendee, isOpen, toggleDialog, sele
   const [name, setName] = useState('');
   const [oldBadgeNumber, setOldBadgeNumber] = useState('');
   const [newBadgeNumber, setNewBadgeNumber] = useState('');
-  const setFields = (name = '', oldBadgeNum = '', newBadgeNum = '') => {
+  const [newPronouns, setNewPronouns] = useState('');
+
+  const setFields = (name = '', oldBadgeNum = '', newBadgeNum = '', newPronouns = '') => {
     setName(name);
     setOldBadgeNumber(oldBadgeNum);
     setNewBadgeNumber(newBadgeNum);
+    setNewPronouns(newPronouns);
   };
 
   return (
@@ -20,13 +23,14 @@ const UpdateAttendeeDialog = ({ saving, saveAttendee, isOpen, toggleDialog, sele
       headerText='Update Attendee'
       saving={saving}
       disabled={saving}
-      save={() => saveAttendee(name, oldBadgeNumber, newBadgeNumber)}
+      save={() => saveAttendee(name, oldBadgeNumber, newBadgeNumber, newPronouns)}
       isOpen={isOpen}
-      onOpening={() => setFields(selectedAttendee.Name, selectedAttendee.BadgeNumber, selectedAttendee.BadgeNumber)}
+      onOpening={() => setFields(selectedAttendee.Name, selectedAttendee.BadgeNumber, selectedAttendee.BadgeNumber, selectedAttendee.Pronouns)}
       close={toggleDialog}
       onClosed={setFields}
     >
       <LabeledInput label='Name' value={name} onChange={setName} />
+      <LabeledInput label='Pronouns' value={newPronouns} onChange={setNewPronouns} />
       <LabeledInput label='Badge #' value={newBadgeNumber} onChange={setNewBadgeNumber} autoFocus={true} />
     </SaveDialog>
   );
@@ -38,7 +42,7 @@ const mapState = state => ({
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  saveAttendee: (name, oldBadgeNum, badgeNum) => dispatch(createUpdateAttendeeAction(name, oldBadgeNum, badgeNum)),
+  saveAttendee: (name, oldBadgeNum, badgeNum, pronouns) => dispatch(createUpdateAttendeeAction(name, oldBadgeNum, badgeNum, pronouns)),
   toggleDialog: () => dispatch(toggleUpdateAttendeeDialog())
 });
 

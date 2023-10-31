@@ -36,12 +36,12 @@ export const toggleUpdateAttendeeDialog = attendee => ({
 });
 export const toggleUploadAttendeesDialog = () => ({ type: actionTypes.toggleUploadAttendeesDialog });
 
-export const createAddAttendeeAction = (name, badgeNumber) => {
+export const createAddAttendeeAction = (name, badgeNumber, pronouns) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
       endpoint: () => `${apiRoot}/attendees`,
-      body: JSON.stringify({ name, badgeNumber }),
+      body: JSON.stringify({ name: name, badgeNumber: badgeNumber, pronouns: pronouns }),
       method: 'POST',
       types: [actionTypes.addAttendeeRequest, actionTypes.addAttendeeSuccess, actionTypes.addAttendeeFailure]
     }
@@ -66,12 +66,12 @@ export const createUploadAttendeesAction = files => {
   };
 };
 
-export const createUpdateAttendeeAction = (name, oldBadgeNumber, newBadgeNumber) => {
+export const createUpdateAttendeeAction = (name, oldBadgeNumber, newBadgeNumber, pronouns) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
       endpoint: () => `${apiRoot}/attendees/${oldBadgeNumber}`,
-      body: JSON.stringify({ name, badgeNumber: newBadgeNumber }),
+      body: JSON.stringify({ name: name, badgeNumber: newBadgeNumber, pronouns: pronouns }),
       method: 'PUT',
       types: [actionTypes.updateAttendeeRequest, actionTypes.updateAttendeeSuccess, actionTypes.updateAttendeeFailure]
     }

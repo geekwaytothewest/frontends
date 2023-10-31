@@ -24,6 +24,10 @@ export const AttendeeCardRight = styled.div`
 export const CardBoldText = styled.h5`
   margin: 0;
 `;
+export const CardText = styled.p`
+  margin: 0;
+`;
+
 export const BadgeNumberText = styled(CardBoldText)`
   width: 100%;
   text-align: center;
