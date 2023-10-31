@@ -11,7 +11,8 @@ const LabeledInput = ({
   large = false,
   helperText = '',
   autoFocus = false,
-  disabled = false
+  disabled = false,
+  password = false,
 }) => (
   <FormGroup helperText={helperText} label={label} labelInfo={labelInfo}>
     <InputGroup
@@ -22,6 +23,7 @@ const LabeledInput = ({
       onChange={event => onChange(event.target.value)}
       autoFocus={autoFocus}
       autoComplete={autoComplete}
+      type={password ? 'password' : ''}
     />
   </FormGroup>
 );

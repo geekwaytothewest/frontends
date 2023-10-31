@@ -77,3 +77,15 @@ export const createUpdateAttendeeAction = (name, oldBadgeNumber, newBadgeNumber,
     }
   };
 };
+
+export const createSyncTabletopEventsAction = (userName, password, apiKey) => {
+  return {
+    [RSAA]: {
+      headers: { 'Content-Type': 'application/json' },
+      endpoint: () => `${apiRoot}/attendees/syncTabletopEvents`,
+      body: JSON.stringify({ userName: userName, password: password, apiKey: apiKey }),
+      method: 'PUT',
+      types: [actionTypes.updateSyncTabletopEventsRequest, actionTypes.updateSyncTabletopEventsSuccess, actionTypes.updateSyncTabletopEventsFailure]
+    }
+  };
+};
