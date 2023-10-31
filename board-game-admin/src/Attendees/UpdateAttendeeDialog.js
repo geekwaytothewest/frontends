@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { createUpdateAttendeeAction, toggleUpdateAttendeeDialog } from './attendeesActions';
+import { createSyncTabletopEventsAction, createUpdateAttendeeAction, toggleSyncTabletopEventsDialog, toggleUpdateAttendeeDialog } from './attendeesActions';
 import LabeledInput from '../SharedComponents/LabeledInput';
 import SaveDialog from '../SharedComponents/SaveDialog';
 
-const UpdateAttendeeDialog = ({ saving, saveAttendee, isOpen, toggleDialog, selectedAttendee }) => {
+const UpdateAttendeeDialog = ({ saving, saveAttendee, syncAttendee, toggleSyncTabletopEventsDialog, isOpen, toggleDialog, selectedAttendee }) => {
   const [name, setName] = useState('');
   const [oldBadgeNumber, setOldBadgeNumber] = useState('');
   const [newBadgeNumber, setNewBadgeNumber] = useState('');
@@ -28,6 +28,7 @@ const UpdateAttendeeDialog = ({ saving, saveAttendee, isOpen, toggleDialog, sele
       onOpening={() => setFields(selectedAttendee.Name, selectedAttendee.BadgeNumber, selectedAttendee.BadgeNumber, selectedAttendee.Pronouns)}
       close={toggleDialog}
       onClosed={setFields}
+      sync={() => toggleSyncTabletopEventsDialog(selectedAttendee.TTEBadgeNumber, selectedAttendee.TTEBadgeID)}
     >
       <LabeledInput label='Name' value={name} onChange={setName} />
       <LabeledInput label='Pronouns' value={newPronouns} onChange={setNewPronouns} />
@@ -43,7 +44,9 @@ const mapState = state => ({
 });
 const mapDispatch = dispatch => ({
   saveAttendee: (name, oldBadgeNum, badgeNum, pronouns) => dispatch(createUpdateAttendeeAction(name, oldBadgeNum, badgeNum, pronouns)),
-  toggleDialog: () => dispatch(toggleUpdateAttendeeDialog())
+  syncAttendee: (userName, password, apiKey) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey)),
+  toggleDialog: () => dispatch(toggleUpdateAttendeeDialog()),
+  toggleSyncTabletopEventsDialog: (tteBadgeNumber, tteBadgeId) => dispatch(toggleSyncTabletopEventsDialog(tteBadgeNumber, tteBadgeId))
 });
 
 export default connect(

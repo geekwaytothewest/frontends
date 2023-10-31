@@ -18,7 +18,11 @@ export const actionTypes = {
   toggleUpdateAttendeeDialog: 'TOGGLE_UPDATE_ATTENDEE_DIALOG',
   updateAttendeeRequest: 'UPDATE_ATTENDEE_REQUEST',
   updateAttendeeSuccess: 'UPDATE_ATTENDEE_SUCCESS',
-  updateAttendeeFailure: 'UPDATE_ATTENDEE_FAILURE'
+  updateAttendeeFailure: 'UPDATE_ATTENDEE_FAILURE',
+  toggleSyncTabletopEventsDialog: 'TOGGLE_SYNCTTE_DIALOG',
+  syncTabletopEventsRequest: 'SYNC_TTE_REQUEST',
+  syncTabletopEventsAttendeeSuccess: 'SYNC_TTE_SUCCESS',
+  syncTabletopEventsAttendeeFailure: 'SYNC_TTE_FAILURE'
 };
 
 export const createGetAttendeesAction = () => ({
@@ -30,6 +34,7 @@ export const createGetAttendeesAction = () => ({
 });
 
 export const toggleAddAttendeeDialog = () => ({ type: actionTypes.toggleAddAttendeeDialog });
+export const toggleSyncTabletopEventsDialog = (tteBadgeNumber, tteBadgeId) => ({ type: actionTypes.toggleSyncTabletopEventsDialog, tteBadgeNumber: tteBadgeNumber, tteBadgeId: tteBadgeId });
 export const toggleUpdateAttendeeDialog = attendee => ({
   type: actionTypes.toggleUpdateAttendeeDialog,
   attendee
@@ -78,14 +83,14 @@ export const createUpdateAttendeeAction = (name, oldBadgeNumber, newBadgeNumber,
   };
 };
 
-export const createSyncTabletopEventsAction = (userName, password, apiKey) => {
+export const createSyncTabletopEventsAction = (userName, password, apiKey, tteBadgeNumber, tteBadgeId) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
-      endpoint: () => `${apiRoot}/attendees/syncTabletopEvents`,
-      body: JSON.stringify({ userName: userName, password: password, apiKey: apiKey }),
+      endpoint: () => `${apiRoot}/attendees/sync/tabletopEvents`,
+      body: JSON.stringify({ userName: userName, password: password, apiKey: apiKey, tteBadgeNumber: tteBadgeNumber, tteBadgeId: tteBadgeId }),
       method: 'PUT',
-      types: [actionTypes.updateSyncTabletopEventsRequest, actionTypes.updateSyncTabletopEventsSuccess, actionTypes.updateSyncTabletopEventsFailure]
+      types: [actionTypes.syncTabletopEventsRequest, actionTypes.syncTabletopEventsAttendeeSuccess, actionTypes.syncTabletopEventsAttendeeFailure]
     }
   };
 };

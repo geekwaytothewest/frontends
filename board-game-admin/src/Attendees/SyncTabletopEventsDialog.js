@@ -4,7 +4,7 @@ import { toggleSyncTabletopEventsDialog, createSyncTabletopEventsAction } from '
 import LabeledInput from '../SharedComponents/LabeledInput';
 import SaveDialog from '../SharedComponents/SaveDialog';
 
-const SyncTabletopEventsDialog = ({ saving, isOpen, toggleDialog }) => {
+const SyncTabletopEventsDialog = ({ saving, isOpen, tteBadgeNumber, tteBadgeId, toggleDialog, syncTabletopEvents }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -18,13 +18,14 @@ const SyncTabletopEventsDialog = ({ saving, isOpen, toggleDialog }) => {
   return (
     <SaveDialog
       helperText='Warning: This operation can take a long time when you are uploading a large number of rows. Please be patient.'
-      headerText='Reset from Tabletop.Events'
+      headerText='Sync With Tabletop.Events'
       saving={saving}
       disabled={saving}
-      save={() => createSyncTabletopEventsAction()}
+      save={() => syncTabletopEvents(userName, password, apiKey, tteBadgeNumber, tteBadgeId)}
       isOpen={isOpen}
       close={toggleDialog}
       onClosed={setFields}
+      onOpening={() => setFields('', '', '')}
     >
       <LabeledInput label='User Name' value={userName} onChange={setUserName} autoFocus={true} />
       <LabeledInput label='Password' value={password} onChange={setPassword} password={true} />
@@ -34,12 +35,14 @@ const SyncTabletopEventsDialog = ({ saving, isOpen, toggleDialog }) => {
 };
 
 const mapState = state => ({
-  isOpen: state.attendees.addAttendeeDialogOpen,
+  tteBadgeNumber: state.attendees.tteBadgeNumber,
+  tteBadgeId: state.attendees.tteBadgeId,
+  isOpen: state.attendees.updateSyncTabletopEventsDialogOpen,
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  createSyncTabletopEventsAction: () => dispatch(createSyncTabletopEventsAction()),
-  toggleDialog: () => dispatch(toggleResetTabletopEventsDialog())
+  syncTabletopEvents: (userName, password, apiKey, tteBadgeNumber, tteBadgeId) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey, tteBadgeNumber, tteBadgeId)),
+  toggleDialog: () => dispatch(toggleSyncTabletopEventsDialog())
 });
 
 export default connect(

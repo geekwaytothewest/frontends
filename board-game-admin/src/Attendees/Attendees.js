@@ -12,12 +12,13 @@ import {
   PageHeaderButtonSection,
   PageHeaderSearch
 } from '../layoutComponents';
-import { createGetAttendeesAction, toggleAddAttendeeDialog, toggleUploadAttendeesDialog } from './attendeesActions';
+import { createGetAttendeesAction, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog } from './attendeesActions';
 import { NonIdealState, Spinner, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import AttendeesUploadDialog from './AttendeesUploadDialog';
+import SyncTabletopEventsDialog from './SyncTabletopEventsDialog';
 
-const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDialog, toggleUploadAttendeesDialog }) => {
+const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog }) => {
   const [filterText, setFilterText] = useState('');
   const onFilterTextChange = text => setFilterText(text);
 
@@ -42,6 +43,7 @@ const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDial
     <ColumnPage>
       <AddAttendeeDialog description='Add a new attendee' />
       <AttendeesUploadDialog />
+      <SyncTabletopEventsDialog />
       <PageHeader>
         <PageHeaderSection>
           <PageHeaderText>Search:</PageHeaderText>
@@ -55,6 +57,12 @@ const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDial
         </PageHeaderSection>
         <PageHeaderTitle>Attendees</PageHeaderTitle>
         <PageHeaderButtonSection>
+          <PageHeaderButton
+            text='Sync With TTE'
+            rightIcon={IconNames.CHANGES}
+            intent={Intent.PRIMARY}
+            onClick={toggleSyncTabletopEventsDialog}
+          />
           <PageHeaderButton
             text='Add Attendee'
             rightIcon={IconNames.ADD}
@@ -76,7 +84,8 @@ const mapState = state => ({
 const mapDispatch = dispatch => ({
   requestAttendees: () => dispatch(createGetAttendeesAction()),
   toggleAddAttendeeDialog: () => dispatch(toggleAddAttendeeDialog()),
-  toggleUploadAttendeesDialog: () => dispatch(toggleUploadAttendeesDialog())
+  toggleUploadAttendeesDialog: () => dispatch(toggleUploadAttendeesDialog()),
+  toggleSyncTabletopEventsDialog: () => dispatch(toggleSyncTabletopEventsDialog())
 });
 
 export default connect(

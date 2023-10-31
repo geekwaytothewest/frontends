@@ -18,7 +18,10 @@ export default {
     addAttendeeDialogOpen: false,
     uploadAttendeesDialogOpen: false,
     updateAttendeeDialogOpen: false,
-    savingAttendee: false
+    updateSyncTabletopEventsDialogOpen: false,
+    savingAttendee: false,
+    tteBadgeNumber: undefined,
+    tteBadgeId: undefined
   },
   games: {
     loading: false,

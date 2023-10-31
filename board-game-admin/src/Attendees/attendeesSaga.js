@@ -9,4 +9,5 @@ export default function* attendeesSaga() {
   yield takeEvery(actionTypes.addAttendeeSuccess, onAttendeeChangeSuccess);
   yield takeEvery(actionTypes.updateAttendeeSuccess, onAttendeeChangeSuccess);
   yield takeEvery(actionTypes.uploadAttendeesSuccess, onAttendeeChangeSuccess);
+  yield takeEvery(actionTypes.syncTabletopEventsAttendeeSuccess, onAttendeeChangeSuccess);
 }
