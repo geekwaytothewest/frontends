@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { toggleSyncTabletopEventsDialog, createSyncTabletopEventsAction } from './attendeesActions';
+import { toggleSyncTabletopEventsDialog, createSyncTabletopEventsAction, createGetAttendeesAction } from './attendeesActions';
 import LabeledInput from '../SharedComponents/LabeledInput';
 import SaveDialog from '../SharedComponents/SaveDialog';
 
-const SyncTabletopEventsDialog = ({ saving, isOpen, tteBadgeNumber, tteBadgeId, toggleDialog, syncTabletopEvents }) => {
+const SyncTabletopEventsDialog = ({ saving, isOpen, tteBadgeNumber, tteBadgeId, toggleDialog, syncTabletopEvents, createGetAttendeesAction }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [apiKey, setApiKey] = useState('');
@@ -21,7 +21,10 @@ const SyncTabletopEventsDialog = ({ saving, isOpen, tteBadgeNumber, tteBadgeId, 
       headerText='Sync With Tabletop.Events'
       saving={saving}
       disabled={saving}
-      save={() => syncTabletopEvents(userName, password, apiKey, tteBadgeNumber, tteBadgeId)}
+      save={async () => {
+        await syncTabletopEvents(userName, password, apiKey, tteBadgeNumber, tteBadgeId);
+        await createGetAttendeesAction();
+      }}
       isOpen={isOpen}
       close={toggleDialog}
       onClosed={setFields}
@@ -42,7 +45,8 @@ const mapState = state => ({
 });
 const mapDispatch = dispatch => ({
   syncTabletopEvents: (userName, password, apiKey, tteBadgeNumber, tteBadgeId) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey, tteBadgeNumber, tteBadgeId)),
-  toggleDialog: () => dispatch(toggleSyncTabletopEventsDialog())
+  toggleDialog: () => dispatch(toggleSyncTabletopEventsDialog()),
+  createGetAttendeesAction: () => dispatch(createGetAttendeesAction())
 });
 
 export default connect(
