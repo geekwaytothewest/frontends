@@ -24,7 +24,6 @@ const AddCollectionDialog = ({ isOpen, toggle, saveCollection, savingCollection,
       save={async () => {
         await saveCollection(localCollectionName, localAllowWinning);
         await requestCollections();
-        toggle();
       }}
       isOpen={isOpen}
       onOpening={() => {
@@ -50,7 +49,7 @@ const AddCollectionDialog = ({ isOpen, toggle, saveCollection, savingCollection,
 const mapState = state => ({
   savingCollection: state.collections.savingCollection,
   errors: state.collections.errorMessages,
-  isOpen: state.collections.addCollectionDialogOpen
+  isOpen: state.collections.addCollectionDialogOpen,
 });
 const mapDispatch = dispatch => ({
   toggle: () => dispatch(toggleAddCollectionDialog()),
