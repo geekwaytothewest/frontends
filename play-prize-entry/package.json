@@ -3,7 +3,7 @@
   "author": "Joe Henderson",
   "version": "2.0.0",
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js --port 8083",
+    "start": "webpack serve --config webpack.dev.js --open --port 8083",
     "build:test": "webpack --config webpack.test.js -o dist/test/bundle.js",
     "build:prod": "webpack --config webpack.prod.js -o dist/prod/bundle.js"
   },
