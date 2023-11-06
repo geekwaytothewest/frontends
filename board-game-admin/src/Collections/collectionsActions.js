@@ -132,7 +132,7 @@ export const updateCollectionAction = (collection, collectionName, allowWinning)
   };
 };
 
-export const createUpdateCopyAction = (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable) => {
+export const createUpdateCopyAction = (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable, comments) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
@@ -141,6 +141,7 @@ export const createUpdateCopyAction = (oldBarcodeLabel, newBarcodeLabel, newColl
         libraryId: newBarcodeLabel,
         collectionId: newCollectionId,
         winnable: winnable,
+        comments: comments
       }),
       method: 'PUT',
       types: [actionTypes.updateCopyRequest, actionTypes.updateCopySuccess, actionTypes.updateCopyFailure]

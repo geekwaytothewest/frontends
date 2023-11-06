@@ -23,11 +23,13 @@ const UpdateCopyDialog = ({
   const [localCopyId, setCopyId] = useState('');
   const [localCollectionId, setCollectionId] = useState('');
   const [localWinnable, setWinnable] = useState(false);
-  const setFields = (upTitle, upCopyId, upCollId, winnable) => {
+  const [localCopyComments, setComments] = useState('');
+  const setFields = (upTitle, upCopyId, upCollId, winnable, comments) => {
     setTitle(upTitle);
     setCopyId(upCopyId);
     setCollectionId(upCollId);
     setWinnable(winnable);
+    setComments(comments);
   };
 
   return (
@@ -37,11 +39,11 @@ const UpdateCopyDialog = ({
       headerText='Update Copy'
       saving={savingCopy}
       disabled={savingCopy}
-      save={() => saveCopy(originalId, localCopyId, localCollectionId, localWinnable)}
+      save={() => saveCopy(originalId, localCopyId, localCollectionId, localWinnable, localCopyComments)}
       isOpen={isOpen}
-      onOpening={() => setFields(copy.Title, copy.ID, selectedCollection.ID, copy.Winnable)}
+      onOpening={() => setFields(copy.Title, copy.ID, selectedCollection.ID, copy.Winnable, copy.Comments ?? '')}
       onClosed={() => {
-        setFields('', '', '', false);
+        setFields('', '', '', false, '' );
         onClosed();
       }}
     >
@@ -58,6 +60,7 @@ const UpdateCopyDialog = ({
           </Option>
         ))}
       </Select>
+      <LabeledInput label='Comments' placeholder='ABC123' large={true} value={localCopyComments} onChange={setComments} />
       <Label>Winnable</Label>
       <Checkbox checked={localWinnable} onChange={() => setWinnable(!localWinnable)} />
     </SaveDialog>
@@ -73,8 +76,8 @@ const mapState = state => ({
   errors: state.collections.errorMessages
 });
 const mapDispatch = dispatch => ({
-  saveCopy: (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable) =>
-    dispatch(createUpdateCopyAction(oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable))
+  saveCopy: (oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable, comments) =>
+    dispatch(createUpdateCopyAction(oldBarcodeLabel, newBarcodeLabel, newCollectionId, winnable, comments))
 });
 
 export default connect(
