@@ -54,7 +54,7 @@ export const toggleImportCollectionDialog = () => ({ type: actionTypes.toggleImp
 export const toggleUpdateCollectionDialog = collection => ({ type: actionTypes.toggleUpdateCollectionDialog, collection });
 export const toggleAddCollectionDialog = () => ({ type: actionTypes.toggleAddCollectionDialog });
 
-export const createAddCopyAction = (collection, gameTitle, copyId) => {
+export const createAddCopyAction = (collection, gameTitle, copyId, winnable, comments) => {
   const collId = collection.ID;
 
   return {
@@ -63,7 +63,9 @@ export const createAddCopyAction = (collection, gameTitle, copyId) => {
       endpoint: () => `${apiRoot}/copycollections/${collId}/copies`,
       body: JSON.stringify({
         title: gameTitle,
-        libraryId: copyId
+        libraryId: copyId,
+        winnable: winnable,
+        comments: comments
       }),
       method: 'POST',
       types: [actionTypes.addCopyRequest, actionTypes.addCopySuccess, actionTypes.addCopyFailure]
