@@ -35,7 +35,7 @@ const SaveDialog = ({
   }
 
   return (
-    <Dialog className='bp3-dark' isOpen={isOpen} onClosed={onClosed} onOpening={onOpening} lazy={lazy} usePortal={lazy}>
+    <Dialog className='bp5-dark' isOpen={isOpen} onClosed={onClosed} onOpening={onOpening} lazy={lazy} usePortal={lazy}>
       <form>
         <div className={DIALOG_HEADER}>
           <H4>{headerText}</H4>

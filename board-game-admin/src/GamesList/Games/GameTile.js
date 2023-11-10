@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '@blueprintjs/core';
 import { gameTileStyles, GameTileHeader, EditGameButton } from '../GamesListStyles';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import { IconNames } from '@blueprintjs/icons';
 import { Intent } from '@blueprintjs/core';
 

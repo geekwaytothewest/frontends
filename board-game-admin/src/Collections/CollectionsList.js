@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card, Spinner, Icon, Tooltip, Position } from '@blueprintjs/core';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import { collectionListStyles, listItemStyles, selectedListItemStyles, EditCollectionButton } from './CollectionsStyles';
 import { NonIdealState } from '@blueprintjs/core';
 import { setSelectedCollectionAction, toggleAddCollectionDialog, toggleImportCollectionDialog, toggleUpdateCollectionDialog } from './collectionsActions';
