@@ -55,7 +55,6 @@ module.exports = {
       AUTH_CLIENT_ID: JSON.stringify(process.env.AUTH_CLIENT_ID),
       AUTH_CALLBACK: JSON.stringify(process.env.AUTH_CALLBACK),
       API_IDENTIFIER: JSON.stringify(process.env.API_IDENTIFIER),
-      LOGOUT_RETURN_URL: JSON.stringify(process.env.LOGOUT_RETURN_URL),
     })
   ],
 };
