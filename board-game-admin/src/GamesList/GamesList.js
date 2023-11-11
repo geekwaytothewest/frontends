@@ -32,7 +32,7 @@ const GamesList = ({ loading, games, requestGames, gamesLoading, toggleUpdateGam
         <PageHeaderSection>
           <PageHeaderText>Search:</PageHeaderText>
           <PageHeaderSearch
-            className='bp3-dark'
+            className='bp5-dark'
             placeholder='Game'
             autoFocus={true}
             onChange={event => onFilterTextChange(event.target.value)}

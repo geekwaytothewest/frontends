@@ -23,7 +23,7 @@ class Nav extends Component {
     const btnAction = isAuthenticated ? this.signOut.bind(this) : this.signIn.bind(this);
 
     return (
-      <Navbar className='bp3-dark' fixedToTop={true}>
+      <Navbar className='bp5-dark' fixedToTop={true}>
         <Navbar.Group align={Alignment.LEFT}>
           <NavHeading>Admin</NavHeading>
           <Navbar.Divider />

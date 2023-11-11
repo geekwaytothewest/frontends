@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { Colors } from '@blueprintjs/core';
 
 export const listBlockStyles = css`

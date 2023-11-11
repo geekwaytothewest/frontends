@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import colorPalette from '../colorPalette';
 import styled from '@emotion/styled';
 import { Button, InputGroup } from '@blueprintjs/core';

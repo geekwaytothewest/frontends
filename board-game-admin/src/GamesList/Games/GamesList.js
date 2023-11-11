@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import GameTile from './GameTile';
 import { gameListStyles } from '../GamesListStyles';
 

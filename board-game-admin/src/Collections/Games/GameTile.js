@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Collapse, Button, Intent, Divider } from '@blueprintjs/core';
 import { gameTileStyles, GameTileHeader, GameTileHeaderAddBtn } from '../CollectionsStyles';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import { IconNames } from '@blueprintjs/icons';
 import CopyList from './CopyList';
 

@@ -48,7 +48,7 @@ const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDial
         <PageHeaderSection>
           <PageHeaderText>Search:</PageHeaderText>
           <PageHeaderSearch
-            className='bp3-dark'
+            className='bp5-dark'
             placeholder='Name | Badge #'
             autoFocus={true}
             onChange={event => onFilterTextChange(event.target.value)}

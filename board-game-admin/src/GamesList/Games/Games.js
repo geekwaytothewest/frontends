@@ -2,7 +2,7 @@ import { useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import { GameSection } from '../GamesListStyles';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import GamesList from './GamesList';
 import GamesNonIdeal from './GamesNonIdeal';
 
