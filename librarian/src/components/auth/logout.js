@@ -1,7 +1,7 @@
 import React from 'react';
 import Auth from './auth';
 import { Button, Intent } from '@blueprintjs/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { connect } from 'react-redux';
 
 const auth = new Auth();

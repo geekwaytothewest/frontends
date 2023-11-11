@@ -1,5 +1,7 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -9,6 +11,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 
 const faviconPlugin = new FaviconsWebpackPlugin('./src/assets/favicon.png');
 module.exports = {
+  mode: process.env.WEBPACK_MODE,
   output: { publicPath: '/' },
   module: {
     rules: [
@@ -53,5 +56,20 @@ module.exports = {
       }
     ]
   },
-  plugins: [htmlWebpackPlugin, faviconPlugin]
+  plugins: [
+    htmlWebpackPlugin,
+    faviconPlugin,
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed)
+    }),
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify(process.env.API_URL),
+      AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
+      AUTH_CLIENT_ID: JSON.stringify(process.env.AUTH_CLIENT_ID),
+      AUTH_CALLBACK: JSON.stringify(process.env.AUTH_CALLBACK),
+      API_IDENTIFIER: JSON.stringify(process.env.API_IDENTIFIER),
+      LOGOUT_RETURN_URL: JSON.stringify(process.env.LOGOUT_RETURN_URL),
+      ALWAYS_OVERRIDE_LIMIT: process.env.ALWAYS_OVERRIDE_LIMIT,
+    })
+  ]
 };
