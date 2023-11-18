@@ -8,7 +8,6 @@ env:
   ECS_CLUSTER: geekway-nonprod
   ECS_TASK_DEFINITION: librarian/.aws/taskdefinition-nonprod.json          
   CONTAINER_NAME: frontends-librarian
-                                               
 
 permissions:
   contents: read
