@@ -1,9 +1,6 @@
 name: Deploy to Amazon ECS (NonProd)
 
-on:
-  push:
-    tags:
-      - "nonprod-*"
+on: workflow_dispatch
 
 env:
   ECR_REPOSITORY: frontends-librarian
