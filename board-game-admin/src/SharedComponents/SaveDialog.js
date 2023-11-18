@@ -20,15 +20,22 @@ const SaveDialog = ({
   headerText = '',
   onClosed = noop,
   onOpening = noop,
-  lazy = true
+  lazy = true,
+  sync
 }) => {
   const onSave = event => {
     event.preventDefault();
     save();
   };
 
+  const onSync = event => {
+    event.preventDefault();
+    sync();
+    close();
+  }
+
   return (
-    <Dialog className='bp3-dark' isOpen={isOpen} onClosed={onClosed} onOpening={onOpening} lazy={lazy} usePortal={lazy}>
+    <Dialog className='bp5-dark' isOpen={isOpen} onClosed={onClosed} onOpening={onOpening} lazy={lazy} usePortal={lazy}>
       <form>
         <div className={DIALOG_HEADER}>
           <H4>{headerText}</H4>
@@ -39,6 +46,18 @@ const SaveDialog = ({
         </div>
         <div className={DIALOG_FOOTER}>
           <div className={DIALOG_FOOTER_ACTIONS}>
+            {sync && (
+              <>
+                <Button
+                  text={saving ? 'Saving...' : 'Sync With TTE'}
+                  type='button'
+                  disabled={saving}
+                  rightIcon={IconNames.CHANGES}
+                  intent={Intent.SUCCESS}
+                  onClick={onSync}
+                />
+              </>
+            )}
             <Button
               text={saving ? 'Saving...' : 'Save'}
               type='submit'

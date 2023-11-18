@@ -3,7 +3,7 @@ import types from './actionTypes';
 
 export const getLongestCheckouts = () => ({
   [RSAA]: {
-    endpoint: () => `${API_URL.trim()}/checkouts/checkedOutLongest/`,
+    endpoint: () => `${API_URL.trim()}/checkouts/checkedOutLongest`,
     method: 'GET',
     types: [
       types.longestCheckouts.getLongestCheckoutsRequest,

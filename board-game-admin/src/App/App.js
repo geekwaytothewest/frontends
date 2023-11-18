@@ -12,6 +12,7 @@ import { PrivateRoute } from './PrivateRoute';
 import CheckingAuthentication from './CheckingAuthentication';
 import createReduxStore from '../Redux/store';
 import { Provider } from 'react-redux';
+import GamesList from '../GamesList/GamesList';
 
 const AppContent = styled.div`
   background-color: ${colorPalette.LIGHT_GRAY3};
@@ -50,6 +51,7 @@ class App extends Component {
               <Route path='/unauthenticated' render={props => <Unauthenticated {...props} />} />
               <Provider store={this.state.reduxStore}>
                 <PrivateRoute auth={auth} exact path='/' component={() => <Redirect to='/collections' />} />
+                <PrivateRoute auth={auth} path='/games' component={GamesList} />
                 <PrivateRoute auth={auth} path='/collections' component={Collections} />
                 <PrivateRoute auth={auth} path='/attendees' component={Attendees} />
               </Provider>

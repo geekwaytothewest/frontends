@@ -31,7 +31,6 @@ export const checkIn = copyId => ({
   [RSAA]: {
     endpoint: `${API_URL.trim()}/checkouts/checkin/${copyId}`,
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
     types: [types.checkInOut.checkInRequest, types.checkInOut.checkInReceive, types.checkInOut.checkInFailure]
   }
 });

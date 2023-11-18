@@ -1,4 +1,4 @@
-import { css } from '@emotion/core';
+import { css } from '@emotion/react';
 import colorPalette from '../colorPalette';
 import styled from '@emotion/styled';
 import { Button, InputGroup } from '@blueprintjs/core';
@@ -130,4 +130,8 @@ export const gameTileStyles = css`
   h3 {
     margin-top: 0;
   }
+`;
+
+export const EditCollectionButton = styled(Button)`
+  position: relative;
 `;
