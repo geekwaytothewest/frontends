@@ -10,7 +10,8 @@ import {
   CardBoldText,
   BadgeNumberText,
   EditAttendeeButton,
-  ListContainer
+  ListContainer,
+  CardText
 } from './attendeesStyles';
 import filterListItems from '../Utilities/filterListItems';
 import { PageSubheader, PageHeaderText } from '../layoutComponents';
@@ -31,6 +32,7 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
             <Icon icon='mugshot' iconSize={52} style={{ flex: 1 }} />
             <AttendeeCardRight>
               <CardBoldText>{attendee.Name}</CardBoldText>
+              <CardText>{attendee.Pronouns}</CardText>
               <BadgeNumberText>{attendee.BadgeNumber}</BadgeNumberText>
             </AttendeeCardRight>
             <EditAttendeeButton

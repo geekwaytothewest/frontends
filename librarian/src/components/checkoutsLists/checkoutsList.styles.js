@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import styled from '@emotion/styled';
 import { Callout } from '@blueprintjs/core';
 

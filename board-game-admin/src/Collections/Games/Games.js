@@ -2,7 +2,7 @@ import { useState, useLayoutEffect } from 'react';
 import { connect } from 'react-redux';
 import { GameSection } from '../CollectionsStyles';
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { jsx } from '@emotion/react';
 import AddCopyDialog from './AddCopyDialog';
 import { Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
@@ -76,7 +76,7 @@ const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCop
             <PageHeaderText>Search:</PageHeaderText>
             <PageHeaderSearch
               id='game-search'
-              className='bp3-dark'
+              className='bp5-dark'
               placeholder='Game Title'
               autoFocus={true}
               onChange={event => onFilterTextChange(event)}
