@@ -6,6 +6,13 @@
 
 FROM node:20 as build
 
+ARG API_URL
+ARG AUTH_DOMAIN
+ARG AUTH_CLIENT_ID
+ARG AUTH_CALLBACK
+ARG API_IDENTIFIER
+ARG WEBPACK_MODE
+
 WORKDIR /usr/src/app
 
 # Copy the rest of the source files into the image.
