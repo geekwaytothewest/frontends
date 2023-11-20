@@ -6,7 +6,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy-librarians:
+  deploy-librarian:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
       ecr-repository: frontends-librarian
