@@ -12,7 +12,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 const faviconPlugin = new FaviconsWebpackPlugin('./src/assets/favicon.png');
 module.exports = {
   mode: process.env.WEBPACK_MODE,
-  output: { publicPath: '/librarian/' },
+  output: { publicPath: '/' },
   module: {
     rules: [
       {
@@ -62,6 +62,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(dotenv.config().parsed)
     }),
+    new webpack.EnvironmentPlugin(['API_URL', 'AUTH_DOMAIN', 'AUTH_CLIENT_ID', 'AUTH_CALLBACK', 'API_IDENTIFIER', 'LOGOUT_RETURN_URL', 'ALWAYS_OVERRIDE_LIMIT']),
     new webpack.DefinePlugin({
       API_URL: JSON.stringify(process.env.API_URL),
       AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
