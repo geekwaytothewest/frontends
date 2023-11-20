@@ -14,7 +14,7 @@ module.exports = {
     historyApiFallback: true
   },
   devtool: 'inline-source-map',
-  output: { publicPath: '/' },
+  output: { publicPath: '/admin/' },
   module: {
     rules: [
       {

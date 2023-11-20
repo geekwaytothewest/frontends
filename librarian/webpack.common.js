@@ -12,7 +12,7 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 const faviconPlugin = new FaviconsWebpackPlugin('./src/assets/favicon.png');
 module.exports = {
   mode: process.env.WEBPACK_MODE,
-  output: { publicPath: '/' },
+  output: { publicPath: '/librarian/' },
   module: {
     rules: [
       {
