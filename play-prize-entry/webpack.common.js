@@ -50,6 +50,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(dotenv.config().parsed)
     }),
+    new webpack.EnvironmentPlugin(['API_URL', 'AUTH_DOMAIN', 'AUTH_CLIENT_ID', 'AUTH_CALLBACK', 'API_IDENTIFIER']),
     new webpack.DefinePlugin({
       API_URL: JSON.stringify(process.env.API_URL),
       AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
