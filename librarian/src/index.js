@@ -17,7 +17,7 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={history} basename={'librarian'}>
+    <Router history={history} basename='/librarian'>
       <React.Fragment>
         <Route
           path='/'

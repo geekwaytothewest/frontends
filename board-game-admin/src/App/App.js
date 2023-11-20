@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history} basename={'admin'}>
+      <Router history={history} basename='/admin'>
         <Nav waitingForAuthResult={this.state.waitingForAuthResult} auth={auth} history={history} />
         <AppContent>
           {this.state.waitingForAuthResult && <CheckingAuthentication />}
