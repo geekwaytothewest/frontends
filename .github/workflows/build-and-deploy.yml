@@ -54,7 +54,7 @@ jobs:
         # push it to ECR so that it can
         # be deployed to ECS.
         cd librarian
-        docker build --build-arg ALWAYS_OVERRIDE_LIMIT=${{ secrets.ALWAYS_OVERRIDE_LIMIT }} --build-arg API_IDENTIFIER=${{ secrets.API_IDENTIFER }} --build-arg API_URL=${{ secrets.API_URL }} --build-arg ALWAYS_OVERRIDE_LIMIT=${{ secrets.AUTH_CALLBACK }} --build-arg AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }} --build-arg AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }} --build-arg LOGOUT_RETURN_URL=${{ secrets.LOGOUT_RETURN_URL }} --build-arg WEBPACK_MODE=${{ secrets.WEBPACK_MODE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build --build-arg ALWAYS_OVERRIDE_LIMIT=${{ secrets.ALWAYS_OVERRIDE_LIMIT }} --build-arg API_IDENTIFIER=${{ secrets.API_IDENTIFER }} --build-arg API_URL=${{ secrets.API_URL }} --build-arg AUTH_CALLBACK=${{ secrets.AUTH_CALLBACK }} --build-arg AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }} --build-arg AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }} --build-arg LOGOUT_RETURN_URL=${{ secrets.LOGOUT_RETURN_URL }} --build-arg WEBPACK_MODE=${{ secrets.WEBPACK_MODE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
