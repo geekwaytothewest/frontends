@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Router, Redirect } from 'react-router-dom';
+import { Route, Redirect, BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Nav from './Nav';
 import auth from '../auth';
@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history} basename='/admin'>
+      <BrowserRouter history={history} basename='/admin'>
         <Nav waitingForAuthResult={this.state.waitingForAuthResult} auth={auth} history={history} />
         <AppContent>
           {this.state.waitingForAuthResult && <CheckingAuthentication />}
@@ -58,7 +58,7 @@ class App extends Component {
             </>
           )}
         </AppContent>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
