@@ -16,13 +16,8 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: librarian
       always-override-limit: false
-      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
-      api-url: ${{ vars.secrets.API_URL }}
-      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_LIBRARIAN }}
-      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
-      logout-return-url: ${{ vars.secrets.LOGOUT_RETURN_URL_LIBRARIAN }}
-      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
+      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
+      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
     secrets: inherit
   deploy-admin:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -34,13 +29,8 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: board-game-admin
       always-override-limit: false
-      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
-      api-url: ${{ vars.secrets.API_URL }}
-      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_ADMIN }}
-      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
-      logout-return-url: ${{ vars.secrets.LOGOUT_RETURN_URL_ADMIN }}
-      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
+      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
+      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
     secrets: inherit
   deploy-play-and-win:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -52,11 +42,6 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: play-prize-entry
       always-override-limit: false
-      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
-      api-url: ${{ vars.secrets.API_URL }}
-      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_PLAYANDWIN }}
-      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
-      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
-      logout-return-url: NA
+      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
+      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
     secrets: inherit
