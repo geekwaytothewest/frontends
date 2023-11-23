@@ -16,7 +16,7 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: librarian
       always-override-limit: false
-      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
+      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
       logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
     secrets: inherit
   deploy-admin:
@@ -29,7 +29,7 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: board-game-admin
       always-override-limit: false
-      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
+      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
       logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
     secrets: inherit
   deploy-play-and-win:
@@ -42,6 +42,6 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: play-prize-entry
       always-override-limit: false
-      auth-callback: http://onprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
+      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
       logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
     secrets: inherit
