@@ -16,13 +16,13 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: librarian
       always-override-limit: false
-      api-identifier: ${{ secrets.API_IDENTIFIER }}
-      api-url: ${{ secrets.API_URL }}
-      auth-callback: ${{ secrets.AUTH_CALLBACK_LIBRARIAN }}
-      auth-client-id: ${{ secrets.AUTH_CLIENT_ID }}
-      logout-return-url: ${{ secrets.LOGOUT_RETURN_URL_LIBRARIAN }}
-      auth-domain: ${{ secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ secrets.WEBPACK_MODE }}
+      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
+      api-url: ${{ vars.secrets.API_URL }}
+      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_LIBRARIAN }}
+      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
+      logout-return-url: ${{ vars.secrets.LOGOUT_RETURN_URL_LIBRARIAN }}
+      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
+      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
     secrets: inherit
   deploy-admin:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -34,13 +34,13 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: board-game-admin
       always-override-limit: false
-      api-identifier: ${{ secrets.API_IDENTIFIER }}
-      api-url: ${{ secrets.API_URL }}
-      auth-callback: ${{ secrets.AUTH_CALLBACK_ADMIN }}
-      auth-client-id: ${{ secrets.AUTH_CLIENT_ID }}
-      logout-return-url: ${{ secrets.LOGOUT_RETURN_URL_ADMIN }}
-      auth-domain: ${{ secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ secrets.WEBPACK_MODE }}
+      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
+      api-url: ${{ vars.secrets.API_URL }}
+      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_ADMIN }}
+      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
+      logout-return-url: ${{ vars.secrets.LOGOUT_RETURN_URL_ADMIN }}
+      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
+      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
     secrets: inherit
   deploy-play-and-win:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -52,11 +52,11 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: play-prize-entry
       always-override-limit: false
-      api-identifier: ${{ secrets.API_IDENTIFIER }}
-      api-url: ${{ secrets.API_URL }}
-      auth-callback: ${{ secrets.AUTH_CALLBACK_PLAYANDWIN }}
-      auth-client-id: ${{ secrets.AUTH_CLIENT_ID }}
-      auth-domain: ${{ secrets.AUTH_DOMAIN }}
-      webpack-mode: ${{ secrets.WEBPACK_MODE }}
+      api-identifier: ${{ vars.secrets.API_IDENTIFIER }}
+      api-url: ${{ vars.secrets.API_URL }}
+      auth-callback: ${{ vars.secrets.AUTH_CALLBACK_PLAYANDWIN }}
+      auth-client-id: ${{ vars.secrets.AUTH_CLIENT_ID }}
+      auth-domain: ${{ vars.secrets.AUTH_DOMAIN }}
+      webpack-mode: ${{ vars.secrets.WEBPACK_MODE }}
       logout-return-url: NA
     secrets: inherit
