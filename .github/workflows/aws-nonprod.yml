@@ -15,7 +15,7 @@ jobs:
       container-name: frontends-librarian
       ecs-cluster: geekway-nonprod
       folder-name: librarian
-      always-override-limit: ${{ github.job.secrets.ALWAYS_OVERRIDE_LIMIT }}
+      always-override-limit: false
       api-identifier: ${{ github.job.secrets.API_IDENTIFIER }}
       api-url: ${{ github.job.secrets.API_URL }}
       auth-callback: ${{ github.job.secrets.AUTH_CALLBACK_LIBRARIAN }}
