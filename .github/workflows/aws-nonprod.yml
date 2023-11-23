@@ -9,7 +9,7 @@ jobs:
   deploy-librarian:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
-      ecr-repository: frontend-librarian
+      ecr-repository: frontends-librarian
       ecs-service: frontend-librarian
       ecs-task-definition: librarian/.aws/taskdefinition-nonprod.json
       container-name: frontend-librarian
@@ -22,7 +22,7 @@ jobs:
   deploy-admin:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
-      ecr-repository: frontend-admin
+      ecr-repository: frontends-admin
       ecs-service: frontend-admin
       ecs-task-definition: board-game-admin/.aws/taskdefinition-nonprod.json
       container-name: frontend-admin
@@ -35,7 +35,7 @@ jobs:
   deploy-play-and-win:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
-      ecr-repository: frontend-playandwin
+      ecr-repository: frontends-playandwin
       ecs-service: frontend-playandwin
       ecs-task-definition: play-prize-entry/.aws/taskdefinition-nonprod.json
       container-name: frontend-play-and-win
