@@ -35,7 +35,7 @@ jobs:
   deploy-play-and-win:
     uses: ./.github/workflows/build-and-deploy.yml
     with:
-      ecr-repository: frontends-playandwin
+      ecr-repository: frontends-play-and-win
       ecs-service: frontend-playandwin
       ecs-task-definition: play-prize-entry/.aws/taskdefinition-nonprod.json
       container-name: frontends-play-and-win
