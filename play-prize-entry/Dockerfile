@@ -28,6 +28,6 @@ FROM nginx:stable-alpine
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/dist/prod/bundle.js /usr/share/nginx/html
-EXPOSE 8083
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
