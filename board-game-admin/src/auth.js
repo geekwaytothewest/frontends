@@ -3,7 +3,6 @@ import env from './App/environmentVariables';
 
 class Auth {
   constructor() {
-    console.log(env);
     this.auth0 = new auth0.WebAuth({
       domain: env.authDomain,
       clientID: env.authClientId,
