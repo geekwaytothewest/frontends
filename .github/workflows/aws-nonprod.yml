@@ -16,8 +16,8 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: librarian
       always-override-limit: false
-      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
-      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/librarian
+      auth-callback: http://ruleslawyer.geekway.com/librarian
+      logout-return-url: http://ruleslawyer.geekway.com/librarian
     secrets: inherit
   deploy-admin:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -29,8 +29,8 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: board-game-admin
       always-override-limit: false
-      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
-      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/admin
+      auth-callback: http://ruleslawyer.geekway.com/admin
+      logout-return-url: http://ruleslawyer.geekway.com/admin
     secrets: inherit
   deploy-play-and-win:
     uses: ./.github/workflows/build-and-deploy.yml
@@ -42,6 +42,6 @@ jobs:
       ecs-cluster: geekway-nonprod
       folder-name: play-prize-entry
       always-override-limit: false
-      auth-callback: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
-      logout-return-url: http://nonprod-alb-609305099.us-east-1.elb.amazonaws.com/playandwin
+      auth-callback: http://ruleslawyer.geekway.com/playandwin
+      logout-return-url: http://ruleslawyer.geekway.comcom/playandwin
     secrets: inherit
