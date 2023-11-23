@@ -12,7 +12,7 @@ jobs:
       ecr-repository: frontends-librarian
       ecs-service: frontend-librarian
       ecs-task-definition: librarian/.aws/taskdefinition-nonprod.json
-      container-name: frontend-librarian
+      container-name: frontends-librarian
       ecs-cluster: geekway-nonprod
       folder-name: librarian
       always-override-limit: false
@@ -25,7 +25,7 @@ jobs:
       ecr-repository: frontends-admin
       ecs-service: frontend-admin
       ecs-task-definition: board-game-admin/.aws/taskdefinition-nonprod.json
-      container-name: frontend-admin
+      container-name: frontends-admin
       ecs-cluster: geekway-nonprod
       folder-name: board-game-admin
       always-override-limit: false
@@ -38,7 +38,7 @@ jobs:
       ecr-repository: frontends-playandwin
       ecs-service: frontend-playandwin
       ecs-task-definition: play-prize-entry/.aws/taskdefinition-nonprod.json
-      container-name: frontend-play-and-win
+      container-name: frontends-play-and-win
       ecs-cluster: geekway-nonprod
       folder-name: play-prize-entry
       always-override-limit: false
