@@ -47,13 +47,13 @@ class App extends Component {
           {this.state.waitingForAuthResult && <CheckingAuthentication />}
           {!this.state.waitingForAuthResult && (
             <>
-              <Route exact path='/callback' component={LoginCallback} />
+              <Route path='/callback' component={LoginCallback} />
               <Route path='/unauthenticated' render={props => <Unauthenticated {...props} />} />
               <Provider store={this.state.reduxStore}>
-                <PrivateRoute auth={auth} exact path='/' component={() => <Redirect to='/collections' />} />
                 <PrivateRoute auth={auth} path='/games' component={GamesList} />
                 <PrivateRoute auth={auth} path='/collections' component={Collections} />
                 <PrivateRoute auth={auth} path='/attendees' component={Attendees} />
+                <PrivateRoute auth={auth} path='/' component={() => <Redirect to='/collections' />} />
               </Provider>
             </>
           )}
