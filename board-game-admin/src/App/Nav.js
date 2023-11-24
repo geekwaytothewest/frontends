@@ -15,7 +15,7 @@ class Nav extends Component {
   signIn = () => auth.signIn();
   signOut = () => {
     auth.signOut();
-    this.props.history.replace('/');
+    this.goTo('/')
   };
   render() {
     const isAuthenticated = auth.isAuthenticated();

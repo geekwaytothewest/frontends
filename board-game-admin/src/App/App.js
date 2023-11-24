@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Router, Redirect } from 'react-router-dom';
+import { Route, Redirect, BrowserRouter } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Nav from './Nav';
 import auth from '../auth';
@@ -41,24 +41,24 @@ class App extends Component {
 
   render() {
     return (
-      <Router history={history}>
+      <BrowserRouter history={history} basename='/admin'>
         <Nav waitingForAuthResult={this.state.waitingForAuthResult} auth={auth} history={history} />
         <AppContent>
           {this.state.waitingForAuthResult && <CheckingAuthentication />}
           {!this.state.waitingForAuthResult && (
             <>
-              <Route exact path='/callback' component={LoginCallback} />
+              <Route path='/callback' component={LoginCallback} />
               <Route path='/unauthenticated' render={props => <Unauthenticated {...props} />} />
               <Provider store={this.state.reduxStore}>
-                <PrivateRoute auth={auth} exact path='/' component={() => <Redirect to='/collections' />} />
                 <PrivateRoute auth={auth} path='/games' component={GamesList} />
                 <PrivateRoute auth={auth} path='/collections' component={Collections} />
                 <PrivateRoute auth={auth} path='/attendees' component={Attendees} />
+                <PrivateRoute auth={auth} path='/' component={() => <Redirect to='/collections' />} />
               </Provider>
             </>
           )}
         </AppContent>
-      </Router>
+      </BrowserRouter>
     );
   }
 }

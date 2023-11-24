@@ -34,7 +34,7 @@ let store = createStore(
 const render = () => {
   root.render(
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename='/playandwin'>
         <Routes>
           <Route
             path='/'
