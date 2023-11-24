@@ -3,7 +3,7 @@
   "author": "Joe Henderson",
   "version": "2.0.0",
   "scripts": {
-    "start": "webpack serve --config webpack.common.js --open --port 8083",
+    "start": "webpack serve --config webpack.common.js --open /playandwin/ --mode development --port 8083",
     "build:test": "webpack --config webpack.common.js -o dist/test/bundle.js",
     "build:prod": "webpack --config webpack.common.js -o dist/prod/bundle.js"
   },
