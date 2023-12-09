@@ -22,7 +22,7 @@ export const toggleUpdateGameDialog = (game) => ({ type: actionTypes.toggleUpdat
 
 export const createGetGamesAction = () => ({
   [RSAA]: {
-    endpoint: () => `${apiRoot}/games`,
+    endpoint: () => `${apiRoot}/gameList`,
     method: 'GET',
     types: [actionTypes.getGamesRequest, actionTypes.getGamesSuccess, actionTypes.getGamesFailure]
   }
@@ -32,7 +32,7 @@ export const createUpdateGameAction = (id, name) => {
   return {
     [RSAA]: {
       headers: { 'Content-Type': 'application/json' },
-      endpoint: () => `${apiRoot}/games/${id}`,
+      endpoint: () => `${apiRoot}/gameList/${id}`,
       body: JSON.stringify({
         title: name,
       }),
