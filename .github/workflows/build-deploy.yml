@@ -3,22 +3,13 @@ name: Build and Deploy Service
 on:
   workflow_call:
     inputs:
-      ecr-repository:
+      environment:
         required: true
         type: string
-      ecs-service:
+      service:
         required: true
         type: string
-      ecs-task-definition:
-        required: true
-        type: string
-      container-name:
-        required: true
-        type: string
-      ecs-cluster:
-        required: true
-        type: string
-      folder-name:
+      folder:
         required: true
         type: string
       always-override-limit:
@@ -31,6 +22,13 @@ on:
         required: true
         type: string
 
+env: 
+  ROLE_TO_ASSUME: ${{ inputs.environment == 'nonprod' && secrets.NONPROD_ROLE_ARN || secrets.PROD_ROLE_ARN }}
+  ECS_CLUSTER: geekway-${{ inputs.environment }}
+  ECR_REPOSITORY: frontends-${{ inputs.service }}
+  ECS_SERVICE: frontends-${{ inputs.service }}
+  API_URL: ${{ inputs.environment == 'nonprod' && 'https://nonprod.ruleslawyer.geekway.com/api/legacy/org/1/con/1' || 'https://library.geekway.com/api/legacy/org/1/con/1' }}
+
 permissions:
   contents: read
 
@@ -38,7 +36,6 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
     - name: Checkout
@@ -50,6 +47,8 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
+        role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+        role-duration-seconds: 1200
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -60,13 +59,13 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
-        ECR_REPOSITORY: ${{ inputs.ecr-repository }}
+        ECR_REPOSITORY: frontends-${{ inputs.service }}
       run: |
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
         cd ${{ inputs.folder-name }}
-        docker build --build-arg ALWAYS_OVERRIDE_LIMIT=${{ inputs.always-override-limit }} --build-arg API_IDENTIFIER=${{ secrets.API_IDENTIFIER }} --build-arg API_URL=${{ secrets.API_URL_NONPROD }} --build-arg AUTH_CALLBACK=${{ inputs.auth-callback }} --build-arg AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }} --build-arg AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }} --build-arg LOGOUT_RETURN_URL=${{ inputs.logout-return-url }} --build-arg WEBPACK_MODE=${{ secrets.WEBPACK_MODE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build --build-arg ALWAYS_OVERRIDE_LIMIT=${{ inputs.always-override-limit }} --build-arg API_IDENTIFIER=${{ secrets.API_IDENTIFIER }} --build-arg API_URL=${{ env.API_URL }} --build-arg AUTH_CALLBACK=${{ inputs.auth-callback }} --build-arg AUTH_CLIENT_ID=${{ secrets.AUTH_CLIENT_ID }} --build-arg AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }} --build-arg LOGOUT_RETURN_URL=${{ inputs.logout-return-url }} --build-arg WEBPACK_MODE=${{ secrets.WEBPACK_MODE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -74,14 +73,14 @@ jobs:
     #   id: task-def
     #   uses: aws-actions/amazon-ecs-render-task-definition@v1
     #   with:
-    #     task-definition: ${{ inputs.ecs-task-definition }}
-    #     container-name: ${{ inputs.container-name }}
+    #     task-definition: ${{ inputs.folder }}/.aws/taskdefinition-${{ inputs.environment }}.json
+    #     container-name: frontends-${{ inputs.service }}
     #     image: ${{ steps.build-image.outputs.image }}
 
     # - name: Deploy Amazon ECS task definition
     #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
     #   with:
     #     task-definition: ${{ steps.task-def.outputs.task-definition }}
-    #     service: ${{ inputs.ecs-service }}
-    #     cluster: ${{ inputs.ecs-cluster }}
+    #     service: frontends-${{ inputs.service }}
+    #     cluster: ${{ env.ECS_CLUSTER }}
     #     wait-for-service-stability: true
