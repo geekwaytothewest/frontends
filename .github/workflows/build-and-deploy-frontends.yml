@@ -1,0 +1,48 @@
+name: Deploy Frontends to ECS
+
+on: 
+  workflow_dispatch:
+    inputs:
+      environment: 
+        description: 'Choose a deployment environment'
+        required: true
+        default: 'nonprod'
+        type: choice
+        options:
+          - nonprod
+          - prod
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-librarian:
+    uses: ./.github/workflows/build-deploy.yml
+    with:
+      environment: ${{ inputs.environment }}
+      service: librarian
+      folder: librarian
+      always-override-limit: false
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.ruleslawyer.geekway.com/librarian' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.ruleslawyer.geekway.com/librarian' }}
+    secrets: inherit
+  deploy-admin:
+    uses: ./.github/workflows/build-deploy.yml
+    with:
+      environment: ${{ inputs.environment }}
+      service: admin
+      folder: board-game-admin
+      always-override-limit: false
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
+    secrets: inherit
+  deploy-play-and-win:
+    uses: ./.github/workflows/build-deploy.yml
+    with:
+      environment: ${{ inputs.environment }}
+      service: play-and-win
+      folder: play-prize-entry
+      always-override-limit: false
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.ruleslawyer.geekway.com/playandwin' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.ruleslawyer.geekway.com/playandwin' }}
+    secrets: inherit
