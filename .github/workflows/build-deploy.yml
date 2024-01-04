@@ -12,25 +12,6 @@ on:
       folder:
         required: true
         type: string
-
-      ecr-repository:
-        required: true
-        type: string
-      ecs-service:
-        required: true
-        type: string
-      ecs-task-definition:
-        required: true
-        type: string
-      container-name:
-        required: true
-        type: string
-      ecs-cluster:
-        required: true
-        type: string
-      folder-name:
-        required: true
-        type: string
       always-override-limit:
         required: false
         type: string
