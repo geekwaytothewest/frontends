@@ -6,7 +6,7 @@ import { jsx } from '@emotion/react';
 import AddCopyDialog from './AddCopyDialog';
 import { Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
-import { toggleAddCopyDialog, toggleUploadCopiesDialog } from '../collectionsActions';
+import { toggleAddCopyDialog, toggleUploadCopiesDialog, getExportCollection } from '../collectionsActions';
 import GamesList from './GamesList';
 import GamesNonIdeal from './GamesNonIdeal';
 import {
@@ -20,7 +20,7 @@ import {
 } from '../../layoutComponents';
 import CopiesUploadDialog from './CopiesUploadDialog';
 
-const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCopiesDialog, selectedCollection }) => {
+const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCopiesDialog, getExportCollection, selectedCollection, csvText }) => {
   const [dialogTitle, setDialogTitle] = useState('');
   const [dialogCopyId, setDialogCopyId] = useState('');
   const [filterText, setFilterText] = useState('');
@@ -92,6 +92,7 @@ const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCop
               onClick={toggleAddCopyDialog}
             />
             <PageHeaderButton text='Upload' intent={Intent.PRIMARY} onClick={toggleUploadCopiesDialog} />
+            <PageHeaderButton text="Export Plays" intent={Intent.PRIMARY} onClick={() => getExportCollection(selectedCollection)} />
           </PageHeaderButtonSection>
         </PageHeader>
       )}
@@ -101,11 +102,13 @@ const Games = ({ games, collectionsLoading, toggleAddCopyDialog, toggleUploadCop
 };
 const mapState = state => ({
   collectionsLoading: state.collections.loading,
-  selectedCollection: state.collections.selectedCollection
+  selectedCollection: state.collections.selectedCollection,
+  csvText: state.collections.csv
 });
 const mapDispatch = dispatch => ({
   toggleAddCopyDialog: () => dispatch(toggleAddCopyDialog()),
-  toggleUploadCopiesDialog: () => dispatch(toggleUploadCopiesDialog())
+  toggleUploadCopiesDialog: () => dispatch(toggleUploadCopiesDialog()),
+  getExportCollection: (selectedCollection) => dispatch(getExportCollection(selectedCollection.ID))
 });
 
 export default connect(
