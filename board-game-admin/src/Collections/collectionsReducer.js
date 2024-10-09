@@ -1,5 +1,6 @@
 import initialState from '../Redux/initialState';
 import { actionTypes } from './collectionsActions';
+let fileSaver = require('file-saver');
 
 const reducer = (state = initialState.collections, action) => {
   const payload = action.payload;
@@ -67,9 +68,22 @@ const reducer = (state = initialState.collections, action) => {
       return { ...state, savingCollection: false, updateCollectionDialogOpen: false };
     case actionTypes.updateCollectionFailure:
       return { ...state, savingCollection: false, errors: payload.response.Errors };
+    case actionTypes.exportSuccess:
+      let data = s2ab(payload.csvText);
+      fileSaver.saveAs(new Blob([data], {type: 'text/csv'}), `${payload.collectionName}.csv`);
+      return { ...state}
     default:
       return state;
   }
 };
+
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i != s.length; ++i) {
+        view[i] = s.charCodeAt(i) & 0xFF;
+    }
+    return buf;
+}
 
 export default reducer;

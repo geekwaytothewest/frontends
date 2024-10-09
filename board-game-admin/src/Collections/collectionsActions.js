@@ -32,7 +32,18 @@ export const actionTypes = {
   updateCollectionRequest: 'UPDATE_COLLECTION_REQUEST',
   updateCollectionSuccess: 'UPDATE_COLLECTION_SUCCESS',
   updateCollectionFailure: 'UPDATE_COLLECTION_FAILURE',
+  exportRequest: 'EXPORT_REQUEST',
+  exportSuccess: 'EXPORT_SUCCESS',
+  exportFailure: 'EXPORT_FAILURE'
 };
+
+export const getExportCollection = (collection) => ({
+  [RSAA]: {
+    endpoint: () => `${apiRoot}/coll/${collection}/exportPlays`,
+    method: 'GET',
+    types: [actionTypes.exportRequest, actionTypes.exportSuccess, actionTypes.exportFailure]
+  }
+})
 
 export const createGetCollectionsAction = () => ({
   [RSAA]: {

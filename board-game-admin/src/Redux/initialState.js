@@ -8,7 +8,8 @@ export default {
     updateCopyDialogOpen: false,
     uploadCopiesDialogOpen: false,
     selectedCopy: undefined,
-    savingCopy: false
+    savingCopy: false,
+    csv: undefined,
   },
   attendees: {
     loading: false,
