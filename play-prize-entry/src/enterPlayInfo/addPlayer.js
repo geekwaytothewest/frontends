@@ -74,7 +74,7 @@ const mapStateToProps = state => {
     loading: state.playerSearch.loading,
     foundAttendees: filteredAttendees,
     playersCount: state.play.players.length,
-    maxPlayers: state.play.maxPlayers,
+    maxPlayers: state.play.maxPlayers ?? 5,
   };
 };
 
