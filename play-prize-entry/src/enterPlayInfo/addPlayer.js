@@ -12,7 +12,7 @@ const focusPlayerSearchInput = () => {
   document.getElementById('player-search').focus();
 };
 
-const AddPlayer = ({ query, loading, foundAttendees, addPlayer, updateQuery }) => {
+const AddPlayer = ({ query, loading, foundAttendees, playersCount, maxPlayers, addPlayer, updateQuery }) => {
   return (
     <div>
       <Popover2
@@ -34,7 +34,7 @@ const AddPlayer = ({ query, loading, foundAttendees, addPlayer, updateQuery }) =
             large={true}
             className='add-player-button'
           />
-  
+
         )}
         content={
           <div className='player-search-popover-content'>
@@ -49,7 +49,7 @@ const AddPlayer = ({ query, loading, foundAttendees, addPlayer, updateQuery }) =
                     intent={Intent.SUCCESS}
                     className='player-search-results-row player-search-results-add'
                     onClick={() => {
-                      addPlayer(attendee);
+                      addPlayer(attendee, playersCount, maxPlayers);
                       document.getElementById('player-search').focus();
                     }}
                     text={`${attendee.name} (${attendee.badgeNumber})`}
@@ -72,12 +72,14 @@ const mapStateToProps = state => {
   return {
     query: state.playerSearch.query,
     loading: state.playerSearch.loading,
-    foundAttendees: filteredAttendees
+    foundAttendees: filteredAttendees,
+    playersCount: state.play.players.length,
+    maxPlayers: state.play.maxPlayers ?? 5,
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ 
+  return bindActionCreators({
     updateQuery: updatePlayerSearchQuery,
     addPlayer,
   }, dispatch);

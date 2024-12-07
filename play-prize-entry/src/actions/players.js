@@ -11,10 +11,17 @@ export const removePlayer = id => ({
   id
 });
 
-export const addPlayer = player => ({
-  type: types.AddPlayer,
-  player: { ...player, wantsToWin: true }
-});
+export const addPlayer = (player, currentPlayers, maxPlayers) => {
+  if (currentPlayers => maxPlayers) {
+    alert(`Cannot add more than ${maxPlayers} players.`);
+    return {};
+  }
+
+  return {
+    type: types.AddPlayer,
+    player: { ...player, wantsToWin: true }
+  }
+};
 
 export const selectRating = (playerId, rating) => ({
   type: types.SelectRating,

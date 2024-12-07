@@ -1,6 +1,6 @@
 import * as types from '../actions/actionTypes';
 
-const play = (state = { checkoutId: null, players: [], submitting: false }, action) => {
+const play = (state = { checkoutId: null, maxPlayers: 0, players: [], submitting: false }, action) => {
   switch (action.type) {
   case types.GetCheckoutsReceive: {
     const payload = action.payload && action.payload.Result;
@@ -12,7 +12,7 @@ const play = (state = { checkoutId: null, players: [], submitting: false }, acti
     return { ...state, players: [{ id: checkoutAttendee.ID, name: checkoutAttendee.Name, rating: null, wantsToWin: true }] };
   }
   case types.CheckoutSelected:
-    return { ...state, game: action.checkout.game, checkoutId: action.checkout.id };
+    return { ...state, game: action.checkout.game, maxPlayers: action.checkout.maxPlayers, checkoutId: action.checkout.id };
   case types.AddPlayer: {
     const playersWithAdded = state.players.slice();
     playersWithAdded.push(action.player);
