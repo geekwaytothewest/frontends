@@ -15,10 +15,6 @@ const play = (state = { checkoutId: null, maxPlayers: 0, players: [], submitting
     return { ...state, game: action.checkout.game, maxPlayers: action.checkout.maxPlayers, checkoutId: action.checkout.id };
   case types.AddPlayer: {
     const playersWithAdded = state.players.slice();
-    if (playersWithAdded.length == state.maxPlayers) {
-      alert(`Cannot add more than ${maxPlayers} players.`);
-      return { ...state, players: playersWithAdded};
-    }
     playersWithAdded.push(action.player);
 
     return { ...state, players: playersWithAdded };
