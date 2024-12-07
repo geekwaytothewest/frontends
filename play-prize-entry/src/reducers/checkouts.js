@@ -38,7 +38,8 @@ const mapPayloadToCheckouts = payload => {
 
   return payload.Result.filter(checkout => checkout.Copy.Collection.AllowWinning).map(checkout => ({
     id: checkout.ID,
-    game: checkout.Copy.Game.Name
+    game: checkout.Copy.Game.Name,
+    maxPlayers: checkout.Copy.Game.MaxPlayers
   }));
 };
 
