@@ -27,7 +27,7 @@ env:
   ECS_CLUSTER: geekway-${{ inputs.environment }}
   ECR_REPOSITORY: frontends-${{ inputs.service }}
   ECS_SERVICE: frontends-${{ inputs.service }}
-  API_URL: ${{ inputs.environment == 'nonprod' && 'https://nonprod.ruleslawyer.geekway.com/api/legacy/org/1/con/1' || 'https://library.geekway.com/api/legacy/org/1/con/3' }}
+  API_URL: ${{ inputs.environment == 'nonprod' && 'https://nonprod.ruleslawyer.geekway.com/api/legacy/org/1/con/1' || 'https://library.geekway.com/api/legacy/org/1/con/4' }}
 
 permissions:
   contents: read
