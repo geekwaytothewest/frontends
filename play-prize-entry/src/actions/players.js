@@ -12,7 +12,7 @@ export const removePlayer = id => ({
 });
 
 export const addPlayer = (player, currentPlayers, maxPlayers) => {
-  if (currentPlayers => maxPlayers + 1) {
+  if (currentPlayers >= maxPlayers + 1) {
     alert(`Cannot add more than ${maxPlayers} players.`);
     return {};
   }
