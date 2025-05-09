@@ -15,7 +15,8 @@ const LabeledInput = ({
   large = false,
   helperText = '',
   autoFocus = false,
-  disabled = false
+  disabled = false,
+  type
 }) => (
   <FormGroup helperText={helperText} label={label} labelInfo={labelInfo}>
     <InputGroup
@@ -28,6 +29,7 @@ const LabeledInput = ({
       autoFocus={autoFocus}
       dir={dir}
       autoComplete={autoComplete}
+      type={type}
     />
   </FormGroup>
 );
