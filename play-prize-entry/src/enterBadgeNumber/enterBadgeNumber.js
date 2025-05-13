@@ -30,6 +30,7 @@ const AuthenticatePresentation = ({
         inputId='badge-number'
         autoFocus={true}
         placeholder='Your Badge Number'
+        type="number"
         value={badgeId}
         onChange={newText => updatebadgeId(newText)}
       />
