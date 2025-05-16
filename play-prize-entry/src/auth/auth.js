@@ -86,12 +86,8 @@ export default class Auth {
   }
 
   scheduleRenewal() {
-    var expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    var delay = expiresAt - Date.now();
-    if (delay > 0) {
-      this.tokenRenewalTimeout = setTimeout(() => {
-        this.renewToken();
-      }, 3 * 60 * 60 * 1000); // 3 hour refresh
-    }
+    this.tokenRenewalTimeout = setTimeout(() => {
+      this.renewToken();
+    }, 3 * 60 * 60 * 1000); // 3 hour refresh
   }
 }
