@@ -75,8 +75,8 @@ export default class Auth {
     this.auth0.checkSession({}, (err, result) => {
       if (err) {
         alert(
-          `Could not get a new token (${err.error}: ${err.error_description}). 
-            Refresh the page. 
+          `Could not get a new token (${err.error}: ${err.error_description}).
+            Refresh the page.
             If the issue continues, let your administrator know.`
         );
       } else {
@@ -86,12 +86,8 @@ export default class Auth {
   }
 
   scheduleRenewal() {
-    var expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    var delay = expiresAt - Date.now();
-    if (delay > 0) {
-      this.tokenRenewalTimeout = setTimeout(() => {
-        this.renewToken();
-      }, delay);
-    }
+    this.tokenRenewalTimeout = setTimeout(() => {
+      this.renewToken();
+    }, 3 * 60 * 60 * 1000); // 3 hour refresh
   }
 }
