@@ -75,8 +75,8 @@ export default class Auth {
     this.auth0.checkSession({}, (err, result) => {
       if (err) {
         alert(
-          `Could not get a new token (${err.error}: ${err.error_description}). 
-            Refresh the page. 
+          `Could not get a new token (${err.error}: ${err.error_description}).
+            Refresh the page.
             If the issue continues, let your administrator know.`
         );
       } else {
@@ -91,7 +91,7 @@ export default class Auth {
     if (delay > 0) {
       this.tokenRenewalTimeout = setTimeout(() => {
         this.renewToken();
-      }, delay);
+      }, 3 * 60 * 60 * 1000); // 3 hour refresh
     }
   }
 }
