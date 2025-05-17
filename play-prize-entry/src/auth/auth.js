@@ -22,6 +22,7 @@ export default class Auth {
     this.scheduleRenewal = this.scheduleRenewal.bind(this);
     this.renewToken = this.renewToken.bind(this);
 
+    this.renewToken();
     this.scheduleRenewal();
   }
 
@@ -49,7 +50,6 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
 
-    this.renewToken();
     this.scheduleRenewal();
 
     // navigate to the home route
