@@ -81,9 +81,12 @@ export default class Auth {
       if (err) {
         alert(
           `Could not get a new token (${err.error}: ${err.error_description}).
-            Refresh the page.
+            Close this dialog box to retry.
             If the issue continues, let your administrator know.`
         );
+        setTimeout(() => {
+          this.renewToken();
+        }, 5000); // Retry after 5 seconds)
       } else {
         this.setSession(result);
       }
