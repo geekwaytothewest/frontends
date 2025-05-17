@@ -41,6 +41,10 @@ module.exports = {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         type: 'asset/resource'
       },
+      {
+        test: /\.manifest$/,
+        type: 'asset/resource',
+      }
     ]
   },
   plugins: [
