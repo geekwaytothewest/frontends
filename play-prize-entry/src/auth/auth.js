@@ -83,7 +83,7 @@ export default class Auth {
         );
         setTimeout(() => {
           this.renewToken();
-        }, 5000); // Retry after 5 seconds)
+        }, 15* 60 * 1000); // Retry after 15 minutes
       } else {
         this.setSession(result);
       }
