@@ -49,7 +49,9 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
 
+    this.renewToken();
     this.scheduleRenewal();
+
     // navigate to the home route
     history.replace(window.location.pathname);
   }
