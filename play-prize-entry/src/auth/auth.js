@@ -22,7 +22,6 @@ export default class Auth {
     this.scheduleRenewal = this.scheduleRenewal.bind(this);
     this.renewToken = this.renewToken.bind(this);
 
-    this.renewToken();
     this.scheduleRenewal();
   }
 
@@ -81,9 +80,8 @@ export default class Auth {
             Close this dialog box to retry.
             If the issue continues, let your administrator know.`
         );
-        setTimeout(() => {
-          this.renewToken();
-        }, 12 * 60 * 60 * 1000); // Retry after 12 hours
+
+        this.scheduleRenewal();
       } else {
         this.setSession(result);
       }
@@ -91,8 +89,16 @@ export default class Auth {
   }
 
   scheduleRenewal() {
-    this.tokenRenewalTimeout = setTimeout(() => {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const delay = expiresAt - Date.now() - (5 * 60 * 60 * 1000);
+    // 5 hours before the token expires
+
+    if (delay > 0) {
+      this.tokenRenewalTimeout = setTimeout(() => {
+        this.renewToken();
+      }, delay);
+    } else {
       this.renewToken();
-    }, 3 * 60 * 60 * 1000); // 3 hour refresh
+    }
   }
 }
