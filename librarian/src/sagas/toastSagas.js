@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import toastTypes from '../toastTypes';
 import types from '../actions/actionTypes';
 import SoundFX from 'sound-fx';
-import failedInputSound from '../content/taters.wav';
+import failedInputSound from '../content/holdon.wav';
 
 const sfx = new SoundFX();
 sfx.load(failedInputSound, failedInputSound);
