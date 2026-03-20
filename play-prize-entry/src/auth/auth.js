@@ -82,6 +82,8 @@ export default class Auth {
         );
 
         this.scheduleRenewal();
+      } else {
+        this.setSession(result);
       }
     });
   }
