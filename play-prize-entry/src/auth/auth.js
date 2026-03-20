@@ -82,13 +82,13 @@ export default class Auth {
         );
 
         this.scheduleRenewal();
-      } else {
-        this.setSession(result);
       }
     });
   }
 
   scheduleRenewal() {
+    clearTimeout(this.tokenRenewalTimeout);
+
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
     const delay = expiresAt - Date.now() - (5 * 60 * 60 * 1000);
     // 5 hours before the token expires
