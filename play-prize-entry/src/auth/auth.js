@@ -11,7 +11,7 @@ export default class Auth {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: AUTH_CONFIG.apiIdentifier,
     responseType: 'token id_token',
-    scope: 'openid'
+    scope: 'openid offline_access'
   });
 
   constructor() {
