@@ -48,6 +48,7 @@ export default class Auth {
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
+    localStorage.setItem('refresh_token', authResult.refreshToken);
 
     this.scheduleRenewal();
 
@@ -60,6 +61,7 @@ export default class Auth {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('refresh_token');
     clearTimeout(this.tokenRenewalTimeout);
     // navigate to the home route
     history.replace(window.location.pathname);
@@ -77,11 +79,10 @@ export default class Auth {
       if (err) {
         alert(
           `Could not get a new token (${err.error}: ${err.error_description}).
-            Close this dialog box to retry.
             If the issue continues, let your administrator know.`
         );
 
-        this.scheduleRenewal();
+        this.logout();
       } else {
         this.setSession(result);
       }
