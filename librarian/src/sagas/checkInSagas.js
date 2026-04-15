@@ -1,6 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import types from '../actions/actionTypes';
 import { checkIn } from '../actions/checkInOutActions';
+import toastTypes from '../toastTypes';
 
 function* tryCheckIn(action) {
   if (action.payload.Result.IsCheckedOut) {
@@ -18,7 +19,7 @@ function* handleCheckInSuccess(action) {
           ${collection.Name}
         </span>
     </div>`;
-  yield put({ type: types.makeToast, text: message, title: 'Success' });
+  yield put({ type: types.makeToast, text: message, title: 'Success', toastSound: 2, toastType: toastTypes.successScan3 });
 }
 
 export default function*() {
