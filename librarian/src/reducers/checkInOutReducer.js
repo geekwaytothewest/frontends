@@ -1,5 +1,6 @@
 import initialState from '../redux/initialState';
 import actionTypes from '../actions/actionTypes';
+import { playSound } from '../sagas/toastSagas';
 
 const reducer = (state = initialState.checkInOut, action) => {
   const payload = action.payload;
@@ -23,6 +24,11 @@ const reducer = (state = initialState.checkInOut, action) => {
   case actionTypes.checkInOut.getCopyStatusReceive: {
     const isCheckedOut = payload.Result.IsCheckedOut;
     const gameTitle = payload.Result.Game.Name;
+
+    if (!isCheckedOut) {
+      playSound(1);
+    }
+
     return { ...state, gameTitle, isCheckedOut, checkingStatus: false, checkingIn: isCheckedOut };
   }
 
