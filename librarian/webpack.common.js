@@ -1,3 +1,4 @@
+const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const webpack = require('webpack');
@@ -13,6 +14,22 @@ const faviconPlugin = new FaviconsWebpackPlugin('./src/assets/favicon.png');
 module.exports = {
   mode: process.env.WEBPACK_MODE,
   output: { publicPath: '/librarian/' },
+  devServer: {
+    port: 8082,
+    hot: true,
+    open: ['/librarian/'],
+    historyApiFallback: {
+      index: '/librarian/'
+    },
+    client: {
+      overlay: true
+    },
+    watchFiles: ['src/**/*'],
+    devMiddleware: {
+      publicPath: '/librarian/'
+    },
+    static: false
+  },
   module: {
     rules: [
       {

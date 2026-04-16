@@ -5,6 +5,7 @@ import CopySearch from './copySearch/copySearch';
 import CheckInOut from './checkInOut/checkInOut';
 import CheckoutsLists from './checkoutsLists/checkoutsLists';
 import Logout from './auth/logout';
+import ScanSound from './scanSound/scanSound';
 
 const App = () => {
     return (
@@ -12,6 +13,7 @@ const App = () => {
             <div className={allContentPaneStyles}>
                 <CopySearch />
                 <Logout />
+                <ScanSound />
                 <CheckInOut />
                 <CheckoutsLists />
             </div>
