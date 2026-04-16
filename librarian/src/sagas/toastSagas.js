@@ -33,6 +33,14 @@ toastr.options = {
 function* makeToast({ title, text, toastType = toastTypes.success, toastSound}) {
   toastr[toastType](text, title);
 
+  playSound(toastSound);
+
+  if ([toastTypes.error, toastTypes.warning].includes(toastType)) {
+    sfx.play(failedInputSound);
+  }
+}
+
+export function playSound(toastSound) {
   if (toastSound === 1 && localStorage.getItem('scanSound') === '1') {
     sfx.play(scan11Sound);
   }
@@ -55,10 +63,6 @@ function* makeToast({ title, text, toastType = toastTypes.success, toastSound}) 
 
   if (toastSound === 3 && localStorage.getItem('scanSound') === '2') {
     sfx.play(scan23Sound);
-  }
-
-  if ([toastTypes.error, toastTypes.warning].includes(toastType)) {
-    sfx.play(failedInputSound);
   }
 }
 
