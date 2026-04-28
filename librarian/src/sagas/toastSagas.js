@@ -3,7 +3,8 @@ import toastr from 'toastr';
 import toastTypes from '../toastTypes';
 import types from '../actions/actionTypes';
 import SoundFX from 'sound-fx';
-import failedInputSound from '../content/holdon.wav';
+import failedInput1Sound from '../content/error.wav';
+import failedInput2Sound from '../content/error2.wav';
 import scan11Sound from '../content/scan11.wav';
 import scan12Sound from '../content/scan12.wav';
 import scan13Sound from '../content/scan13.wav';
@@ -12,7 +13,8 @@ import scan22Sound from '../content/scan22.wav';
 import scan23Sound from '../content/scan23.wav';
 
 const sfx = new SoundFX();
-sfx.load(failedInputSound, failedInputSound);
+sfx.load(failedInput1Sound, failedInput1Sound);
+sfx.load(failedInput2Sound, failedInput2Sound);
 sfx.load(scan11Sound, scan11Sound);
 sfx.load(scan12Sound, scan12Sound);
 sfx.load(scan13Sound, scan13Sound);
@@ -35,8 +37,13 @@ function* makeToast({ title, text, toastType = toastTypes.success, toastSound}) 
 
   playSound(toastSound);
 
-  if ([toastTypes.error, toastTypes.warning].includes(toastType)) {
-    sfx.play(failedInputSound);
+  if ([toastTypes.error, toastTypes.warning].includes(toastType) && localStorage.getItem('scanSound') === '1') {
+    sfx.play(failedInput1Sound);
+  }
+
+
+  if ([toastTypes.error, toastTypes.warning].includes(toastType) && localStorage.getItem('scanSound') === '2') {
+    sfx.play(failedInput2Sound);
   }
 }
 
