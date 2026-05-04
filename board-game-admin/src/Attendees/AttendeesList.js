@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Icon, Intent, H5, Button, Tooltip } from '@blueprintjs/core';
 import UpdateAttendeeDialog from './UpdateAttendeeDialog';
+import ReplacementBadgeDialog from './ReplacementBadgeDialog';
+import TransferBadgeDialog from './TransferBadgeDialog';
 import { IconNames } from '@blueprintjs/icons';
-import { toggleUpdateAttendeeDialog } from './attendeesActions';
+import { toggleUpdateAttendeeDialog, toggleBadgeReplacementDialog, toggleBadgeTransferDialog } from './attendeesActions';
 import {
   AttendeeCard,
   AttendeeCardRight,
@@ -19,7 +21,7 @@ import {
 import filterListItems from '../Utilities/filterListItems';
 import { PageSubheader, PageHeaderText } from '../layoutComponents';
 
-const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog }) => {
+const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog, openReplaceBadgeDialog, openTransferBadgeDialog }) => {
   const [displayCap, setDisplayCap] = useState(50);
   const filteredAttendees = filterListItems(attendees, filterText, ['BadgeNumber', 'Name']).slice(0, displayCap);
   const incrementDisplayCap = () => setDisplayCap(displayCap + 25);
@@ -42,7 +44,7 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
               <Tooltip content='Replace lost badge' position='top'>
                 <LostBadgeButton
                   icon={IconNames.UNLINK}
-                  onClick={() => alert('Not implemented yet')}
+                  onClick={() => openReplaceBadgeDialog(attendee)}
                   minimal={true}
                   intent={Intent.DANGER}
                 />
@@ -50,7 +52,7 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
               <Tooltip content='Transfer badge' position='top'>
                 <TransferBadgeButton
                   icon={IconNames.EXCHANGE}
-                  onClick ={() => alert('Not implemented yet')}
+                  onClick ={() => openTransferBadgeDialog(attendee)}
                   minimal={true}
                   intent={Intent.DANGER}
                 />
@@ -67,6 +69,8 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
           </AttendeeCard>
         ))}
         <UpdateAttendeeDialog description='Update the chosen attendee' />
+        <ReplacementBadgeDialog />
+        <TransferBadgeDialog />
       </ListContainer>
       <Button
         text='Load More'
@@ -79,7 +83,9 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
 };
 
 const mapDispatch = dispatch => ({
-  openUpdateAttendeeDialog: attendee => dispatch(toggleUpdateAttendeeDialog(attendee))
+  openUpdateAttendeeDialog: attendee => dispatch(toggleUpdateAttendeeDialog(attendee)),
+  openReplaceBadgeDialog: attendee => dispatch(toggleBadgeReplacementDialog(attendee)),
+  openTransferBadgeDialog: attendee => dispatch(toggleBadgeTransferDialog(attendee))
 });
 
 export default connect(

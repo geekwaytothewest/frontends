@@ -22,7 +22,15 @@ export const actionTypes = {
   toggleSyncTabletopEventsDialog: 'TOGGLE_SYNCTTE_DIALOG',
   syncTabletopEventsRequest: 'SYNC_TTE_REQUEST',
   syncTabletopEventsAttendeeSuccess: 'SYNC_TTE_SUCCESS',
-  syncTabletopEventsAttendeeFailure: 'SYNC_TTE_FAILURE'
+  syncTabletopEventsAttendeeFailure: 'SYNC_TTE_FAILURE',
+  toggleBadgeReplacementDialog: 'TOGGLE_BADGE_REPLACEMENT_DIALOG',
+  processBadgeReplacementRequest: 'PROCESS_BADGE_REPLACEMENT_REQUEST',
+  processBadgeReplacementSuccess: 'PROCESS_BADGE_REPLACEMENT_SUCCESS',
+  processBadgeReplacementFailure: 'PROCESS_BADGE_REPLACEMENT_FAILURE',
+  toggleBadgeTransferDialog: 'TOGGLE_BADGE_TRANSFER_DIALOG',
+  processBadgeTransferRequest: 'PROCESS_BADGE_TRANSFER_REQUEST',
+  processBadgeTransferSuccess: 'PROCESS_BADGE_TRANSFER_SUCCESS',
+  processBadgeTransferFailure: 'PROCESS_BADGE_TRANSFER_FAILURE'
 };
 
 export const createGetAttendeesAction = () => ({
@@ -40,6 +48,8 @@ export const toggleUpdateAttendeeDialog = attendee => ({
   attendee
 });
 export const toggleUploadAttendeesDialog = () => ({ type: actionTypes.toggleUploadAttendeesDialog });
+export const toggleBadgeReplacementDialog = attendee => ({ type: actionTypes.toggleBadgeReplacementDialog, attendee });
+export const toggleBadgeTransferDialog = attendee => ({ type: actionTypes.toggleBadgeTransferDialog, attendee });
 
 export const createAddAttendeeAction = (name, badgeNumber, pronouns) => {
   return {
@@ -94,3 +104,27 @@ export const createSyncTabletopEventsAction = (userName, password, apiKey, tteBa
     }
   };
 };
+
+export const createReplacementBadgeAction = (oldBadgeNumber, newBadgeNumber) => {
+  return {
+    [RSAA]: {
+      headers: { 'Content-Type': 'application/json' },
+      endpoint: () => `${apiRoot}/attendees/badgeReplacement`,
+      body: JSON.stringify({ fromBadgeNumber: oldBadgeNumber, toBadgeNumber: newBadgeNumber }),
+      method: 'PUT',
+      types: [actionTypes.processBadgeReplacementRequest, actionTypes.processBadgeReplacementSuccess, actionTypes.processBadgeReplacementFailure]
+    }
+  };
+}
+
+export const createBadgeTransferAction = (newBadgeFirstName, newBadgeLastName, newBadgePronouns, oldBadgeNumber) => {
+  return {
+    [RSAA]: {
+      headers: { 'Content-Type': 'application/json' },
+      endpoint: () => `${apiRoot}/attendees/badgeTransfer`,
+      body: JSON.stringify({ fromBadgeNumber: oldBadgeNumber, newBadgeFirstName: newBadgeFirstName, newBadgeLastName: newBadgeLastName, newBadgePronouns: newBadgePronouns }),
+      method: 'PUT',
+      types: [actionTypes.processBadgeTransferRequest, actionTypes.processBadgeTransferSuccess, actionTypes.processBadgeTransferFailure]
+    }
+  };
+}

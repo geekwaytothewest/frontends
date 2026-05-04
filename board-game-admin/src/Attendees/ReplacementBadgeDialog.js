@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { createSyncTabletopEventsAction, createUpdateAttendeeAction, toggleSyncTabletopEventsDialog, toggleUpdateAttendeeDialog } from './attendeesActions';
+import { createReplacementBadgeAction, toggleBadgeReplacementDialog } from './attendeesActions';
 import LabeledInput from '../SharedComponents/LabeledInput';
 import SaveDialog from '../SharedComponents/SaveDialog';
 
-const ReplacementBadgeDialog = ({ saving, processTransfer, isOpen, toggleDialog, selectedAttendee }) => {
+const ReplacementBadgeDialog = ({ saving, processReplacement, isOpen, toggleDialog, selectedAttendee }) => {
   const [oldBadgeNumber, setOldBadgeNumber] = useState('');
   const [newBadgeNumber, setNewBadgeNumber] = useState('');
 
-  const setFields = (oldBadgeNum = '', newBadgeNum = '') => {
+  const setFields = (oldBadgeNum = '') => {
     setOldBadgeNumber(oldBadgeNum);
-    setNewBadgeNumber(newBadgeNum);
   };
 
   return (
@@ -19,7 +18,7 @@ const ReplacementBadgeDialog = ({ saving, processTransfer, isOpen, toggleDialog,
       headerText='Replace Badge'
       saving={saving}
       disabled={saving}
-      save={() => replaceBadge(oldBadgeNumber, newBadgeNumber)}
+      save={() => processReplacement(oldBadgeNumber, newBadgeNumber)}
       isOpen={isOpen}
       onOpening={() => setFields(selectedAttendee.BadgeNumber)}
       close={toggleDialog}
@@ -32,15 +31,15 @@ const ReplacementBadgeDialog = ({ saving, processTransfer, isOpen, toggleDialog,
 
 const mapState = state => ({
   selectedAttendee: state.attendees.selectedAttendee,
-  isOpen: state.attendees.updateAttendeeDialogOpen,
+  isOpen: state.attendees.badgeReplacementDialogOpen,
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  processTransfer: (oldBadgeNum, newBadgeNum) => dispatch(createTransferBadgeAction(oldBadgeNum, newBadgeNum)),
-  toggleDialog: () => dispatch(toggleTransferBadgeDialog()),
+  processReplacement: (oldBadgeNum, newBadgeNum) => dispatch(createReplacementBadgeAction(oldBadgeNum, newBadgeNum)),
+  toggleDialog: () => dispatch(toggleBadgeReplacementDialog()),
 });
 
 export default connect(
   mapState,
   mapDispatch
-)(TransferBadgeDialog);
+)(ReplacementBadgeDialog);

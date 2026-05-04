@@ -49,6 +49,22 @@ const reducer = (state = initialState.attendees, action) => {
       return { ...state, savingAttendee: false, updateSyncTabletopEventsDialogOpen: false };
     case actionTypes.syncTabletopEventsAttendeeFailure:
       return { ...state, savingAttendee: false, errors: payload.Errors };
+    case actionTypes.toggleBadgeReplacementDialog:
+      return { ...state, selectedAttendee: action.attendee, badgeReplacementDialogOpen: !state.badgeReplacementDialogOpen };
+    case actionTypes.processBadgeReplacementRequest:
+      return { ...state, savingAttendee: true };
+    case actionTypes.processBadgeReplacementSuccess:
+      return { ...state, savingAttendee: false, badgeReplacementDialogOpen: false };
+    case actionTypes.processBadgeReplacementFailure:
+      return { ...state, savingAttendee: false, errors: payload.Errors };
+    case actionTypes.toggleBadgeTransferDialog:
+      return { ...state, selectedAttendee: action.attendee, badgeTransferDialogOpen: !state.badgeTransferDialogOpen };
+    case actionTypes.processBadgeTransferRequest:
+      return { ...state, savingAttendee: true };
+    case actionTypes.processBadgeTransferSuccess:
+      return { ...state, savingAttendee: false, badgeTransferDialogOpen: false };
+    case actionTypes.processBadgeTransferFailure:
+      return { ...state, savingAttendee: false, errors: payload.Errors };
     default:
       return state;
   }
