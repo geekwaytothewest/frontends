@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Icon, Intent, H5, Button } from '@blueprintjs/core';
+import { Icon, Intent, H5, Button, Tooltip } from '@blueprintjs/core';
 import UpdateAttendeeDialog from './UpdateAttendeeDialog';
 import { IconNames } from '@blueprintjs/icons';
 import { toggleUpdateAttendeeDialog } from './attendeesActions';
@@ -11,7 +11,10 @@ import {
   BadgeNumberText,
   EditAttendeeButton,
   ListContainer,
-  CardText
+  CardText,
+  LostBadgeButton,
+  TransferBadgeButton,
+  AttendeeButtons
 } from './attendeesStyles';
 import filterListItems from '../Utilities/filterListItems';
 import { PageSubheader, PageHeaderText } from '../layoutComponents';
@@ -35,12 +38,32 @@ const AttendeesList = ({ attendees, filterText = '', openUpdateAttendeeDialog })
               <CardText>{attendee.Pronouns}</CardText>
               <BadgeNumberText>{attendee.BadgeNumber}</BadgeNumberText>
             </AttendeeCardRight>
-            <EditAttendeeButton
-              icon={IconNames.EDIT}
-              onClick={() => openUpdateAttendeeDialog(attendee)}
-              minimal={true}
-              intent={Intent.PRIMARY}
-            />
+            <AttendeeButtons>
+              <Tooltip content='Replace lost badge' position='top'>
+                <LostBadgeButton
+                  icon={IconNames.UNLINK}
+                  onClick={() => alert('Not implemented yet')}
+                  minimal={true}
+                  intent={Intent.DANGER}
+                />
+              </Tooltip>
+              <Tooltip content='Transfer badge' position='top'>
+                <TransferBadgeButton
+                  icon={IconNames.EXCHANGE}
+                  onClick ={() => alert('Not implemented yet')}
+                  minimal={true}
+                  intent={Intent.DANGER}
+                />
+              </Tooltip>
+              <Tooltip content='Edit attendee details' position='top'>
+                <EditAttendeeButton
+                  icon={IconNames.EDIT}
+                  onClick={() => openUpdateAttendeeDialog(attendee)}
+                  minimal={true}
+                  intent={Intent.PRIMARY}
+                />
+              </Tooltip>
+            </AttendeeButtons>
           </AttendeeCard>
         ))}
         <UpdateAttendeeDialog description='Update the chosen attendee' />
