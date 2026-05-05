@@ -14,7 +14,6 @@ const ReplacementBadgeDialog = ({ saving, processReplacement, isOpen, toggleDial
 
   return (
     <SaveDialog
-      helperText='Create a replacement badge for an attendee. This will invalidate the old badge number and update a blank badge with the same name and pronouns.'
       headerText='Replace Badge'
       saving={saving}
       disabled={saving}
@@ -24,7 +23,12 @@ const ReplacementBadgeDialog = ({ saving, processReplacement, isOpen, toggleDial
       close={toggleDialog}
       onClosed={setFields}
     >
+      Step 1: Charge the attendee in the Square payment device for a replacement badge.<br/>
+      Step 2: Get a blank badge from the badge station and enter the badge number in the box below.<br/><br/>
       <LabeledInput label='New Badge #' value={newBadgeNumber} onChange={setNewBadgeNumber} autoFocus={true} />
+      Step 3: Use the label printing software to print two stickers with the attendee's name.<br/>
+      Step 4: Put one sticker on each side of the badge.<br/>
+      Step 5: Remove the geeklet and throw it away.<br/>
     </SaveDialog>
   );
 };
