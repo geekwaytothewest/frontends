@@ -18,6 +18,7 @@ const SaveDialog = ({
   children,
   helperText = '',
   headerText = '',
+  buttonText = 'Save',
   onClosed = noop,
   onOpening = noop,
   lazy = true,
@@ -49,7 +50,7 @@ const SaveDialog = ({
             {sync && (
               <>
                 <Button
-                  text={saving ? 'Saving...' : 'Sync With TTE'}
+                  text={saving ? 'Saving...' : buttonText}
                   type='button'
                   disabled={saving}
                   rightIcon={IconNames.CHANGES}
@@ -59,7 +60,7 @@ const SaveDialog = ({
               </>
             )}
             <Button
-              text={saving ? 'Saving...' : 'Save'}
+              text={saving ? 'Saving...' : buttonText}
               type='submit'
               disabled={saving}
               rightIcon={IconNames.SAVED}

@@ -19,6 +19,7 @@ const SyncTabletopEventsDialog = ({ saving, isOpen, tteBadgeNumber, tteBadgeId, 
     <SaveDialog
       helperText='Warning: This operation can take a long time when you are uploading a large number of rows. Please be patient.'
       headerText='Sync With Tabletop.Events'
+      buttonText='Sync With TTE'
       saving={saving}
       disabled={saving}
       save={async () => {

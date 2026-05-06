@@ -23,7 +23,8 @@ export default {
     badgeReplacementDialogOpen: false,
     savingAttendee: false,
     tteBadgeNumber: undefined,
-    tteBadgeId: undefined
+    tteBadgeId: undefined,
+    badgeHelpDialogOpen: false
   },
   games: {
     loading: false,

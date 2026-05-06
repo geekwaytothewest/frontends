@@ -65,6 +65,8 @@ const reducer = (state = initialState.attendees, action) => {
       return { ...state, savingAttendee: false, badgeTransferDialogOpen: false };
     case actionTypes.processBadgeTransferFailure:
       return { ...state, savingAttendee: false, errors: payload.Errors };
+    case actionTypes.toggleBadgeHelpDialog:
+      return { ...state,  badgeHelpDialogOpen: !state.badgeHelpDialogOpen };
     default:
       return state;
   }

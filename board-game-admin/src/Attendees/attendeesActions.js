@@ -30,7 +30,8 @@ export const actionTypes = {
   toggleBadgeTransferDialog: 'TOGGLE_BADGE_TRANSFER_DIALOG',
   processBadgeTransferRequest: 'PROCESS_BADGE_TRANSFER_REQUEST',
   processBadgeTransferSuccess: 'PROCESS_BADGE_TRANSFER_SUCCESS',
-  processBadgeTransferFailure: 'PROCESS_BADGE_TRANSFER_FAILURE'
+  processBadgeTransferFailure: 'PROCESS_BADGE_TRANSFER_FAILURE',
+  toggleBadgeHelpDialog: 'TOGGLE_BADGE_HELP_DIALOG'
 };
 
 export const createGetAttendeesAction = () => ({
@@ -50,6 +51,7 @@ export const toggleUpdateAttendeeDialog = attendee => ({
 export const toggleUploadAttendeesDialog = () => ({ type: actionTypes.toggleUploadAttendeesDialog });
 export const toggleBadgeReplacementDialog = attendee => ({ type: actionTypes.toggleBadgeReplacementDialog, attendee });
 export const toggleBadgeTransferDialog = attendee => ({ type: actionTypes.toggleBadgeTransferDialog, attendee });
+export const toggleBadgeHelpDialog = () => ({ type: actionTypes.toggleBadgeHelpDialog });
 
 export const createAddAttendeeAction = (name, badgeNumber, pronouns) => {
   return {
