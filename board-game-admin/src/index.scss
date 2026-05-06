@@ -1,11 +1,11 @@
-@import "../node_modules/@blueprintjs/core/lib/scss/variables";
+@use "../node_modules/@blueprintjs/core/lib/scss/variables";
 
 html {
   height: 100%;
 
   body {
     height: 100%;
-    padding-top: $pt-navbar-height;
+    padding-top: variables.$pt-navbar-height;
 
     #index {
       display: flex;

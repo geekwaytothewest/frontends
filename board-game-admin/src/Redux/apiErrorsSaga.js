@@ -1,4 +1,4 @@
-import { put, takeEvery, all } from 'redux-saga/effects';
+import { put, takeEvery, all, take } from 'redux-saga/effects';
 import { actionTypes as attendeeActionTypes } from '../Attendees/attendeesActions';
 import { actionTypes as collectionActionTypes } from '../Collections/collectionsActions';
 import { actionTypes as toastActionTypes } from '../Toasts/toastActions';
@@ -35,6 +35,8 @@ export default function* apiErrorsSaga() {
   yield takeEvery(actionTypes.getAttendeesFailure, onApiRequestFailure);
   yield takeEvery(actionTypes.updateAttendeeFailure, onApiRequestFailure);
   yield takeEvery(actionTypes.uploadAttendeesSuccess, onUploadSuccess);
+  yield takeEvery(actionTypes.processBadgeReplacementFailure, onApiRequestFailure);
+  yield takeEvery(actionTypes.processBadgeTransferFailure, onApiRequestFailure);
   yield takeEvery(actionTypes.getCollectionsFailure, onApiRequestFailure);
   yield takeEvery(actionTypes.addCopyFailure, onApiRequestFailure);
   yield takeEvery(actionTypes.uploadCopiesSuccess, onUploadSuccess);

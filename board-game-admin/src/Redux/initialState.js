@@ -20,9 +20,11 @@ export default {
     uploadAttendeesDialogOpen: false,
     updateAttendeeDialogOpen: false,
     updateSyncTabletopEventsDialogOpen: false,
+    badgeReplacementDialogOpen: false,
     savingAttendee: false,
     tteBadgeNumber: undefined,
-    tteBadgeId: undefined
+    tteBadgeId: undefined,
+    badgeHelpDialogOpen: false
   },
   games: {
     loading: false,

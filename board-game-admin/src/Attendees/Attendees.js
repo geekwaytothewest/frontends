@@ -12,13 +12,14 @@ import {
   PageHeaderButtonSection,
   PageHeaderSearch
 } from '../layoutComponents';
-import { createGetAttendeesAction, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog } from './attendeesActions';
+import { createGetAttendeesAction, toggleBadgeHelpDialog, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog } from './attendeesActions';
 import { NonIdealState, Spinner, Intent } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import AttendeesUploadDialog from './AttendeesUploadDialog';
 import SyncTabletopEventsDialog from './SyncTabletopEventsDialog';
+import BadgeHelpDialog from './BadgeHelpDialog';
 
-const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog }) => {
+const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDialog, toggleUploadAttendeesDialog, toggleSyncTabletopEventsDialog, toggleBadgeHelpDialog }) => {
   const [filterText, setFilterText] = useState('');
   const onFilterTextChange = text => setFilterText(text);
 
@@ -54,6 +55,14 @@ const Attendees = ({ attendees, loading, requestAttendees, toggleAddAttendeeDial
             onChange={event => onFilterTextChange(event.target.value)}
             type='search'
           />
+          <span style={{ width: '20px' }}></span>
+          <PageHeaderButton
+            text='Unable to find an attendee badge?'
+            rightIcon={IconNames.HELP}
+            intent={Intent.PRIMARY}
+            onClick={toggleBadgeHelpDialog}
+          />
+          <BadgeHelpDialog />
         </PageHeaderSection>
         <PageHeaderTitle>Attendees</PageHeaderTitle>
         <PageHeaderButtonSection>
@@ -85,7 +94,8 @@ const mapDispatch = dispatch => ({
   requestAttendees: () => dispatch(createGetAttendeesAction()),
   toggleAddAttendeeDialog: () => dispatch(toggleAddAttendeeDialog()),
   toggleUploadAttendeesDialog: () => dispatch(toggleUploadAttendeesDialog()),
-  toggleSyncTabletopEventsDialog: () => dispatch(toggleSyncTabletopEventsDialog())
+  toggleSyncTabletopEventsDialog: () => dispatch(toggleSyncTabletopEventsDialog()),
+  toggleBadgeHelpDialog: () => dispatch(toggleBadgeHelpDialog())
 });
 
 export default connect(

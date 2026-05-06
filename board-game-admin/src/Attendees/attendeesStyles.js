@@ -10,7 +10,7 @@ export const AttendeeCard = styled(Card)`
   padding: 0.5em;
   margin: 0 1em 1em 0;
   width: 16em;
-  height: 5em;
+  height: 7em;
 `;
 
 export const AttendeeCardRight = styled.div`
@@ -19,6 +19,13 @@ export const AttendeeCardRight = styled.div`
   margin-left: 1em;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+export const AttendeeButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 1em;
 `;
 
 export const CardBoldText = styled.h5`
@@ -51,5 +58,13 @@ export const ListContainer = styled.div`
 `;
 
 export const EditAttendeeButton = styled(Button)`
+  position: relative;
+`;
+
+export const LostBadgeButton = styled(Button)`
+  position: relative;
+`;
+
+export const TransferBadgeButton = styled(Button)`
   position: relative;
 `;
