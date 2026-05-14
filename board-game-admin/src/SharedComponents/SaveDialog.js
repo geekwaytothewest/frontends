@@ -50,7 +50,7 @@ const SaveDialog = ({
             {sync && (
               <>
                 <Button
-                  text={saving ? 'Saving...' : buttonText}
+                  text={saving ? 'Saving...' : 'Sync with TTE'}
                   type='button'
                   disabled={saving}
                   rightIcon={IconNames.CHANGES}
