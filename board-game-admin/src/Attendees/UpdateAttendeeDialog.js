@@ -43,8 +43,8 @@ const mapState = state => ({
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  saveAttendee: (name, oldBadgeNum, badgeNum, pronouns) => dispatch(createUpdateAttendeeAction(name, oldBadgeNum, badgeNum, pronouns)),
-  syncAttendee: (userName, password, apiKey) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey)),
+  saveAttendee: (name, oldBadgeNum, badgeNum, pronouns) => dispatch(createUpdateAttendeeAction(name, oldBadgeNum, badgeNum, pronouns)).then(() => dispatch(createGetAttendeesAction())),
+  syncAttendee: (userName, password, apiKey) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey)).then(() => dispatch(createGetAttendeesAction())),
   toggleDialog: () => dispatch(toggleUpdateAttendeeDialog()),
   toggleSyncTabletopEventsDialog: (tteBadgeNumber, tteBadgeId) => dispatch(toggleSyncTabletopEventsDialog(tteBadgeNumber, tteBadgeId))
 });
