@@ -106,8 +106,8 @@ const mapState = state => ({
   csvText: state.collections.csv
 });
 const mapDispatch = dispatch => ({
-  toggleAddCopyDialog: () => dispatch(toggleAddCopyDialog()),
-  toggleUploadCopiesDialog: () => dispatch(toggleUploadCopiesDialog()),
+  toggleAddCopyDialog: () => dispatch(toggleAddCopyDialog()).then(() => dispatch(createGetCollectionsAction())),
+  toggleUploadCopiesDialog: () => dispatch(toggleUploadCopiesDialog()).then(() => dispatch(createGetCollectionsAction())),
   getExportCollection: (selectedCollection) => dispatch(getExportCollection(selectedCollection.ID))
 });
 
