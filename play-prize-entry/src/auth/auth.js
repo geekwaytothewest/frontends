@@ -21,8 +21,6 @@ export default class Auth {
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.scheduleRenewal = this.scheduleRenewal.bind(this);
     this.renewToken = this.renewToken.bind(this);
-
-    this.scheduleRenewal();
   }
 
   login() {
@@ -70,8 +68,8 @@ export default class Auth {
   isAuthenticated() {
     // Check whether the current time is past the
     // access token's expiry time
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    return !!localStorage.getItem('access_token') && new Date().getTime() < expiresAt;
   }
 
   renewToken() {
