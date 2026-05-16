@@ -20,7 +20,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => ({
   toggle: () => dispatch(toggleUploadAttendeesDialog()),
-  uploadFiles: files => dispatch(createUploadAttendeesAction(files))
+  uploadFiles: files => dispatch(createUploadAttendeesAction(files)).then(() => dispatch(createGetAttendeesAction()))
 });
 
 export default connect(

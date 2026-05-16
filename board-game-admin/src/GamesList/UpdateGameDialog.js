@@ -36,7 +36,7 @@ const mapState = state => ({
   saving: state.games.savingGame
 });
 const mapDispatch = dispatch => ({
-  saveGame: (selectedGame, name) => dispatch(createUpdateGameAction(selectedGame.id, name)),
+  saveGame: (selectedGame, name) => dispatch(createUpdateGameAction(selectedGame.id, name)).then(() => dispatch(createGetGamesAction())),
   toggleDialog: () => dispatch(toggleUpdateGameDialog())
 });
 

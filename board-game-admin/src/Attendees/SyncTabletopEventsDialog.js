@@ -45,7 +45,7 @@ const mapState = state => ({
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  syncTabletopEvents: (userName, password, apiKey, tteBadgeNumber, tteBadgeId) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey, tteBadgeNumber, tteBadgeId)),
+  syncTabletopEvents: (userName, password, apiKey, tteBadgeNumber, tteBadgeId) => dispatch(createSyncTabletopEventsAction(userName, password, apiKey, tteBadgeNumber, tteBadgeId)).then(() => dispatch(createGetAttendeesAction())),
   toggleDialog: () => dispatch(toggleSyncTabletopEventsDialog()),
   createGetAttendeesAction: () => dispatch(createGetAttendeesAction())
 });

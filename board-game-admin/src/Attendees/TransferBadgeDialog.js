@@ -43,7 +43,7 @@ const mapState = state => ({
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  processTransfer: (newBadgeFirstName, newBadgeLastName, newBadgePronouns, oldBadgeNumber) => dispatch(createBadgeTransferAction(newBadgeFirstName, newBadgeLastName, newBadgePronouns, oldBadgeNumber)),
+  processTransfer: (newBadgeFirstName, newBadgeLastName, newBadgePronouns, oldBadgeNumber) => dispatch(createBadgeTransferAction(newBadgeFirstName, newBadgeLastName, newBadgePronouns, oldBadgeNumber)).then(() => dispatch(createGetAttendeesAction())),
   toggleDialog: () => dispatch(toggleBadgeTransferDialog()),
 });
 
