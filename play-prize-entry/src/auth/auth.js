@@ -29,7 +29,7 @@ export default class Auth {
   }
 
   handleAuthentication(successCallback) {
-    this.auth0.handleRedirectCallback((err, authResult) => {
+    this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
         history.replace(window.location.pathname);
