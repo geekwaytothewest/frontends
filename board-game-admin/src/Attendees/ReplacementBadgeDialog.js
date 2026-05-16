@@ -39,7 +39,7 @@ const mapState = state => ({
   saving: state.attendees.savingAttendee
 });
 const mapDispatch = dispatch => ({
-  processReplacement: (oldBadgeNum, newBadgeNum) => dispatch(createReplacementBadgeAction(oldBadgeNum, newBadgeNum)),
+  processReplacement: (oldBadgeNum, newBadgeNum) => dispatch(createReplacementBadgeAction(oldBadgeNum, newBadgeNum)).then(() => dispatch(createGetAttendeesAction())),
   toggleDialog: () => dispatch(toggleBadgeReplacementDialog()),
 });
 
