@@ -1,9 +1,9 @@
 name: Deploy Frontends to ECS
 
-on: 
+on:
   workflow_dispatch:
     inputs:
-      environment: 
+      environment:
         description: 'Choose a deployment environment'
         required: true
         default: 'nonprod'
@@ -37,7 +37,7 @@ jobs:
       logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
     secrets: inherit
   deploy-play-and-win:
-    uses: ./.github/workflows/build-deploy.yml
+    uses: ./.github/workflows/build-deploy-spa.yml
     with:
       environment: ${{ inputs.environment }}
       service: play-and-win
