@@ -1,20 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Auth from './auth';
-
-const auth = new Auth();
+import { authInstance as auth } from './auth';
 
 const EnsureAuthenticated = ({ children }) => {
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = React.useState(auth.isAuthenticated());
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
-    if (/access_token|id_token|error/.test(location.hash)) {
-      auth.handleAuthentication(() => setIsAuthenticated(new Date()));
-    }
-    else if (!isAuthenticated) {
-      auth.login();
-    }
+    const checkAuth = async () => {
+      if (new URLSearchParams(location.search).has('code')) {
+        await auth.handleAuthentication(() => setIsAuthenticated(true));
+      } else {
+        const authenticated = await auth.isAuthenticated();
+        if (authenticated) {
+          setIsAuthenticated(true);
+          auth.scheduleRenewal();
+        } else {
+          auth.login();
+        }
+      }
+    };
+    checkAuth();
   }, [location]);
 
   return (
