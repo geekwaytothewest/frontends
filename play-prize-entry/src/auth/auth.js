@@ -10,8 +10,9 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: AUTH_CONFIG.apiIdentifier,
-    responseType: 'token id_token',
-    scope: 'openid offline_access'
+    responseType: 'code',
+    scope: 'openid offline_access',
+    useRefreshTokens: true,
   });
 
   constructor() {
@@ -28,7 +29,7 @@ export default class Auth {
   }
 
   handleAuthentication(successCallback) {
-    this.auth0.parseHash((err, authResult) => {
+    this.auth0.handleRedirectCallback((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
         history.replace(window.location.pathname);
