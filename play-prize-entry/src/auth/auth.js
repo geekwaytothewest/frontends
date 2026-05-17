@@ -3,7 +3,6 @@ import history from '../history';
 import { AUTH_CONFIG } from './auth0-variables';
 
 class Auth {
-  tokenRenewalTimeout;
   auth0Client = null;
   clientReady;
 
@@ -12,8 +11,6 @@ class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.scheduleRenewal = this.scheduleRenewal.bind(this);
-    this.renewToken = this.renewToken.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
 
     this.clientReady = createAuth0Client({
@@ -41,7 +38,6 @@ class Auth {
     await this.clientReady;
     try {
       await this.auth0Client.handleRedirectCallback();
-      await this.scheduleRenewal();
       history.replace(window.location.pathname);
       successCallback(true);
     } catch (err) {
@@ -56,7 +52,6 @@ class Auth {
   }
 
   logout() {
-    clearTimeout(this.tokenRenewalTimeout);
     if (this.auth0Client) {
       this.auth0Client.logout({
         logoutParams: {
@@ -69,39 +64,6 @@ class Auth {
   async getAccessToken() {
     await this.clientReady;
     return this.auth0Client.getTokenSilently();
-  }
-
-  async renewToken() {
-    await this.clientReady;
-    try {
-      await this.auth0Client.getTokenSilently();
-      await this.scheduleRenewal();
-    } catch (err) {
-      alert(
-        `Could not get a new token (${err.error}: ${err.message}).
-          If the issue continues, let your administrator know.`
-      );
-      this.logout();
-    }
-  }
-
-  async scheduleRenewal() {
-    await this.clientReady;
-    clearTimeout(this.tokenRenewalTimeout);
-
-    const claims = await this.auth0Client.getIdTokenClaims();
-    if (!claims) return;
-
-    const expiresAt = claims.exp * 1000;
-    const delay = expiresAt - Date.now() - (5 * 60 * 60 * 1000);
-
-    if (delay > 0) {
-      this.tokenRenewalTimeout = setTimeout(() => {
-        this.renewToken();
-      }, delay);
-    } else {
-      this.renewToken();
-    }
   }
 }
 

@@ -14,7 +14,6 @@ const EnsureAuthenticated = ({ children }) => {
         const authenticated = await auth.isAuthenticated();
         if (authenticated) {
           setIsAuthenticated(true);
-          auth.scheduleRenewal();
         } else {
           auth.login();
         }
