@@ -50,9 +50,15 @@ class Auth {
 
   async renewSession() {
     await this.clientReady;
-    this._isAuthenticated = await this.auth0Client.isAuthenticated();
-    if (this._isAuthenticated) {
-      this._profile = await this.auth0Client.getUser();
+    try {
+      await this.auth0Client.getTokenSilently();
+      this._isAuthenticated = await this.auth0Client.isAuthenticated();
+      if (this._isAuthenticated) {
+        this._profile = await this.auth0Client.getUser();
+      }
+    } catch {
+      this._isAuthenticated = false;
+      this._profile = null;
     }
   }
 

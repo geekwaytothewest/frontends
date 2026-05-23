@@ -53,7 +53,7 @@ class App extends Component {
                 <PrivateRoute auth={auth} path='/games' component={GamesList} />
                 <PrivateRoute auth={auth} path='/collections' component={Collections} />
                 <PrivateRoute auth={auth} path='/attendees' component={Attendees} />
-                <PrivateRoute auth={auth} path='/' component={() => <Redirect to='/collections' />} />
+                <PrivateRoute auth={auth} exact path='/' component={() => <Redirect to='/collections' />} />
               </Provider>
             </>
           )}
