@@ -1,10 +1,8 @@
 import React from 'react';
-import Auth from './auth';
+import { authInstance as auth } from './auth';
 import { Button, Intent } from '@blueprintjs/core';
 import { css } from '@emotion/css';
 import { connect } from 'react-redux';
-
-const auth = new Auth();
 
 const styles = css`
   position: absolute;
@@ -14,7 +12,6 @@ const styles = css`
 
 const onClick = () => {
   auth.logout();
-  auth.login();
 };
 
 export default () => (
