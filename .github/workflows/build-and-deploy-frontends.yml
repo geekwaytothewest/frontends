@@ -33,7 +33,7 @@ jobs:
       service: admin
       folder: board-game-admin
       always-override-limit: false
-      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin/callback' || 'https://nonprod.ruleslawyer.geekway.com/admin/callback' }}
       logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
     secrets: inherit
   deploy-play-and-win:
