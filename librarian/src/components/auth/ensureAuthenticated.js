@@ -1,31 +1,32 @@
-import React, { Component } from 'react';
-import Auth from './auth';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { authInstance as auth } from './auth';
 
-const auth = new Auth();
+const EnsureAuthenticated = ({ children }) => {
+  const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-class EnsureAuthenticated extends Component {
-  handleAuthentication = ({location}) => {
-    if (/access_token|id_token|error/.test(location.hash)) {
-      auth.handleAuthentication();
-    }
-    else if (!auth.isAuthenticated()) {
-      auth.login();
-    }
-  };
-
-  componentWillMount() {
-    this.handleAuthentication(this.props);
-  }
-  
-  render() {
-    return (
-      <React.Fragment>
-        {
-          auth.isAuthenticated() && this.props.children
+  useEffect(() => {
+    const checkAuth = async () => {
+      if (new URLSearchParams(location.search).has('code')) {
+        await auth.handleAuthentication(() => setIsAuthenticated(true));
+      } else {
+        const authenticated = await auth.isAuthenticated();
+        if (authenticated) {
+          setIsAuthenticated(true);
+        } else {
+          auth.login();
         }
-      </React.Fragment>
-    );
-  }
-}
+      }
+    };
+    checkAuth();
+  }, [location]);
+
+  return (
+    <React.Fragment>
+      {isAuthenticated && children}
+    </React.Fragment>
+  );
+};
 
 export default EnsureAuthenticated;

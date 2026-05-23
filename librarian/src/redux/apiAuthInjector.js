@@ -1,16 +1,15 @@
 import { RSAA } from 'redux-api-middleware';
+import { authInstance as auth } from '../components/auth/auth';
 
-export default () => next => action => {
+export default () => next => async action => {
   const callApi = RSAA ? action[RSAA] : null;
 
-  // Check if this action is a redux-api-middleware action.
   if (callApi) {
-    // Inject the Authorization header from localStorage.
+    const token = await auth.getAccessToken();
     callApi.headers = Object.assign({}, callApi.headers, {
-      Authorization: `Bearer ${localStorage.getItem('access_token')}` || ''
+      Authorization: `Bearer ${token}`
     });
   }
 
-  // Pass the FSA to the next action.
   return next(action);
 };

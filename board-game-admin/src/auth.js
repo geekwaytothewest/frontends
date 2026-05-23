@@ -1,91 +1,82 @@
-import auth0 from 'auth0-js';
+import { createAuth0Client } from '@auth0/auth0-spa-js';
 import env from './App/environmentVariables';
 
 class Auth {
   constructor() {
-    this.auth0 = new auth0.WebAuth({
-      domain: env.authDomain,
-      clientID: env.authClientId,
-      redirectUri: env.authCallbackUrl,
-      responseType: 'token id_token',
-      audience: env.apiIdentifier,
-      scope:
-        'openid profile create:game-collection read:game-collections create:copy delete:copy create:attendee update:attendee update:copy'
-    });
+    this.auth0Client = null;
+    this._isAuthenticated = false;
+    this._profile = null;
 
-    this.getProfile = this.getProfile.bind(this);
-    this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
     this.signIn = this.signIn.bind(this);
     this.signOut = this.signOut.bind(this);
-  }
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.getProfile = this.getProfile.bind(this);
+    this.getAccessToken = this.getAccessToken.bind(this);
+    this.renewSession = this.renewSession.bind(this);
 
-  getProfile() {
-    return this.profile;
-  }
-
-  getIdToken() {
-    return this.idToken;
-  }
-
-  getAccessToken() {
-    return this.accessToken;
+    this.clientReady = createAuth0Client({
+      domain: env.authDomain,
+      clientId: env.authClientId,
+      authorizationParams: {
+        redirect_uri: env.authCallbackUrl,
+        audience: env.apiIdentifier,
+        scope: 'openid offline_access profile create:game-collection read:game-collections create:copy delete:copy create:attendee update:attendee update:copy',
+      },
+      useRefreshTokens: true,
+      cacheLocation: 'localstorage',
+    }).then(client => {
+      this.auth0Client = client;
+      return client;
+    });
   }
 
   isAuthenticated() {
-    return new Date().getTime() < this.expiresAt;
+    return this._isAuthenticated;
+  }
+
+  getProfile() {
+    return this._profile;
+  }
+
+  async getAccessToken() {
+    await this.clientReady;
+    return this.auth0Client.getTokenSilently();
   }
 
   signIn() {
-    this.auth0.authorize();
+    this.clientReady.then(() => this.auth0Client.loginWithRedirect());
   }
 
-  renewSession() {
-    return new Promise((resolve, reject) => {
-      this.auth0.checkSession({}, (err, authResult) => {
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          this.setSession(authResult);
-          resolve(authResult);
-        } else if (err) {
-          // eslint-disable-next-line no-console
-          console.log(err);
-          return reject(err);
-        }
-      });
-    });
+  async renewSession() {
+    await this.clientReady;
+    this._isAuthenticated = await this.auth0Client.isAuthenticated();
+    if (this._isAuthenticated) {
+      this._profile = await this.auth0Client.getUser();
+    }
   }
 
-  handleAuthentication() {
-    return new Promise((resolve, reject) => {
-      this.auth0.parseHash((err, authResult) => {
-        if (err) return reject(err);
-        if (!authResult || !authResult.idToken) {
-          return reject(err);
-        }
-        this.setSession(authResult);
-        resolve();
-      });
-    });
-  }
-
-  setSession(authResult) {
-    this.idToken = authResult.idToken;
-    this.profile = authResult.idTokenPayload;
-    this.accessToken = authResult.accessToken;
-    // set the time that the id token will expire at
-    this.expiresAt = authResult.idTokenPayload.exp * 1000;
+  async handleAuthentication() {
+    await this.clientReady;
+    await this.auth0Client.handleRedirectCallback();
+    this._isAuthenticated = await this.auth0Client.isAuthenticated();
+    if (this._isAuthenticated) {
+      this._profile = await this.auth0Client.getUser();
+    }
   }
 
   signOut() {
-    // clear id token, profile, and expiration
-    this.idToken = null;
-    this.accessToken = null;
-    this.profile = null;
-    this.expiresAt = null;
-    this.auth0.logout({ returnTo: env.logoutReturnUrl });
+    this._isAuthenticated = false;
+    this._profile = null;
+    if (this.auth0Client) {
+      this.auth0Client.logout({
+        logoutParams: {
+          returnTo: env.logoutReturnUrl,
+        },
+      });
+    }
   }
 }
 
 const auth0Client = new Auth();
-
 export default auth0Client;
