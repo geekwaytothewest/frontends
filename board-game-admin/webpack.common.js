@@ -1,3 +1,4 @@
+const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const webpack = require('webpack');
@@ -14,7 +15,11 @@ module.exports = {
     historyApiFallback: true
   },
   devtool: 'inline-source-map',
-  output: { publicPath: '/admin/' },
+  output: {
+    filename: 'bundle.[contenthash].js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/admin/'
+  },
   module: {
     rules: [
       {
