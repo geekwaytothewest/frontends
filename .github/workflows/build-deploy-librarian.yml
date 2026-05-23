@@ -1,4 +1,4 @@
-name: Build and Deploy Service SPA
+name: Build and Deploy Service Librarian SPA
 
 on:
   workflow_call:
