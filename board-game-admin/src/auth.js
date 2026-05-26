@@ -41,7 +41,16 @@ class Auth {
 
   async getAccessToken() {
     await this.clientReady;
-    return this.auth0Client.getTokenSilently();
+    try {
+      return await this.auth0Client.getTokenSilently();
+    } catch (err) {
+      if (['login_required', 'invalid_grant', 'missing_refresh_token', 'consent_required'].includes(err.error)) {
+        this._isAuthenticated = false;
+        this._profile = null;
+        this.signIn();
+      }
+      throw err;
+    }
   }
 
   signIn() {
