@@ -86,6 +86,11 @@ Deployed to AWS ECS via the **Deploy Frontends to ECS** GitHub Action (manual `w
 
 Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the backend repo: [ruleslawyer-backend/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-backend/blob/main/DEPLOYMENT.md).
 
+It is not currently possible to have the frontends access multiple running conventions from a single deployment. Each deployment of these frontends is specific to an individual convention. The base URL that points to `ruleslawyer-backend` uses path variables to assign an Organization Id and a Convention Id.
+
+For example:
+http://localhost:8080/api/legacy/org/1/con/1
+
 ## License
 
 Licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE).
