@@ -74,6 +74,18 @@ npm run build:prod
 
 Builds output to `dist/`. The production Docker image (`node:20-slim` build stage) compiles the app, then copies `dist/` into an `nginx:stable-alpine` image that serves it on port 80. Auth0 and API configuration are passed at build time via Docker `ARG`s (`API_URL`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`).
 
+## Deployment
+
+Deployed to AWS ECS via the **Deploy Frontends to ECS** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. Each builds a Docker image, pushes it to its ECR repo, and updates its ECS service on the `geekway-{env}` cluster:
+
+| App                | ECR repo / ECS service   |
+| ------------------ | ------------------------ |
+| `board-game-admin` | `frontends-admin`        |
+| `librarian`        | `frontends-librarian`    |
+| `play-prize-entry` | `frontends-play-and-win` |
+
+Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the backend repo: [ruleslawyer-backend/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-backend/blob/main/DEPLOYMENT.md).
+
 ## License
 
 Licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE).
