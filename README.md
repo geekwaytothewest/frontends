@@ -99,7 +99,6 @@ http://localhost:8080/api/legacy/org/1/con/1
   - [Libby Swanger](mailto:libby.swanger@gmail.com)
 - Website - [https://geekway.com](https://geekway.com/)
 
-
 ## License
 
 Licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE).
