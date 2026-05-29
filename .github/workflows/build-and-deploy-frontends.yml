@@ -1,4 +1,4 @@
-name: Deploy Frontends to ECS
+name: Deploy Frontends to S3/CloudFront
 
 on:
   workflow_dispatch:
