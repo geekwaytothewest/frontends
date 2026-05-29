@@ -21,7 +21,7 @@ class Auth {
       authorizationParams: {
         redirect_uri: env.authCallbackUrl,
         audience: env.apiIdentifier,
-        scope: 'openid offline_access profile create:game-collection read:game-collections create:copy delete:copy create:attendee update:attendee update:copy',
+        scope: 'openid offline_access profile',
       },
       useRefreshTokens: true,
       cacheLocation: 'localstorage',

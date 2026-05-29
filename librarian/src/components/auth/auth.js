@@ -18,7 +18,7 @@ class Auth {
       authorizationParams: {
         redirect_uri: AUTH_CONFIG.callbackUrl,
         audience: AUTH_CONFIG.apiIdentifier,
-        scope: 'openid offline_access read:recent-checkouts read:longest-checkouts create:checkout update:checkout read:copy-search read:copy',
+        scope: 'openid offline_access profile',
       },
       useRefreshTokens: true,
       cacheLocation: 'localstorage',
