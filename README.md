@@ -91,6 +91,15 @@ It is not currently possible to have the frontends access multiple running conve
 For example:
 http://localhost:8080/api/legacy/org/1/con/1
 
+## Stay in touch
+
+- Contributors
+  - [Joe Henderson](mailto:jjh456@gmail.com)
+  - [Mattie Schraeder](mailto:mattie@geekway.com)
+  - [Libby Swanger](mailto:libby.swanger@gmail.com)
+- Website - [https://geekway.com](https://geekway.com/)
+
+
 ## License
 
 Licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE).
