@@ -25,8 +25,8 @@ jobs:
       service: librarian
       folder: librarian
       always-override-limit: false
-      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.ruleslawyer.geekway.com/librarian' }}
-      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.ruleslawyer.geekway.com/librarian' }}
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.library.geekway.com/librarian' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/librarian' || 'https://nonprod.library.geekway.com/librarian' }}
     secrets: inherit
   deploy-admin:
     uses: ./.github/workflows/build-deploy-board-game-admin.yml
@@ -35,8 +35,8 @@ jobs:
       service: admin
       folder: board-game-admin
       always-override-limit: false
-      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin/callback' || 'https://nonprod.ruleslawyer.geekway.com/admin/callback' }}
-      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.ruleslawyer.geekway.com/admin' }}
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin/callback' || 'https://nonprod.library.geekway.com/admin/callback' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/admin' || 'https://nonprod.library.geekway.com/admin' }}
     secrets: inherit
   deploy-play-and-win:
     uses: ./.github/workflows/build-deploy-play-prize-entry.yml
@@ -45,6 +45,6 @@ jobs:
       service: play-and-win
       folder: play-prize-entry
       always-override-limit: false
-      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.ruleslawyer.geekway.com/playandwin' }}
-      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.ruleslawyer.geekway.com/playandwin' }}
+      auth-callback: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.library.geekway.com/playandwin' }}
+      logout-return-url: ${{ inputs.environment == 'prod' && 'https://library.geekway.com/playandwin' || 'https://nonprod.library.geekway.com/playandwin' }}
     secrets: inherit

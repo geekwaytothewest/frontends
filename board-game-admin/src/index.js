@@ -14,4 +14,25 @@ import { Icons, getIconPaths } from '@blueprintjs/icons';
 // custom loader statically bundles all paths and avoids the chunk loading issue.
 Icons.setLoaderOptions({ loader: (name, size) => Promise.resolve(getIconPaths(name, size)) });
 
-ReactDOM.render(<App />, document.getElementById('index'));
+// Local-dev convenience: deployed environments serve the app under a convention
+// prefix (/org/{id}/con/{id}/admin/...) injected at the edge, which is what
+// App.js's basename and deriveApiUrl key off of. The dev server serves a bare
+// /admin/, so without a prefix both fall back to org=1/con=1 and the URL never
+// reflects the convention. Redirect bare /admin entries to the default
+// convention so local dev mirrors the prefixed routing. The Auth0 callback is
+// excluded — rewriting /admin/callback would drop the code/state and break the
+// token exchange. Scoped to localhost so deployed bare-/admin hits are left
+// alone (defaulting them to a convention would be wrong).
+const DEFAULT_ORG = 1;
+const DEFAULT_CON = 1;
+const { pathname, search, hash, hostname } = window.location;
+const isLocalhost = ['localhost', '127.0.0.1'].includes(hostname);
+const hasConventionPrefix = /\/org\/(\d+)\/con\/(\d+)(?:\/|$)/.test(pathname);
+const isCallback = pathname.startsWith('/admin/callback');
+
+if (isLocalhost && !hasConventionPrefix && !isCallback && pathname.startsWith('/admin')) {
+  const rest = pathname.slice('/admin'.length); // '', '/', '/collections', ...
+  window.location.replace(`/org/${DEFAULT_ORG}/con/${DEFAULT_CON}/admin${rest}${search}${hash}`);
+} else {
+  ReactDOM.render(<App />, document.getElementById('index'));
+}

@@ -31,13 +31,23 @@ class Auth {
 
   async login() {
     await this.clientReady;
-    await this.auth0Client.loginWithRedirect();
+    // The callback URL is convention-independent, so stash the convention path
+    // (/org/{id}/con/{id}/playandwin/...) in appState and restore it after login.
+    const returnTo = window.location.pathname + window.location.search + window.location.hash;
+    await this.auth0Client.loginWithRedirect({ appState: { returnTo } });
   }
 
   async handleAuthentication(successCallback) {
     await this.clientReady;
     try {
-      await this.auth0Client.handleRedirectCallback();
+      const result = await this.auth0Client.handleRedirectCallback();
+      const returnTo = result && result.appState && result.appState.returnTo;
+      if (returnTo && new URL(returnTo, window.location.origin).pathname !== window.location.pathname) {
+        // Different convention prefix than the callback URL — full-page navigate
+        // so the router basename and API base recompute under it.
+        window.location.replace(returnTo);
+        return;
+      }
       history.replace(window.location.pathname);
       successCallback(true);
     } catch (err) {
@@ -55,7 +65,7 @@ class Auth {
     if (this.auth0Client) {
       this.auth0Client.logout({
         logoutParams: {
-          returnTo: window.location.origin,
+          returnTo: AUTH_CONFIG.logoutReturnUrl,
         },
       });
     }

@@ -21,7 +21,7 @@ class Auth {
       authorizationParams: {
         redirect_uri: env.authCallbackUrl,
         audience: env.apiIdentifier,
-        scope: 'openid offline_access profile',
+        scope: 'openid offline_access',
       },
       useRefreshTokens: true,
       cacheLocation: 'localstorage',
@@ -54,7 +54,15 @@ class Auth {
   }
 
   signIn() {
-    this.clientReady.then(() => this.auth0Client.loginWithRedirect());
+    // The callback URL is convention-independent, so stash the convention path
+    // (/org/{id}/con/{id}/admin/...) in appState and restore it after login.
+    // Strip the auth-plumbing routes first: login is usually triggered from
+    // /unauthenticated (the PrivateRoute redirect target), and returning there
+    // post-login would just re-render the "Please Log In" prompt. Falling back
+    // to the convention root lets the app route to its default page.
+    const cleanedPath = window.location.pathname.replace(/\/(unauthenticated|callback)\/?$/, '/');
+    const returnTo = cleanedPath + window.location.search + window.location.hash;
+    this.clientReady.then(() => this.auth0Client.loginWithRedirect({ appState: { returnTo } }));
   }
 
   async renewSession() {
@@ -73,11 +81,12 @@ class Auth {
 
   async handleAuthentication() {
     await this.clientReady;
-    await this.auth0Client.handleRedirectCallback();
+    const result = await this.auth0Client.handleRedirectCallback();
     this._isAuthenticated = await this.auth0Client.isAuthenticated();
     if (this._isAuthenticated) {
       this._profile = await this.auth0Client.getUser();
     }
+    return result && result.appState && result.appState.returnTo;
   }
 
   signOut() {

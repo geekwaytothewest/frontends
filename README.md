@@ -41,7 +41,7 @@ All three apps share a common set of Auth0/API variables; a couple are app-speci
 
 | Variable                | Apps                       | Description                                                      |
 | ----------------------- | -------------------------- | --------------------------------------------------------------- |
-| `API_URL`               | all                        | Base URL of the `ruleslawyer-backend` API                       |
+| `API_HOST`              | all                        | Origin of the `ruleslawyer-backend` API (scheme + host, no path). The `org/{id}/con/{id}` path is added at runtime from the page URL — see [Multiple conventions](#multiple-conventions) |
 | `AUTH_DOMAIN`           | all                        | Auth0 tenant domain                                             |
 | `AUTH_CLIENT_ID`        | all                        | Auth0 application (SPA) client ID                               |
 | `AUTH_CALLBACK`         | all                        | Auth0 redirect URL after login                                  |
@@ -72,7 +72,7 @@ npm run build:test
 npm run build:prod
 ```
 
-Builds output to `dist/`. Auth0 and API configuration are baked into the bundle at build time from `process.env` (`API_URL`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`) via webpack.
+Builds output to `dist/`. Auth0 and API configuration are baked into the bundle at build time from `process.env` (`API_HOST`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`) via webpack. Note that only the API **origin** (`API_HOST`) is baked — the convention-specific `org/{id}/con/{id}` path is resolved at runtime (see [Multiple conventions](#multiple-conventions)).
 
 In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment)). For local use there is also a Docker image (`node:20-slim` build stage compiles the app, then copies `dist/` into an `nginx:stable-alpine` image serving port 80) — this is what the backend's Docker Compose stack builds, passing the same config as build `ARG`s.
 
@@ -88,10 +88,28 @@ Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manu
 
 CloudFront serves the SPA prefixes from S3 and forwards `/api/*` and `/ruleslawyer/*` to the backend ALB. AWS access uses GitHub OIDC (the `geekway-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
 
-It is not currently possible to have the frontends access multiple running conventions from a single deployment. Each deployment of these frontends is specific to an individual convention. The base URL that points to `ruleslawyer-backend` uses path variables to assign an Organization Id and a Convention Id.
+## Multiple conventions
 
-For example:
-http://localhost:8080/api/legacy/org/1/con/1
+A single deployment serves **every** convention. The convention's Organization Id and Convention Id live in the page URL, and the app derives its backend base URL from them at runtime:
+
+```
+https://<host>/org/{orgId}/con/{conId}/admin        -> API: <API_HOST>/api/legacy/org/{orgId}/con/{conId}
+https://<host>/org/{orgId}/con/{conId}/librarian
+https://<host>/org/{orgId}/con/{conId}/playandwin
+```
+
+How it works:
+
+- Only the API **origin** is baked into the bundle (the `API_HOST` env var). The `org/{id}/con/{id}` segment is parsed from `window.location.pathname` at runtime in each app's webpack `DefinePlugin` shim (wherever the source references `API_URL`).
+- Each app's React Router `basename` is likewise computed from the URL (`/org/{id}/con/{id}/<app>`), so client-side routing works under any convention prefix. If no `org/con` is present in the path (e.g. local dev), it falls back to `org 1 / con 1` and the bare `/<app>` basename.
+- Static assets are still served from the single S3 prefix per app (`/admin`, `/librarian`, `/playandwin`) with an absolute `publicPath`, so **nothing is duplicated in S3** — adding a convention requires no rebuild or redeploy.
+
+For this to work, two things outside this repo must be configured:
+
+1. **CloudFront** must rewrite SPA navigations under a convention prefix to the app's single `index.html` — i.e. a request to `/org/{n}/con/{m}/<app>/*` returns `/<app>/index.html` (a CloudFront Function on the viewer-request event, matching `^/org/\d+/con/\d+/(admin|librarian|playandwin)`). Requests to the bare `/<app>/*` asset paths continue to serve the bundle directly from S3. See [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
+2. **Auth0** needs only a **single** allowed callback and logout URL **per app** — they are convention-independent (`AUTH_CALLBACK` / `LOGOUT_RETURN_URL`, e.g. `https://<host>/admin/callback` and `https://<host>/admin`), so they do **not** multiply with conventions. The convention the user was on is carried through the login round-trip via Auth0 `appState` and restored with a full-page redirect afterward, so they land back under the right `/org/{id}/con/{id}/<app>` prefix.
+
+The `API_HOST` secret is the API origin only — e.g. `https://nonprod.library.geekway.com` (or `http://localhost:8080` locally).
 
 ## Stay in touch
 

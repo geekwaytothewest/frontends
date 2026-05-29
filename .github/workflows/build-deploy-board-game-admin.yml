@@ -29,7 +29,9 @@ permissions:
 
 env:
   ROLE_TO_ASSUME: ${{ inputs.environment == 'nonprod' && secrets.NONPROD_ROLE_ARN || secrets.PROD_ROLE_ARN }}
-  API_URL: ${{ inputs.environment == 'nonprod' && secrets.API_URL_NONPROD || secrets.API_URL }}
+  # Only the API origin is baked into the bundle now; the org/{id}/con/{id} path
+  # segment is read from the page URL at runtime (one build serves all conventions).
+  API_HOST: ${{ inputs.environment == 'nonprod' && secrets.API_HOST_NONPROD || secrets.API_HOST }}
   # Static SPA hosting (replaces ECR/ECS). Bucket name is deterministic from the
   # CDK (geekway-<env>-spa); the distribution id is not, so it's a secret.
   SPA_BUCKET: geekway-${{ inputs.environment }}-spa
