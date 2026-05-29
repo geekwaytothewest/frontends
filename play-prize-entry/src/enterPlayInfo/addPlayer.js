@@ -12,7 +12,7 @@ const focusPlayerSearchInput = () => {
   document.getElementById('player-search').focus();
 };
 
-const AddPlayer = ({ query, loading, foundAttendees, playersCount, maxPlayers, addPlayer, updateQuery }) => {
+const AddPlayer = ({ query, loading, foundAttendees, tooBroad, playersCount, maxPlayers, addPlayer, updateQuery }) => {
   return (
     <div>
       <Popover2
@@ -39,7 +39,8 @@ const AddPlayer = ({ query, loading, foundAttendees, playersCount, maxPlayers, a
         content={
           <div className='player-search-popover-content'>
             <PlayerSearchInput />
-            {!foundAttendees.length && query && !loading ? <b>No people found. Search by name or badge number.</b> : ''}
+            {tooBroad && !loading ? <b>Too many matches. Enter more of the name or a full badge number.</b> : ''}
+            {!tooBroad && !foundAttendees.length && query && !loading ? <b>No people found. Search by name or badge number.</b> : ''}
             <div className='player-search-results'>
               <div className='player-search-results-rows'>
                 {foundAttendees.map(attendee => (
@@ -73,6 +74,7 @@ const mapStateToProps = state => {
     query: state.playerSearch.query,
     loading: state.playerSearch.loading,
     foundAttendees: filteredAttendees,
+    tooBroad: state.playerSearch.tooBroad,
     playersCount: state.play.players.length,
     maxPlayers: state.play.maxPlayers ?? 5,
   };
