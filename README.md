@@ -1,6 +1,6 @@
 # Frontends
 
-The web frontends for the Geekway to the West Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/) and served behind nginx in production. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
+The web frontends for the Geekway to the West Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/). In production they are static bundles served from an S3 bucket behind CloudFront (provisioned by [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra)); locally they build into a Docker/nginx image for the Compose stack. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
 
 ## Apps
 
@@ -72,19 +72,21 @@ npm run build:test
 npm run build:prod
 ```
 
-Builds output to `dist/`. The production Docker image (`node:20-slim` build stage) compiles the app, then copies `dist/` into an `nginx:stable-alpine` image that serves it on port 80. Auth0 and API configuration are passed at build time via Docker `ARG`s (`API_URL`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`).
+Builds output to `dist/`. Auth0 and API configuration are baked into the bundle at build time from `process.env` (`API_URL`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`) via webpack.
+
+In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment)). For local use there is also a Docker image (`node:20-slim` build stage compiles the app, then copies `dist/` into an `nginx:stable-alpine` image serving port 80) — this is what the backend's Docker Compose stack builds, passing the same config as build `ARG`s.
 
 ## Deployment
 
-Deployed to AWS ECS via the **Deploy Frontends to ECS** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. Each builds a Docker image, pushes it to its ECR repo, and updates its ECS service on the `geekway-{env}` cluster:
+Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. The static hosting (one private S3 bucket `geekway-{env}-spa` with three prefixes, fronted by a CloudFront distribution) is provisioned by the CDK in [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra) — these apps no longer run as ECS/Fargate tasks. Each job builds the static bundle, runs `aws s3 sync dist/` into its bucket prefix, then issues a `aws cloudfront create-invalidation` for that prefix:
 
-| App                | ECR repo / ECS service   |
-| ------------------ | ------------------------ |
-| `board-game-admin` | `frontends-admin`        |
-| `librarian`        | `frontends-librarian`    |
-| `play-prize-entry` | `frontends-play-and-win` |
+| App                | S3 prefix     | CloudFront behavior |
+| ------------------ | ------------- | ------------------- |
+| `board-game-admin` | `/admin`      | `/admin/*`          |
+| `librarian`        | `/librarian`  | `/librarian/*`      |
+| `play-prize-entry` | `/playandwin` | `/playandwin/*`     |
 
-Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the backend repo: [ruleslawyer-backend/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-backend/blob/main/DEPLOYMENT.md).
+CloudFront serves the SPA prefixes from S3 and forwards `/api/*` and `/ruleslawyer/*` to the backend ALB. AWS access uses GitHub OIDC (the `geekway-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
 
 It is not currently possible to have the frontends access multiple running conventions from a single deployment. Each deployment of these frontends is specific to an individual convention. The base URL that points to `ruleslawyer-backend` uses path variables to assign an Organization Id and a Convention Id.
 
