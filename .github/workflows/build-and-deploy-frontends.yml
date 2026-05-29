@@ -12,7 +12,9 @@ on:
           - nonprod
           - prod
 
+# id-token needed so the called workflows can assume the deploy role via OIDC.
 permissions:
+  id-token: write
   contents: read
 
 jobs:

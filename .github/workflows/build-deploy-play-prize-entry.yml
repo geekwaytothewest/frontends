@@ -15,22 +15,25 @@ on:
       always-override-limit:
         required: false
         type: string
+      # play-prize-entry has no logout flow, so this is optional and unused.
       logout-return-url:
-        required: true
+        required: false
         type: string
       auth-callback:
         required: true
         type: string
 
+# OIDC: assume the geekway-<env>-github-deploy role; no static AWS keys.
+permissions:
+  id-token: write
+  contents: read
+
 env:
   ROLE_TO_ASSUME: ${{ inputs.environment == 'nonprod' && secrets.NONPROD_ROLE_ARN || secrets.PROD_ROLE_ARN }}
-  ECS_CLUSTER: geekway-${{ inputs.environment }}
-  ECR_REPOSITORY: frontends-${{ inputs.service }}
-  ECS_SERVICE: frontends-${{ inputs.service }}
   API_URL: ${{ inputs.environment == 'nonprod' && secrets.API_URL_NONPROD || secrets.API_URL }}
-
-permissions:
-  contents: read
+  SPA_BUCKET: geekway-${{ inputs.environment }}-spa
+  SPA_PREFIX: playandwin
+  CF_DISTRIBUTION_ID: ${{ inputs.environment == 'nonprod' && secrets.CF_DISTRIBUTION_ID_NONPROD || secrets.CF_DISTRIBUTION_ID }}
 
 jobs:
   deploy:
@@ -39,52 +42,37 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
         role-to-assume: ${{ env.ROLE_TO_ASSUME }}
         role-duration-seconds: 1200
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-
-    - name: Build, tag, and push image to Amazon ECR
+    - name: Build SPA
+      working-directory: ${{ inputs.folder }}
+      # play-prize-entry's EnvironmentPlugin requires only these (no logout url).
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        API_IDENTIFIER: ${{ secrets.API_IDENTIFIER }}
+        AUTH_CALLBACK: ${{ inputs.auth-callback }}
+        AUTH_CLIENT_ID: ${{ secrets.AUTH_PLAY_PRIZE_ENTRY_CLIENT_ID }}
+        AUTH_DOMAIN: ${{ secrets.AUTH_DOMAIN }}
+        WEBPACK_MODE: ${{ secrets.WEBPACK_MODE }}
       run: |
-        # SPA config (API_URL, AUTH_*) is baked at build time via build args.
-        # Tag with both the commit SHA (immutable record) and latest
-        # (the tag the CDK-owned task definition references).
-        cd ${{ inputs.folder }}
-        docker build \
-          --build-arg ALWAYS_OVERRIDE_LIMIT=${{ inputs.always-override-limit }} \
-          --build-arg API_IDENTIFIER=${{ secrets.API_IDENTIFIER }} \
-          --build-arg API_URL=${{ env.API_URL }} \
-          --build-arg AUTH_CALLBACK=${{ inputs.auth-callback }} \
-          --build-arg AUTH_CLIENT_ID=${{ secrets.AUTH_PLAY_PRIZE_ENTRY_CLIENT_ID }} \
-          --build-arg AUTH_DOMAIN=${{ secrets.AUTH_DOMAIN }} \
-          --build-arg LOGOUT_RETURN_URL=${{ inputs.logout-return-url }} \
-          --build-arg WEBPACK_MODE=${{ secrets.WEBPACK_MODE }} \
-          -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-          -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        npm install
+        npm run build:prod
 
-    - name: Trigger ECS deployment
+    - name: Sync to S3 and invalidate CloudFront
+      working-directory: ${{ inputs.folder }}
       run: |
-        # The task definition is owned by geekway-infra (CDK). Forcing a new
-        # deployment restarts the service so it re-pulls the latest image.
-        aws ecs update-service \
-          --cluster "$ECS_CLUSTER" \
-          --service "$ECS_SERVICE" \
-          --force-new-deployment
-        aws ecs wait services-stable \
-          --cluster "$ECS_CLUSTER" \
-          --services "$ECS_SERVICE"
+        aws s3 sync dist/ "s3://${SPA_BUCKET}/${SPA_PREFIX}/" --delete
+        aws cloudfront create-invalidation \
+          --distribution-id "$CF_DISTRIBUTION_ID" \
+          --paths "/${SPA_PREFIX}/*"
