@@ -33,7 +33,7 @@ env:
   # segment is read from the page URL at runtime (one build serves all conventions).
   API_HOST: ${{ inputs.environment == 'nonprod' && secrets.API_HOST_NONPROD || secrets.API_HOST }}
   SPA_BUCKET: geekway-${{ inputs.environment }}-spa
-  SPA_PREFIX: playandwin
+  SPA_PREFIX: legacy/playandwin
   CF_DISTRIBUTION_ID: ${{ inputs.environment == 'nonprod' && secrets.CF_DISTRIBUTION_ID_NONPROD || secrets.CF_DISTRIBUTION_ID }}
 
 jobs:

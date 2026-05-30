@@ -32,7 +32,7 @@ class Auth {
   async login() {
     await this.clientReady;
     // The callback URL is convention-independent, so stash the convention path
-    // (/org/{id}/con/{id}/playandwin/...) in appState and restore it after login.
+    // (/legacy/playandwin/org/{id}/con/{id}/...) in appState and restore it after login.
     const returnTo = window.location.pathname + window.location.search + window.location.hash;
     await this.auth0Client.loginWithRedirect({ appState: { returnTo } });
   }

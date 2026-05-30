@@ -55,7 +55,7 @@ class Auth {
 
   signIn() {
     // The callback URL is convention-independent, so stash the convention path
-    // (/org/{id}/con/{id}/admin/...) in appState and restore it after login.
+    // (/legacy/admin/org/{id}/con/{id}/...) in appState and restore it after login.
     // Strip the auth-plumbing routes first: login is usually triggered from
     // /unauthenticated (the PrivateRoute redirect target), and returning there
     // post-login would just re-render the "Please Log In" prompt. Falling back

@@ -35,21 +35,21 @@ module.exports = {
   output: {
     filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/librarian/'
+    publicPath: '/legacy/librarian/'
   },
   devServer: {
     port: 8082,
     hot: true,
-    open: ['/librarian/'],
+    open: ['/legacy/librarian/'],
     historyApiFallback: {
-      index: '/librarian/'
+      index: '/legacy/librarian/'
     },
     client: {
       overlay: true
     },
     watchFiles: ['src/**/*'],
     devMiddleware: {
-      publicPath: '/librarian/'
+      publicPath: '/legacy/librarian/'
     },
     static: false
   },

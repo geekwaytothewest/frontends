@@ -26,11 +26,11 @@ const AppContent = styled.div`
 `;
 const Unauthenticated = () => <h1>Please Log In</h1>;
 
-// The convention is encoded in the URL (/org/{id}/con/{id}/admin/...) so a single
-// deployment serves every convention. Build the router basename from it, falling
-// back to plain /admin for local dev or the bare prefix.
+// The convention is encoded in the URL (/legacy/admin/org/{id}/con/{id}/...) so a
+// single deployment serves every convention. Build the router basename from it,
+// falling back to plain /legacy/admin for local dev or the bare prefix.
 const conMatch = (window.location.pathname || '').match(/\/org\/(\d+)\/con\/(\d+)(?:\/|$)/);
-const basename = (conMatch ? `/org/${conMatch[1]}/con/${conMatch[2]}` : '') + '/admin';
+const basename = '/legacy/admin' + (conMatch ? `/org/${conMatch[1]}/con/${conMatch[2]}` : '');
 
 class App extends Component {
   constructor(args) {

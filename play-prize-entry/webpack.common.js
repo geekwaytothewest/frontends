@@ -37,14 +37,14 @@ module.exports = {
   output: {
     filename: 'main.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/playandwin/'
+    publicPath: '/legacy/playandwin/'
   },
   // Serve the app's index for convention-prefixed client routes
-  // (/org/{id}/con/{id}/playandwin/...); without this the dev server 404s on the
-  // prefixed path that index.js redirects to. Ignored by `webpack build`.
+  // (/legacy/playandwin/org/{id}/con/{id}/...); without this the dev server 404s
+  // on the prefixed path that index.js redirects to. Ignored by `webpack build`.
   devServer: {
     historyApiFallback: {
-      index: '/playandwin/'
+      index: '/legacy/playandwin/'
     }
   },
   module: {

@@ -32,17 +32,17 @@ module.exports = {
   mode: process.env.WEBPACK_MODE,
   devServer: {
     // Serve the app's index for client-side routes (e.g. the Auth0 redirect to
-    // /admin/callback). The index lives under the /admin/ publicPath, so the
-    // default '/index.html' target would 404 ("Cannot GET /admin/callback").
+    // /legacy/admin/callback). The index lives under the /legacy/admin/
+    // publicPath, so the default '/index.html' target would 404.
     historyApiFallback: {
-      index: '/admin/index.html'
+      index: '/legacy/admin/index.html'
     }
   },
   devtool: 'inline-source-map',
   output: {
     filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/admin/'
+    publicPath: '/legacy/admin/'
   },
   module: {
     rules: [

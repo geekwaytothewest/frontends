@@ -35,7 +35,7 @@ env:
   # Static SPA hosting (replaces ECR/ECS). Bucket name is deterministic from the
   # CDK (geekway-<env>-spa); the distribution id is not, so it's a secret.
   SPA_BUCKET: geekway-${{ inputs.environment }}-spa
-  SPA_PREFIX: admin
+  SPA_PREFIX: legacy/admin
   CF_DISTRIBUTION_ID: ${{ inputs.environment == 'nonprod' && secrets.CF_DISTRIBUTION_ID_NONPROD || secrets.CF_DISTRIBUTION_ID }}
 
 jobs:

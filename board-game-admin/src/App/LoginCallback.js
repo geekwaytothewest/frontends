@@ -7,7 +7,7 @@ class Callback extends Component {
     const returnTo = await auth.handleAuthentication();
     // Full-page navigation (not history.replace) so the router basename and the
     // API base recompute under the convention prefix that was active pre-login.
-    window.location.replace(returnTo || '/admin/');
+    window.location.replace(returnTo || '/legacy/admin/');
   }
   render() {
     return (
