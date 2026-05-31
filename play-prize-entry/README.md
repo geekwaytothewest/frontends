@@ -3,7 +3,7 @@
 The guided flow for entering Play & Win plays: enter a badge number, choose the checkout, enter play info, review, and submit. Part of the [`frontends`](../README.md) repo.
 
 - **Stack:** React 18 + React Router 6, bundled with webpack, served behind nginx in production
-- **Local URL:** http://localhost:8083/playandwin
+- **Local URL:** http://localhost:8083/legacy/playandwin
 - **API:** the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend), authenticated via Auth0
 
 ## Setup
@@ -20,7 +20,7 @@ Create an `.env` from `.env.template`. Variables: `API_URL`, `AUTH_DOMAIN`, `AUT
 npm run start
 ```
 
-Starts the webpack dev server on port 8083 and opens `/playandwin/`.
+Starts the webpack dev server on port 8083 and opens `/legacy/playandwin/`.
 
 ## Build
 
