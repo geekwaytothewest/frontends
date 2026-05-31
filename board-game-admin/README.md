@@ -3,7 +3,7 @@
 Administrative interface for the Geekway to the West Rules Lawyer system — manage games, collections, and attendees. Part of the [`frontends`](../README.md) repo.
 
 - **Stack:** React 16.8 + React Router 5, bundled with webpack, served behind nginx in production
-- **Local URL:** http://localhost:8081/admin
+- **Local URL:** http://localhost:8081/legacy/admin
 - **API:** the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend), authenticated via Auth0
 
 ## Setup
@@ -20,7 +20,7 @@ Create an `.env` from `.env.template`. Variables: `API_URL`, `AUTH_DOMAIN`, `AUT
 npm run start
 ```
 
-Starts the webpack dev server on port 8081 and opens `/admin/`.
+Starts the webpack dev server on port 8081 and opens `/legacy/admin/`.
 
 ## Build
 

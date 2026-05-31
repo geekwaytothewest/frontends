@@ -32,7 +32,8 @@ env:
   # Only the API origin is baked into the bundle now; the org/{id}/con/{id} path
   # segment is read from the page URL at runtime (one build serves all conventions).
   API_HOST: ${{ inputs.environment == 'nonprod' && secrets.API_HOST_NONPROD || secrets.API_HOST }}
-  SPA_BUCKET: geekway-${{ inputs.environment }}-spa
+  # SPA_BUCKET is resolved at runtime from the network stack's SpaBucketName
+  # output (see step below) — the bucket name is account-scoped.
   SPA_PREFIX: legacy/librarian
   CF_DISTRIBUTION_ID: ${{ inputs.environment == 'nonprod' && secrets.CF_DISTRIBUTION_ID_NONPROD || secrets.CF_DISTRIBUTION_ID }}
 
@@ -56,6 +57,14 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
         role-to-assume: ${{ env.ROLE_TO_ASSUME }}
         role-duration-seconds: 1200
+
+    - name: Resolve SPA bucket from CDK stack output
+      run: |
+        SPA_BUCKET=$(aws cloudformation describe-stacks \
+          --stack-name "geekway-${{ inputs.environment }}-network" \
+          --query "Stacks[0].Outputs[?OutputKey=='SpaBucketName'].OutputValue" \
+          --output text)
+        echo "SPA_BUCKET=$SPA_BUCKET" >> "$GITHUB_ENV"
 
     - name: Build SPA
       working-directory: ${{ inputs.folder }}

@@ -4,11 +4,11 @@ The web frontends for the Geekway to the West Rules Lawyer convention system. Th
 
 ## Apps
 
-| Directory          | Package name                 | Purpose                          | Route         | Docker URL                         |
-| ------------------ | ---------------------------- | -------------------------------- | ------------- | ---------------------------------- |
-| `board-game-admin` | `board-game-admin`           | Admin interface                  | `/admin`      | http://localhost:8081/admin        |
-| `librarian`        | `library-attendant-interface`| Library attendant interface      | `/librarian`  | http://localhost:8082/librarian    |
-| `play-prize-entry` | `play-and-win-prize-entry`   | Play & Win prize entry           | `/playandwin` | http://localhost:8083/playandwin   |
+| Directory          | Package name                 | Purpose                          | Route              | Docker URL                              |
+| ------------------ | ---------------------------- | -------------------------------- | ------------------ | --------------------------------------- |
+| `board-game-admin` | `board-game-admin`           | Admin interface                  | `/legacy/admin`      | http://localhost:8081/legacy/admin        |
+| `librarian`        | `library-attendant-interface`| Library attendant interface      | `/legacy/librarian`  | http://localhost:8082/legacy/librarian    |
+| `play-prize-entry` | `play-and-win-prize-entry`   | Play & Win prize entry           | `/legacy/playandwin` | http://localhost:8083/legacy/playandwin   |
 
 (The Ruleslawyer dashboard is a separate Next.js app in the [`ruleslawyer-frontend`](https://github.com/geekwaytothewest/ruleslawyer-frontend) repo, not part of this one.)
 
@@ -58,9 +58,9 @@ Each app runs its own webpack dev server:
 npm run start
 ```
 
-- `board-game-admin` serves at http://localhost:8081/admin
-- `librarian` serves at http://localhost:8082/librarian
-- `play-prize-entry` serves at http://localhost:8083/playandwin
+- `board-game-admin` serves at http://localhost:8081/legacy/admin
+- `librarian` serves at http://localhost:8082/legacy/librarian
+- `play-prize-entry` serves at http://localhost:8083/legacy/playandwin
 
 ## Building
 
@@ -78,36 +78,36 @@ In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment
 
 ## Deployment
 
-Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. The static hosting (one private S3 bucket `geekway-{env}-spa` with three prefixes, fronted by a CloudFront distribution) is provisioned by the CDK in [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra) — these apps no longer run as ECS/Fargate tasks. Each job builds the static bundle, runs `aws s3 sync dist/` into its bucket prefix, then issues a `aws cloudfront create-invalidation` for that prefix:
+Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. The static hosting (one private, account-scoped S3 bucket `geekway-{env}-spa-{account}` with three prefixes, fronted by a CloudFront distribution) is provisioned by the CDK in [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra) — these apps no longer run as ECS/Fargate tasks. Each job resolves the bucket name from the network stack's `SpaBucketName` output, builds the static bundle, runs `aws s3 sync dist/` into its bucket prefix, then issues a `aws cloudfront create-invalidation` for that prefix:
 
-| App                | S3 prefix     | CloudFront behavior |
-| ------------------ | ------------- | ------------------- |
-| `board-game-admin` | `/admin`      | `/admin/*`          |
-| `librarian`        | `/librarian`  | `/librarian/*`      |
-| `play-prize-entry` | `/playandwin` | `/playandwin/*`     |
+| App                | S3 prefix          | CloudFront behaviors                 |
+| ------------------ | ------------------ | ------------------------------------ |
+| `board-game-admin` | `legacy/admin`      | `/legacy/admin`, `/legacy/admin/*`      |
+| `librarian`        | `legacy/librarian`  | `/legacy/librarian`, `/legacy/librarian/*` |
+| `play-prize-entry` | `legacy/playandwin` | `/legacy/playandwin`, `/legacy/playandwin/*` |
 
-CloudFront serves the SPA prefixes from S3 and forwards `/api/*` and `/ruleslawyer/*` to the backend ALB. AWS access uses GitHub OIDC (the `geekway-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
+CloudFront serves the `/legacy/<app>` prefixes from S3 and forwards `/api/*` to the backend ALB; the apex `/` and everything else go to the **ruleslawyer-frontend** dashboard (also via the ALB). AWS access uses GitHub OIDC (the `geekway-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
 
 ## Multiple conventions
 
 A single deployment serves **every** convention. The convention's Organization Id and Convention Id live in the page URL, and the app derives its backend base URL from them at runtime:
 
 ```
-https://<host>/org/{orgId}/con/{conId}/admin        -> API: <API_HOST>/api/legacy/org/{orgId}/con/{conId}
-https://<host>/org/{orgId}/con/{conId}/librarian
-https://<host>/org/{orgId}/con/{conId}/playandwin
+https://<host>/legacy/admin/org/{orgId}/con/{conId}        -> API: <API_HOST>/api/legacy/org/{orgId}/con/{conId}
+https://<host>/legacy/librarian/org/{orgId}/con/{conId}
+https://<host>/legacy/playandwin/org/{orgId}/con/{conId}
 ```
 
 How it works:
 
 - Only the API **origin** is baked into the bundle (the `API_HOST` env var). The `org/{id}/con/{id}` segment is parsed from `window.location.pathname` at runtime in each app's webpack `DefinePlugin` shim (wherever the source references `API_URL`).
-- Each app's React Router `basename` is likewise computed from the URL (`/org/{id}/con/{id}/<app>`), so client-side routing works under any convention prefix. If no `org/con` is present in the path (e.g. local dev), it falls back to `org 1 / con 1` and the bare `/<app>` basename.
-- Static assets are still served from the single S3 prefix per app (`/admin`, `/librarian`, `/playandwin`) with an absolute `publicPath`, so **nothing is duplicated in S3** — adding a convention requires no rebuild or redeploy.
+- Each app's React Router `basename` is likewise computed from the URL (`/legacy/<app>/org/{id}/con/{id}`), so client-side routing works under any convention prefix. If no `org/con` is present in the path (e.g. local dev), it falls back to `org 1 / con 1` under the bare `/legacy/<app>` basename.
+- Static assets are served from the single S3 prefix per app (`/legacy/admin`, `/legacy/librarian`, `/legacy/playandwin`) with an absolute `publicPath`, so **nothing is duplicated in S3** — adding a convention requires no rebuild or redeploy.
 
 For this to work, two things outside this repo must be configured:
 
-1. **CloudFront** must rewrite SPA navigations under a convention prefix to the app's single `index.html` — i.e. a request to `/org/{n}/con/{m}/<app>/*` returns `/<app>/index.html` (a CloudFront Function on the viewer-request event, matching `^/org/\d+/con/\d+/(admin|librarian|playandwin)`). Requests to the bare `/<app>/*` asset paths continue to serve the bundle directly from S3. See [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
-2. **Auth0** needs only a **single** allowed callback and logout URL **per app** — they are convention-independent (`AUTH_CALLBACK` / `LOGOUT_RETURN_URL`, e.g. `https://<host>/admin/callback` and `https://<host>/admin`), so they do **not** multiply with conventions. The convention the user was on is carried through the login round-trip via Auth0 `appState` and restored with a full-page redirect afterward, so they land back under the right `/org/{id}/con/{id}/<app>` prefix.
+1. **CloudFront** must rewrite SPA navigations under a `/legacy/<app>/` prefix to that app's single `index.html` — i.e. any extensionless request under `/legacy/<app>/` (bare, convention-scoped `/legacy/<app>/org/{n}/con/{m}`, or a deep link) returns `/legacy/<app>/index.html` (a CloudFront Function on the viewer-request event). Requests carrying a file extension serve the real asset directly from S3. Because org/con is just part of the path under the prefix, no special convention parsing is needed. See [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
+2. **Auth0** needs only a **single** allowed callback and logout URL **per app** — they are convention-independent (`AUTH_CALLBACK` / `LOGOUT_RETURN_URL`, e.g. `https://<host>/legacy/admin/callback` and `https://<host>/legacy/admin`), so they do **not** multiply with conventions. The convention the user was on is carried through the login round-trip via Auth0 `appState` and restored with a full-page redirect afterward, so they land back under the right `/legacy/<app>/org/{id}/con/{id}` prefix.
 
 The `API_HOST` secret is the API origin only — e.g. `https://nonprod.library.geekway.com` (or `http://localhost:8080` locally).
 
