@@ -32,10 +32,10 @@ env:
   # Only the API origin is baked into the bundle now; the org/{id}/con/{id} path
   # segment is read from the page URL at runtime (one build serves all conventions).
   API_HOST: ${{ inputs.environment == 'nonprod' && secrets.API_HOST_NONPROD || secrets.API_HOST }}
-  # SPA_BUCKET is resolved at runtime from the network stack's SpaBucketName
-  # output (see step below) — the bucket name is account-scoped.
+  # SPA_BUCKET and CF_DISTRIBUTION_ID are resolved at runtime from the network
+  # stack's SpaBucketName / DistributionId outputs (see step below) — both are
+  # account-scoped, so they're read from the stack rather than from secrets.
   SPA_PREFIX: legacy/playandwin
-  CF_DISTRIBUTION_ID: ${{ inputs.environment == 'nonprod' && secrets.CF_DISTRIBUTION_ID_NONPROD || secrets.CF_DISTRIBUTION_ID }}
 
 jobs:
   deploy:
@@ -58,13 +58,18 @@ jobs:
         role-to-assume: ${{ env.ROLE_TO_ASSUME }}
         role-duration-seconds: 1200
 
-    - name: Resolve SPA bucket from CDK stack output
+    - name: Resolve SPA bucket + CloudFront distribution from CDK stack outputs
       run: |
         SPA_BUCKET=$(aws cloudformation describe-stacks \
           --stack-name "geekway-${{ inputs.environment }}-network" \
           --query "Stacks[0].Outputs[?OutputKey=='SpaBucketName'].OutputValue" \
           --output text)
         echo "SPA_BUCKET=$SPA_BUCKET" >> "$GITHUB_ENV"
+        CF_DISTRIBUTION_ID=$(aws cloudformation describe-stacks \
+          --stack-name "geekway-${{ inputs.environment }}-network" \
+          --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
+          --output text)
+        echo "CF_DISTRIBUTION_ID=$CF_DISTRIBUTION_ID" >> "$GITHUB_ENV"
 
     - name: Build SPA
       working-directory: ${{ inputs.folder }}
