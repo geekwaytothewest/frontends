@@ -26,6 +26,12 @@ const AppContent = styled.div`
 `;
 const Unauthenticated = () => <h1>Please Log In</h1>;
 
+// The convention is encoded in the URL (/legacy/admin/org/{id}/con/{id}/...) so a
+// single deployment serves every convention. Build the router basename from it,
+// falling back to plain /legacy/admin for local dev or the bare prefix.
+const conMatch = (window.location.pathname || '').match(/\/org\/(\d+)\/con\/(\d+)(?:\/|$)/);
+const basename = '/legacy/admin' + (conMatch ? `/org/${conMatch[1]}/con/${conMatch[2]}` : '');
+
 class App extends Component {
   constructor(args) {
     super(args);
@@ -41,7 +47,7 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter history={history} basename='/admin/'>
+      <BrowserRouter history={history} basename={basename}>
         <Nav waitingForAuthResult={this.state.waitingForAuthResult} auth={auth} history={history} />
         <AppContent>
           {this.state.waitingForAuthResult && <CheckingAuthentication />}
