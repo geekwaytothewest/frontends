@@ -42,6 +42,13 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
+    # Real GitHub Environment (configure required reviewers on `prod`). The gate
+    # lives here, in the called workflow, because this is where the deploy role is
+    # assumed; it also scopes the OIDC sub to `…:environment:<env>`, which the role
+    # trust now requires. NOTE: the orchestrator fans out to three called
+    # workflows, so a prod run prompts for approval three times — approve each, or
+    # consolidate the three deploys into one job if that's noisy.
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
