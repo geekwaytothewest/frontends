@@ -9,13 +9,22 @@ import { apiMiddleware } from 'redux-api-middleware';
 import apiAuthInjector from './apiAuthInjector';
 import App from './app/app';
 import EnsureAuthenticated from './auth/ensureAuthenticated';
+import ResolveConvention from './app/resolveConvention';
 import getInitialState from './initialState';
 import './main.scss';
 import allReducers from './reducers/allReducers';
 
+// The PWA installs once with a convention-agnostic start_url (see the favicons
+// plugin in webpack.common.js); ResolveConvention runs after auth and, when the
+// URL has no /org/{id}/con/{id} prefix, redirects to the user's current
+// convention or shows a picker. The convention is encoded in the URL, so
+// resolution happens via a full-page navigate (below) and the app then re-evals
+// with the right basename / API base.
 const EnsureAuthWrapper = props => (
   <EnsureAuthenticated {...props}>
-    <App />
+    <ResolveConvention>
+      <App />
+    </ResolveConvention>
   </EnsureAuthenticated>
 );
 
@@ -60,7 +69,8 @@ const render = () => {
 // to the default convention so local dev mirrors the prefixed routing. The Auth0
 // callback (?code=...) is excluded so handleAuthentication can finish the token
 // exchange and navigate to the stashed returnTo itself. Scoped to localhost so
-// deployed bare hits are left alone (defaulting them to a convention is wrong).
+// deployed bare hits are left alone — there, ResolveConvention picks the
+// convention from the user's permissions instead.
 const DEFAULT_ORG = 1;
 const DEFAULT_CON = 1;
 const { pathname, search, hash, hostname } = window.location;

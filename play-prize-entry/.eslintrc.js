@@ -13,6 +13,7 @@ module.exports = {
     'process': 'readonly',
     'module': 'readonly',
     'API_URL': 'readonly',
+    'API_HOST': 'readonly',
     'AUTH_DOMAIN': 'readonly',
     'AUTH_CLIENT_ID': 'readonly',
     'API_IDENTIFIER': 'readonly',
