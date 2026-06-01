@@ -29,7 +29,21 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
   title: 'Play and Win',
   template: 'template.ejs'
 });
-const faviconPlugin = new FaviconsWebpackPlugin('./src/assets/favicon.png');
+// Single, convention-agnostic PWA identity. One install serves every
+// convention: the manifest's start_url/scope point at the bare app entry
+// (no /org/{id}/con/{id}), and the resolver in index.js redirects an installed
+// launch to the user's current convention (or shows a picker). Because identity
+// derives from start_url, this is one installable app that auto-rolls forward
+// each year instead of a stale per-convention install.
+const faviconPlugin = new FaviconsWebpackPlugin({
+  logo: './src/assets/favicon.png',
+  favicons: {
+    appName: 'Play and Win',
+    appShortName: 'Play and Win',
+    start_url: '/legacy/playandwin/?homescreen=1',
+    scope: '/legacy/playandwin/',
+  },
+});
 
 module.exports = {
   mode: 'production',
@@ -95,6 +109,9 @@ module.exports = {
     new webpack.EnvironmentPlugin(['AUTH_DOMAIN', 'AUTH_CLIENT_ID', 'AUTH_CALLBACK', 'API_IDENTIFIER', 'LOGOUT_RETURN_URL']),
     new webpack.DefinePlugin({
       API_URL: apiUrlExpr,
+      // Bare API origin, used for convention-independent calls (e.g. the
+      // convention resolver) that aren't under the /org/{id}/con/{id} base.
+      API_HOST: JSON.stringify(API_HOST),
       AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
       AUTH_CLIENT_ID: JSON.stringify(process.env.AUTH_CLIENT_ID),
       AUTH_CALLBACK: JSON.stringify(process.env.AUTH_CALLBACK),
