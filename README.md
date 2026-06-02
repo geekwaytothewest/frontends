@@ -1,6 +1,6 @@
 # Frontends
 
-The web frontends for the Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/). In production they are static bundles served from an S3 bucket behind CloudFront (provisioned by [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra)); locally they build into a Docker/nginx image for the Compose stack. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
+The web frontends for the Geekway to the West Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/). In production they are static bundles served from an S3 bucket behind CloudFront (provisioned by [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra)); locally they build into a Docker/nginx image for the Compose stack. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
 
 ## Apps
 
