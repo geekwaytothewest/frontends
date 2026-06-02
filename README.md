@@ -1,6 +1,6 @@
 # Frontends
 
-The web frontends for the Geekway to the West Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/). In production they are static bundles served from an S3 bucket behind CloudFront (provisioned by [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra)); locally they build into a Docker/nginx image for the Compose stack. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
+The web frontends for the Rules Lawyer convention system. This repo contains three [React](https://react.dev/) single-page apps, each bundled with [webpack](https://webpack.js.org/). In production they are static bundles served from an S3 bucket behind CloudFront (provisioned by [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra)); locally they build into a Docker/nginx image for the Compose stack. They talk to the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) API and authenticate via Auth0.
 
 ## Apps
 
@@ -10,7 +10,7 @@ The web frontends for the Geekway to the West Rules Lawyer convention system. Th
 | `librarian`        | `library-attendant-interface`| Library attendant interface      | `/legacy/librarian`  | http://localhost:8082/legacy/librarian    |
 | `play-prize-entry` | `play-and-win-prize-entry`   | Play & Win prize entry           | `/legacy/playandwin` | http://localhost:8083/legacy/playandwin   |
 
-(The Ruleslawyer dashboard is a separate Next.js app in the [`ruleslawyer-frontend`](https://github.com/geekwaytothewest/ruleslawyer-frontend) repo, not part of this one.)
+(The Ruleslawyer dashboard is a separate Next.js app in the [`ruleslawyer-frontend`](https://github.com/rules-lawyer/ruleslawyer-frontend) repo, not part of this one.)
 
 ## Requirements
 
@@ -24,7 +24,7 @@ The web frontends for the Geekway to the West Rules Lawyer convention system. Th
 git clone https://github.com/geekwaytothewest/frontends.git
 ```
 
-For the full stack (backend + database + all frontends) running together, see the [`ruleslawyer-backend`](https://github.com/geekwaytothewest/ruleslawyer-backend) README — its Docker Compose setup builds and serves these apps for you.
+For the full stack (backend + database + all frontends) running together, see the [`ruleslawyer-backend`](https://github.com/rules-lawyer/ruleslawyer-backend) README — its Docker Compose setup builds and serves these apps for you.
 
 Each app is installed and configured independently. In each app directory:
 
@@ -78,7 +78,7 @@ In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment
 
 ## Deployment
 
-Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. The static hosting (one private, account-scoped S3 bucket `geekway-{env}-spa-{account}` with three prefixes, fronted by a CloudFront distribution) is provisioned by the CDK in [`ruleslawyer-infra`](https://github.com/geekwaytothewest/ruleslawyer-infra) — these apps no longer run as ECS/Fargate tasks. Each job resolves the bucket name from the network stack's `SpaBucketName` output, builds the static bundle, runs `aws s3 sync dist/` into its bucket prefix, then issues a `aws cloudfront create-invalidation` for that prefix:
+Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manual `workflow_dispatch`; choose `nonprod` or `prod`), which fans out to all three apps. The static hosting (one private, account-scoped S3 bucket `geekway-{env}-spa-{account}` with three prefixes, fronted by a CloudFront distribution) is provisioned by the CDK in [`ruleslawyer-infra`](https://github.com/rules-lawyer/ruleslawyer-infra) — these apps no longer run as ECS/Fargate tasks. Each job resolves the bucket name from the network stack's `SpaBucketName` output, builds the static bundle, runs `aws s3 sync dist/` into its bucket prefix, then issues a `aws cloudfront create-invalidation` for that prefix:
 
 | App                | S3 prefix          | CloudFront behaviors                 |
 | ------------------ | ------------------ | ------------------------------------ |
@@ -86,7 +86,7 @@ Deployed to AWS S3 + CloudFront via the **Deploy Frontends** GitHub Action (manu
 | `librarian`        | `legacy/librarian`  | `/legacy/librarian`, `/legacy/librarian/*` |
 | `play-prize-entry` | `legacy/playandwin` | `/legacy/playandwin`, `/legacy/playandwin/*` |
 
-CloudFront serves the `/legacy/<app>` prefixes from S3 and forwards `/api/*` to the backend ALB; the apex `/` and everything else go to the **ruleslawyer-frontend** dashboard (also via the ALB). AWS access uses GitHub OIDC (the `geekway-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
+CloudFront serves the `/legacy/<app>` prefixes from S3 and forwards `/api/*` to the backend ALB; the apex `/` and everything else go to the **ruleslawyer-frontend** dashboard (also via the ALB). AWS access uses GitHub OIDC (the `ruleslawyer-{env}-github-deploy` role created by the CDK); the bucket name is deterministic but the distribution id is supplied as a secret (`CF_DISTRIBUTION_ID[_NONPROD]`). Auth0 callback/logout URLs and the API URL are baked into each bundle at build time. See the full guide in the infra repo: [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/rules-lawyer/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
 
 ## Multiple conventions
 
@@ -106,10 +106,10 @@ How it works:
 
 For this to work, two things outside this repo must be configured:
 
-1. **CloudFront** must rewrite SPA navigations under a `/legacy/<app>/` prefix to that app's single `index.html` — i.e. any extensionless request under `/legacy/<app>/` (bare, convention-scoped `/legacy/<app>/org/{n}/con/{m}`, or a deep link) returns `/legacy/<app>/index.html` (a CloudFront Function on the viewer-request event). Requests carrying a file extension serve the real asset directly from S3. Because org/con is just part of the path under the prefix, no special convention parsing is needed. See [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/geekwaytothewest/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
+1. **CloudFront** must rewrite SPA navigations under a `/legacy/<app>/` prefix to that app's single `index.html` — i.e. any extensionless request under `/legacy/<app>/` (bare, convention-scoped `/legacy/<app>/org/{n}/con/{m}`, or a deep link) returns `/legacy/<app>/index.html` (a CloudFront Function on the viewer-request event). Requests carrying a file extension serve the real asset directly from S3. Because org/con is just part of the path under the prefix, no special convention parsing is needed. See [ruleslawyer-infra/DEPLOYMENT.md](https://github.com/rules-lawyer/ruleslawyer-infra/blob/main/DEPLOYMENT.md).
 2. **Auth0** needs only a **single** allowed callback and logout URL **per app** — they are convention-independent (`AUTH_CALLBACK` / `LOGOUT_RETURN_URL`, e.g. `https://<host>/legacy/admin/callback` and `https://<host>/legacy/admin`), so they do **not** multiply with conventions. The convention the user was on is carried through the login round-trip via Auth0 `appState` and restored with a full-page redirect afterward, so they land back under the right `/legacy/<app>/org/{id}/con/{id}` prefix.
 
-The `API_HOST` secret is the API origin only — e.g. `https://nonprod.library.geekway.com` (or `http://localhost:8080` locally).
+The `API_HOST` secret is the API origin only — e.g. `https://nonprod.library.ruleslawyer.com` (or `http://localhost:8080` locally).
 
 ## Stay in touch
 
