@@ -14,7 +14,7 @@ The web frontends for the Geekway to the West Rules Lawyer convention system. Th
 
 ## Requirements
 
-- Node.js 20+
+- Node.js 24 (pinned via [`.nvmrc`](.nvmrc); CI and the Docker build images both use Node 24)
 - Auth0 tenant (for auth)
 - An accessible `ruleslawyer-backend` API
 
@@ -74,7 +74,7 @@ npm run build:prod
 
 Builds output to `dist/`. Auth0 and API configuration are baked into the bundle at build time from `process.env` (`API_HOST`, `AUTH_DOMAIN`, `AUTH_CLIENT_ID`, `AUTH_CALLBACK`, `API_IDENTIFIER`, `LOGOUT_RETURN_URL`, `WEBPACK_MODE`) via webpack. Note that only the API **origin** (`API_HOST`) is baked — the convention-specific `org/{id}/con/{id}` path is resolved at runtime (see [Multiple conventions](#multiple-conventions)).
 
-In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment)). For local use there is also a Docker image (`node:20-slim` build stage compiles the app, then copies `dist/` into an `nginx:stable-alpine` image serving port 80) — this is what the backend's Docker Compose stack builds, passing the same config as build `ARG`s.
+In production the `dist/` bundle is uploaded to S3 (see [Deployment](#deployment)). For local use there is also a Docker image (`node:lts-alpine` build stage compiles the app, then copies `dist/` into an `nginx:stable-alpine` image serving port 80) — this is what the backend's Docker Compose stack builds, passing the same config as build `ARG`s.
 
 ## Deployment
 
