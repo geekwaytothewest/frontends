@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-FROM node:20-slim as build
+FROM node:24-alpine AS build
 
 ARG API_HOST
 ARG AUTH_DOMAIN
