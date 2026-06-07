@@ -2,6 +2,9 @@
   "name": "play-and-win-prize-entry",
   "author": "Joe Henderson",
   "version": "2.0.0",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "start": "webpack serve --config webpack.common.js --open /playandwin/ --mode development --port 8083",
     "build:test": "webpack --config webpack.common.js",

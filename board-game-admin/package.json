@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "start": "webpack-dev-server --config webpack.common.js --mode development --open /admin/ --mode development --hot --port 8081",
     "build:test": "webpack --config webpack.common.js --env ENVIRONMENT=production --mode production",
