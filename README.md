@@ -6,11 +6,13 @@ The web frontends for the Geekway to the West Rules Lawyer convention system. Th
 
 | Directory          | Package name                 | Purpose                          | Route              | Docker URL                              |
 | ------------------ | ---------------------------- | -------------------------------- | ------------------ | --------------------------------------- |
-| `board-game-admin` | `board-game-admin`           | Admin interface                  | `/legacy/admin`      | http://localhost:8081/legacy/admin        |
+| `board-game-admin` | `board-game-admin`           | Admin interface **(deprecated)** | `/legacy/admin`      | http://localhost:8081/legacy/admin        |
 | `librarian`        | `library-attendant-interface`| Library attendant interface      | `/legacy/librarian`  | http://localhost:8082/legacy/librarian    |
 | `play-prize-entry` | `play-and-win-prize-entry`   | Play & Win prize entry           | `/legacy/playandwin` | http://localhost:8083/legacy/playandwin   |
 
 (The Ruleslawyer dashboard is a separate Next.js app in the [`ruleslawyer-frontend`](https://github.com/rules-lawyer/ruleslawyer-frontend) repo, not part of this one.)
+
+> **`board-game-admin` is deprecated** in favor of the [`ruleslawyer-frontend`](https://github.com/rules-lawyer/ruleslawyer-frontend) Next.js dashboard, which is at parity with all of its features. It stays here for reference until fully retired — new work should target the dashboard. `librarian` and `play-prize-entry` remain active.
 
 ## Requirements
 

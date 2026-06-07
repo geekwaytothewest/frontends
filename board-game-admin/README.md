@@ -1,5 +1,7 @@
 # Board Game Admin
 
+> **⚠️ Deprecated.** This app has been replaced by the [`ruleslawyer-frontend`](https://github.com/geekwaytothewest/ruleslawyer-frontend) Next.js dashboard, which is at parity with all of its features. It's kept here for reference until fully retired; new development should target the dashboard.
+
 Administrative interface for the Geekway to the West Rules Lawyer system — manage games, collections, and attendees. Part of the [`frontends`](../README.md) repo.
 
 - **Stack:** React 16.8 + React Router 5, bundled with webpack, served behind nginx in production
